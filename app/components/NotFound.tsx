@@ -2,18 +2,18 @@ import { Link } from "react-router";
 
 export default function NotFound() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-4">
+    <div className="flex flex-col items-center justify-center min-h-screen">
       <div className="text-center space-y-6 max-w-md">
-        <h1 className="text-9xl font-extrabold text-indigo-600 dark:text-indigo-500 tracking-widest">
+        <span className="text-9xl font-extrabold text-primary dark:text-primary tracking-widest">
           404
-        </h1>
-        <div className="bg-indigo-600 px-2  text-sm rounded rotate-12 absolute">
+        </span>
+        <h2 className="rounded text-2xl">
           Page Not Found 
-        </div>
+        </h2>
         <div className="mt-16">
           <Link
             to="/"
-            className="inline-block px-8 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75"
+            className="inline-block px-8 py-3 hover:bg-primary text-white font-semibold rounded-lg shadow-md bg-gradient-to-r from-[#FAD126] to-[#FF564E] animation-pulse duration-500 ease-in-out"
           >
             Go Home
           </Link>

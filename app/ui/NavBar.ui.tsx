@@ -8,12 +8,12 @@ export function Navbar() {
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2 font-bold text-xl text-white">
           <Gamepad2 className="h-6 w-6 text-primary" />
-          <span>FuncCards</span>
+          <span>CardComposer</span>
         </Link>
 
         <div className="flex items-center gap-6">
           <Link to="/play" className="text-sm font-medium text-white/70 hover:text-white transition-colors">
-            Jugar
+            Reglas
           </Link>
           <Link to="/about" className="text-sm font-medium text-white/70 hover:text-white transition-colors">
             Sobre los Creadores

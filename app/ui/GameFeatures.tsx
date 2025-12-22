@@ -1,43 +1,27 @@
 import { Card } from "../components/ui/card"
-import { Layers, Zap, Brain, Users } from "lucide-react"
 
-const features = [
-  {
-    icon: Layers,
-    title: "Composición Pura",
-    description:
-      "Cada carta representa una función pura. Combínalas para crear estrategias complejas sin efectos secundarios.",
-  },
-  {
-    icon: Zap,
-    title: "Transformaciones",
-    description: "Usa map, filter y reduce en tiempo real. Aprende transformaciones de datos mientras juegas.",
-  },
-  {
-    icon: Brain,
-    title: "Inmutabilidad",
-    description:
-      "El estado del juego nunca muta. Cada jugada crea una nueva realidad, enseñando inmutabilidad de forma natural.",
-  },
-  {
-    icon: Users,
-    title: "Higher-Order Cards",
-    description:
-      "Cartas especiales que toman otras cartas como entrada, demostrando funciones de orden superior en acción.",
-  },
-]
+interface Feature {
+  icon: React.ComponentType<{ className?: string }>,
+  title: string,
+  description: string
+}
 
-export function GameFeatures() {
+export function GameFeatures({features, title, subtitle}: {features: Feature[], title?: string, subtitle?: string}) {
   return (
     <section id="como-funciona" className="py-20 px-4 bg-white/5">
       <div className="container mx-auto max-w-6xl">
         <div className="text-center space-y-4 mb-12">
+          {title && 
           <h2 className="text-3xl md:text-5xl font-bold text-balance text-white">
-            Conceptos funcionales en cada jugada
+            {title}
           </h2>
+          }
+          {
+          subtitle &&
           <p className="text-lg text-white/70 max-w-2xl mx-auto">
-            Cada mecánica del juego está diseñada para reforzar principios fundamentales de programación funcional
+            {subtitle}
           </p>
+          }
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">

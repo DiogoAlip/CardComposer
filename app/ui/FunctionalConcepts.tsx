@@ -27,20 +27,20 @@ const concepts = [
   },
 ]
 
-export function FunctionalConcepts() {
+export function FunctionalConcepts({title, subtitle}: {title: string, subtitle: string}) {
   return (
     <section className="py-20 px-4">
       <div className="container mx-auto max-w-6xl">
         <div className="text-center space-y-4 mb-12">
-          <h2 className="text-3xl md:text-5xl font-bold text-balance text-white">Programación funcional en acción</h2>
+          <h2 className="text-3xl md:text-5xl font-bold text-balance text-white">{title}</h2>
           <p className="text-lg text-white/70 max-w-2xl mx-auto">
-            Cada concepto se traduce directamente en mecánicas de juego intuitivas
+            {subtitle}
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
           {concepts.map((concept, index) => (
-            <Card key={index} className={`p-6 border-l-4 ${concept.color} bg-card border-border`}>
+            <Card key={index} className={`p-6 border-l-4 ${concept.color} border-border hover:border-accent transition-colors duration-300`}>
               <div className="space-y-3">
                 <div className="flex items-start justify-between">
                   <h3 className="text-xl font-semibold text-white">{concept.title}</h3>
