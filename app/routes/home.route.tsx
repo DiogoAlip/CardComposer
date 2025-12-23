@@ -1,16 +1,16 @@
-import type { Route } from "./+types/home";
+import type { Route } from "./+types/home.route";
 import { Navbar } from "../ui/NavBar.ui"
-import { HeroSection } from "../ui/HeroSection"
-import { GameFeatures } from "../ui/GameFeatures"
-import { FunctionalConcepts } from "../ui/FunctionalConcepts"
-import { CtaSection } from "../ui/CTASection"
-import { Footer } from "../ui/Footer"
-import { Layers, Zap, Brain, Users } from "lucide-react";
+import { HeroSection } from "../ui/HeroSection.ui"
+import { GameFeatures } from "../ui/GameFeatures.ui"
+import { FunctionalConcepts } from "../ui/FunctionalConcepts.ui"
+import { CtaSection } from "../ui/CTASection.ui"
+import { Footer } from "../ui/Footer.ui"
+import { Layers, Zap, Brain, Users, Code2 } from "lucide-react";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "CardComposer" },
+    { name: "description", content: "Aprende programación funcional jugando" },
   ];
 }
 
@@ -43,7 +43,18 @@ export default function Home() {
   return (
   <div className="min-h-screen">
     <Navbar />
-    <HeroSection />
+    <HeroSection
+      title="Aprende a programar"
+      colorTitle="jugando cartas"
+      paragraph="Domina los conceptos de programación funcional mientras desarrollas estrategias ganadoras en un juego de cartas único e innovador."
+      addButtons={false}
+      children={
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 text-primary text-sm font-mono">
+          <Code2 className="h-4 w-4" />
+          <span>Programación Funcional + Estrategia</span>
+        </div>
+      }
+    />
     <GameFeatures features={features} title="Conceptos funcionales en cada jugada" subtitle="Cada mecánica del juego está diseñada para reforzar principios fundamentales de programación funcional"/>
     <FunctionalConcepts
       title="Programación funcional en acción"

@@ -13,13 +13,13 @@ export function Navbar() {
 
         <div className="flex items-center gap-6">
           <Link to="/play" className="text-sm font-medium text-white/70 hover:text-white transition-colors">
-            Reglas
+            Tutorial
           </Link>
           <Link to="/about" className="text-sm font-medium text-white/70 hover:text-white transition-colors">
             Sobre los Creadores
           </Link>
           <Button size="sm" className="ml-2">
-            Comenzar
+            Jugar
           </Button>
         </div>
       </div>
