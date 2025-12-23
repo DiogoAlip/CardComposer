@@ -12,14 +12,16 @@ export function Navbar() {
         </Link>
 
         <div className="flex items-center gap-6">
-          <Link to="/play" className="text-sm font-medium text-white/70 hover:text-white transition-colors">
+          <Link to="/tutorial" className="text-sm font-medium text-white/70 hover:text-white transition-colors">
             Tutorial
           </Link>
           <Link to="/about" className="text-sm font-medium text-white/70 hover:text-white transition-colors">
             Sobre los Creadores
           </Link>
-          <Button size="sm" className="ml-2">
-            Jugar
+          <Button size="sm" className="ml-2 bg-gradient-to-r from-[#FAD126] to-[#FF564E] hover:scale-110 transition-all">
+            <Link to="/dashboard">
+              Jugar
+            </Link>
           </Button>
         </div>
       </div>

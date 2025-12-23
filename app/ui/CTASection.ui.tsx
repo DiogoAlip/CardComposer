@@ -3,11 +3,17 @@ import { Card } from "../components/ui/card"
 import { ArrowRight, Github } from "lucide-react"
 import { Link } from "react-router"
 
-export function CtaSection({title, subtitle}: {title: string, subtitle: string}) {
+interface CtaSectionProps {
+    title: string;
+    subtitle: string;
+    dark?: boolean;
+}
+
+export function CtaSection({title, subtitle, dark = false}: CtaSectionProps) {
   return (
     <section className="py-20 px-4">
       <div className="container mx-auto max-w-4xl">
-        <Card className="p-12 text-center bg-gradient-to-br from-[#FAD126] to-[#FF564E] border-0">
+        <Card className={`p-12 text-center ${dark ? "bg-gradient-to-r from-yellow-400/20 to-red-500/20 border border-yellow-400/30 rounded-lg" : "bg-gradient-to-br from-[#FAD126] to-[#FF564E] border-0"}`}>
           <h2 className="text-3xl md:text-5xl font-bold mb-4 text-balance text-white">
             {title}
           </h2>

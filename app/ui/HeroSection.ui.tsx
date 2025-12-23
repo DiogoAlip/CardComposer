@@ -3,7 +3,7 @@ import { ArrowRight, Code2 } from "lucide-react"
 import { Link } from "react-router"
 
 interface HeroSectionProps {
-  title: string;
+  title?: string;
   colorTitle?: string;
   paragraph?: string;
   addButtons?: false;

@@ -13,7 +13,7 @@ export default function NotFound() {
         <div className="mt-16">
           <Link
             to="/"
-            className="inline-block px-8 py-3 hover:bg-primary text-white font-semibold rounded-lg shadow-md bg-gradient-to-r from-[#FAD126] to-[#FF564E] animation-pulse duration-500 ease-in-out"
+            className="inline-block px-8 py-3 text-white font-semibold rounded-lg shadow-md bg-gradient-to-r from-[#FAD126] to-[#FF564E]"
           >
             Go Home
           </Link>
