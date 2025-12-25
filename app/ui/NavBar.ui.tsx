@@ -19,7 +19,7 @@ export function Navbar() {
             Sobre los Creadores
           </Link>
           <Button size="sm" className="ml-2 bg-gradient-to-r from-[#FAD126] to-[#FF564E] hover:scale-110 transition-all">
-            <Link to="/dashboard">
+            <Link to="/gamemode">
               Jugar
             </Link>
           </Button>

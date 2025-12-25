@@ -34,7 +34,7 @@ export function HeroSection({title, colorTitle, paragraph, addButtons, children}
 
           {addButtons && <div className="flex items-center justify-center gap-4 flex-wrap">
             <Button size="lg" className="gap-2" asChild>
-              <Link to="/play">
+              <Link to="/gamemode">
                 Jugar Ahora
                 <ArrowRight className="h-4 w-4" />
               </Link>

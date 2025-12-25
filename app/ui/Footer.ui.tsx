@@ -18,7 +18,7 @@ export function Footer() {
             <h4 className="font-semibold mb-4 text-white">Juego</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link to="/play" className="text-white/70 hover:text-white transition-colors">
+                <Link to="/gamemode" className="text-white/70 hover:text-white transition-colors">
                   Jugar Ahora
                 </Link>
               </li>

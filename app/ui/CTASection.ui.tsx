@@ -22,7 +22,7 @@ export function CtaSection({title, subtitle, dark = false}: CtaSectionProps) {
           </p>
           <div className="flex items-center justify-center gap-4 flex-wrap">
             <Button size="lg" className="gap-2 bg-white text-secondary hover:bg-white/90" asChild>
-              <Link to="/play">
+              <Link to="/gamemode">
                 Comenzar a Jugar
                 <ArrowRight className="h-4 w-4" />
               </Link>
