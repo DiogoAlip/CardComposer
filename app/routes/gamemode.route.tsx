@@ -4,7 +4,7 @@ import {Navbar} from "~/ui/NavBar.ui";
 import { Link } from "react-router";
 import { Footer } from "~/ui/Footer.ui";
 import { Card } from "~/components/ui/card";
-import { Gamepad2, Share2, UserPlus } from "lucide-react";
+import { BrainCircuit, Share2, UserPlus } from "lucide-react";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -18,7 +18,7 @@ const gameModes = [
     id: 1,
     title: "Jugar contra la máquina",
     description: "Desafía la inteligencia artificial y demuestra tu dominio de la programación funcional",
-    icon: Gamepad2,
+    icon: BrainCircuit,
     href: "/play/vs-computer",
     color: "from-[#FAD126] to-[#FF564E]",
   },
@@ -73,7 +73,7 @@ export default function GameMode() {
                     }`}
                     onClick={() => setSelectedMode(mode.id)}
                   >
-                    <div className="flex flex-col h-full">
+                    <div className="flex flex-col h-full justify-center items-center">
                       {/* Icon */}
                       <div
                         className={`mb-6 p-4 rounded-full w-fit transition-all duration-300 ${
