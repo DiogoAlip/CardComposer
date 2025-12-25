@@ -57,7 +57,7 @@ export default function Tutorial () {
                 return (
                   <div key={index} className="flex gap-6 md:gap-12 items-start h-fit">
                     {/* Timeline connector */}
-                    <div className="flex flex-col items-center gap-4 self-stretch">
+                    <div className="hidden md:flex flex-col items-center gap-4 self-stretch">
                       {/* Step circle */}
                       <div className="w-16 h-16 rounded-full bg-primary flex-shrink-0 flex items-center justify-center">
                         <Icon className="w-8 h-8 text-black" />
