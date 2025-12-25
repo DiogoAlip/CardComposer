@@ -16,11 +16,10 @@ export function meta({}: Route.MetaArgs) {
 const gameModes = [
   {
     id: "vs-computer",
-    title: "Jugar contra la máquina",
+    title: "Solo",
     description: "Desafía la inteligencia artificial y demuestra tu dominio de la programación funcional",
     icon: BrainCircuit,
     href: "/play/vs-computer",
-    color: "from-[#FAD126] to-[#FF564E]",
   },
   {
     id: "invite",
@@ -28,7 +27,6 @@ const gameModes = [
     description: "Reta a un amigo a jugar mediante un enlace de invitación",
     icon: Share2,
     href: "/play/invite",
-    color: "from-[#FFD428] to-[#FF9B50]",
   },
   {
     id: "join",
@@ -36,15 +34,10 @@ const gameModes = [
     description: "Accede a una partida existente usando un código de invitación compartido",
     icon: UserPlus,
     href: "/play/join",
-    color: "from-[#FF564E] to-[#FAD126]",
   },
 ]
 
-type gameModeInterface = "join" | "invite" | "vs-computer" | "";
-
 export default function GameMode() {
-  const [selectedMode, setSelectedMode] = useState<gameModeInterface>("")
-
   return (
     <>
     <Navbar />
@@ -63,43 +56,33 @@ export default function GameMode() {
           <div className="grid md:grid-cols-3 gap-6 mb-12">
             {gameModes.map((mode) => {
               const IconComponent = mode.icon
-              const isSelected = selectedMode === mode.id
 
               return (
                 <Link key={mode.id} to={mode.href} className="group cursor-pointer">
                   <Card
-                    className={`p-8 h-full border-2 transition-all duration-300 ${
-                      isSelected
-                        ? `border-[#FFD428] bg-gradient-to-br ${mode.color}`
-                        : "border-white/10 bg-white/5 hover:border-[#FFD428] hover:bg-white/10"
-                    }`}
-                    onClick={() => setSelectedMode(mode.id as gameModeInterface)}
+                    className={`p-8 h-full border-2 transition-all duration-300 border-white/10 bg-white/5 hover:border-[#FFD428] hover:bg-white/10`}
                   >
                     <div className="flex flex-col h-full justify-center items-center">
                       {/* Icon */}
                       <div
-                        className={`mb-6 p-4 rounded-full w-fit transition-all duration-300 ${
-                          isSelected ? "bg-white/20" : "bg-gradient-to-br from-[#FAD126] to-[#FF564E]"
-                        }`}
+                        className="mb-6 p-4 rounded-full w-fit transition-all duration-300 bg-gradient-to-br from-[#FAD126] to-[#FF564E]"
                       >
-                        <IconComponent className={`h-8 w-8 ${isSelected ? "text-white" : "text-white"}`} />
+                        <IconComponent className="h-8 w-8 text-white" />
                       </div>
 
                       {/* Content */}
                       <h3
-                        className={`text-2xl font-bold mb-3 text-balance ${isSelected ? "text-white" : "text-white"}`}
+                        className="text-2xl font-bold mb-3 text-balance text-white"
                       >
                         {mode.title}
                       </h3>
-                      <p className={`text-sm mb-6 flex-1 ${isSelected ? "text-white/90" : "text-white/60"}`}>
+                      <p className="text-sm mb-6 flex-1 text-white/60">
                         {mode.description}
                       </p>
 
                       {/* Arrow indicator */}
                       <div
-                        className={`text-sm font-semibold flex items-center gap-2 transition-all duration-300 ${
-                          isSelected ? "text-white translate-x-2" : "text-[#FFD428] group-hover:translate-x-2"
-                        }`}
+                        className="text-sm font-semibold flex items-center gap-2 transition-all duration-300 text-[#FFD428] group-hover:translate-x-2"
                       >
                         Comenzar
                         <span>→</span>
