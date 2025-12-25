@@ -22,7 +22,7 @@ export function Navbar() {
             Sobre los Creadores
           </Link>
           <Button size="sm" className="ml-2 bg-gradient-to-r from-[#FAD126] to-[#FF564E] hover:scale-110 transition-all">
-            <Link to="/gamemode">
+            <Link to="/play">
               Jugar
             </Link>
           </Button>
@@ -53,7 +53,7 @@ export function Navbar() {
               Sobre los Creadores
             </Link>
             <Link
-              to="/gamemode"
+              to="/play"
               onClick={() => setIsOpen(false)}
             >
               <Button size="sm" className="w-full bg-gradient-to-r from-[#FAD126] to-[#FF564E] mt-2">

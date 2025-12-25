@@ -46,7 +46,6 @@ const tutorialSteps = [
 export default function Tutorial () {
     return (
         <div>
-            <Navbar />
             <HeroSection
                 colorTitle="Como jugar CardComposer"
                 paragraph="Aprende paso a paso cómo dominar el juego de cartas de programación funcional"
@@ -86,7 +85,6 @@ export default function Tutorial () {
                 title="¿Listo para jugar?"
                 subtitle="Ahora que ya conoces las mecánicas básicas, es hora de poner a prueba tus habilidades contra otros jugadores"
             />
-            <Footer />
         </div>
     )
 }

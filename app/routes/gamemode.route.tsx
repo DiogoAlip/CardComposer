@@ -15,7 +15,7 @@ export function meta({}: Route.MetaArgs) {
 
 const gameModes = [
   {
-    id: 1,
+    id: "vs-computer",
     title: "Jugar contra la máquina",
     description: "Desafía la inteligencia artificial y demuestra tu dominio de la programación funcional",
     icon: BrainCircuit,
@@ -23,7 +23,7 @@ const gameModes = [
     color: "from-[#FAD126] to-[#FF564E]",
   },
   {
-    id: 2,
+    id: "invite",
     title: "Invitar jugador",
     description: "Reta a un amigo a jugar mediante un enlace de invitación",
     icon: Share2,
@@ -31,7 +31,7 @@ const gameModes = [
     color: "from-[#FFD428] to-[#FF9B50]",
   },
   {
-    id: 3,
+    id: "join",
     title: "Unirse a partida",
     description: "Accede a una partida existente usando un código de invitación compartido",
     icon: UserPlus,
@@ -40,13 +40,15 @@ const gameModes = [
   },
 ]
 
+type gameModeInterface = "join" | "invite" | "vs-computer" | "";
+
 export default function GameMode() {
-  const [selectedMode, setSelectedMode] = useState<number | null>(null)
+  const [selectedMode, setSelectedMode] = useState<gameModeInterface>("")
 
   return (
+    <>
+    <Navbar />
     <div className="min-h-screen bg-black flex flex-col">
-      <Navbar />
-
       <main className="flex-1 pt-24 pb-20 px-4">
         <div className="container mx-auto max-w-6xl">
           {/* Header */}
@@ -71,7 +73,7 @@ export default function GameMode() {
                         ? `border-[#FFD428] bg-gradient-to-br ${mode.color}`
                         : "border-white/10 bg-white/5 hover:border-[#FFD428] hover:bg-white/10"
                     }`}
-                    onClick={() => setSelectedMode(mode.id)}
+                    onClick={() => setSelectedMode(mode.id as gameModeInterface)}
                   >
                     <div className="flex flex-col h-full justify-center items-center">
                       {/* Icon */}
@@ -110,8 +112,7 @@ export default function GameMode() {
           </div>
         </div>
       </main>
-
-      <Footer />
     </div>
+    </>
   )
 }

@@ -42,7 +42,6 @@ export default function Home() {
 ]
   return (
   <div className="min-h-screen">
-    <Navbar />
     <HeroSection
       title="Aprende a programar"
       colorTitle="jugando cartas"
@@ -64,7 +63,6 @@ export default function Home() {
       title="¿Listo para dominar la programación funcional?"
       subtitle="Únete a miles de desarrolladores que están aprendiendo FP de la manera más divertida posible"
     />
-    <Footer />
   </div>
   );
 }

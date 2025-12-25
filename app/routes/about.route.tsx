@@ -44,7 +44,6 @@ const creators = [
 export default function About() {
   return (
   <div className="min-h-screen ">
-    <Navbar />
     <div className="container mx-auto px-4 py-16">
       <HeroSection
         title="Sobre los Creadores"
@@ -73,7 +72,6 @@ export default function About() {
       ))}
       </div>
     </div>
-    <Footer />
   </div>
 );
 }
