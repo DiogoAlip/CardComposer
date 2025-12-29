@@ -1,7 +1,9 @@
+import DeckTemplate from "~/components/custom/DeckTemplate";
+
 export default function PlayVsComputerRoute() {
   return (
     <div>
-      <h1>VS Computer</h1>
+      <DeckTemplate />
     </div>
   );
 }
