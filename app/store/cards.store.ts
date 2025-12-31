@@ -2,22 +2,85 @@ import {create} from "zustand";
 import type { Card } from "../helpers/getDeck";
 import getDeck from "../helpers/getDeck";
 
-const initialCards = getDeck().shuffleDeck();
+const initialCards = getDeck().shuffleDeck().slice(0,16);
 
 interface CardsStore {
-    CardsFromPlayer1: Card[];
-    CardsFromPlayer2: Card[];
+    CardsFromPlayer1: {
+        FrontRow: Card[],
+        BackRow: Card[]
+    };
+    CardsFromPlayer2: {
+        FrontRow: Card[],
+        BackRow: Card[]
+    };
     ShuffleCards: () => void;
+    SwapFrontToBack: (player: 1 | 2) => void;
+    SetCardsInOnePlayer: (player: 1 | 2, FrontRow: Card[], BackRow: Card[]) => void;
+    SetCardsInBothPlayers: (Player1Cards: Card[], Player2Cards: Card[]) => void;    
 }
 
-const useCardsStore = create<CardsStore>((set) => ({
-    CardsFromPlayer1: initialCards.slice(0, 8),
-    CardsFromPlayer2: initialCards.slice(8, 16),
+export const useCardsStore = create<CardsStore>((set) => ({
+    CardsFromPlayer1: {
+        FrontRow: initialCards.slice(0, 4).map((card,index) => ({...card, isFaceUp: index%2 == 0 ? true : false})),
+        BackRow: initialCards.slice(4, 8).map((card,index) => ({...card, isFaceUp: index%2 == 0 ? false : true})),
+    },
+    CardsFromPlayer2: {
+        FrontRow: initialCards.slice(8, 12).map((card,index) => ({...card, isFaceUp: index%2 == 0 ? true : false})),
+        BackRow: initialCards.slice(12, 16).map((card,index) => ({...card, isFaceUp: index%2 == 0 ? false : true})),
+    },
     ShuffleCards: () => {
         const newCards = getDeck().shuffleDeck();
         set({
-            CardsFromPlayer1: newCards.slice(0, 8),
-            CardsFromPlayer2: newCards.slice(8, 16),
+            CardsFromPlayer1: {
+                FrontRow: newCards.slice(0, 4).map((card,index) => ({...card, isFaceUp: index%2 == 0 ? true : false})),
+                BackRow: newCards.slice(4, 8).map((card,index) => ({...card, isFaceUp: index%2 == 0 ? false : true})),
+            },
+            CardsFromPlayer2: {
+                FrontRow: newCards.slice(8, 12).map((card,index) => ({...card, isFaceUp: index%2 == 0 ? true : false})),
+                BackRow: newCards.slice(12, 16).map((card,index) => ({...card, isFaceUp: index%2 == 0 ? false : true})),
+            },
+        });
+    },
+    SwapFrontToBack: (player: 1 | 2) => {
+        if (player === 1) {
+            const state = useCardsStore((state) => state);
+            const FrontRow = state.CardsFromPlayer1.FrontRow;
+            const BackRow = state.CardsFromPlayer1.BackRow;
+            set({...state, CardsFromPlayer1: {FrontRow: BackRow, BackRow: FrontRow}});
+        } else {
+            const state = useCardsStore((state) => state);
+            const FrontRow = state.CardsFromPlayer2.FrontRow;
+            const BackRow = state.CardsFromPlayer2.BackRow;
+            set({...state, CardsFromPlayer2: {FrontRow: BackRow, BackRow: FrontRow}});
+        }
+    },
+    SetCardsInOnePlayer: (player: 1 | 2, FrontRow: Card[], BackRow: Card[]) => {
+        if (player === 1) {
+            set({
+                CardsFromPlayer1: {
+                    FrontRow: FrontRow,
+                    BackRow: BackRow,
+                },
+            });
+        } else {
+            set({
+                CardsFromPlayer2: {
+                    FrontRow: FrontRow,
+                    BackRow: BackRow,
+                },
+            });
+        }
+    },
+    SetCardsInBothPlayers: (Player1Cards: Card[], Player2Cards: Card[]) => {
+        set({
+            CardsFromPlayer1: {
+                FrontRow: Player1Cards.slice(0, 4),
+                BackRow: Player1Cards.slice(4, 8),
+            },
+            CardsFromPlayer2: {
+                FrontRow: Player2Cards.slice(0, 4),
+                BackRow: Player2Cards.slice(4, 8),
+            },
         });
     },
 }));

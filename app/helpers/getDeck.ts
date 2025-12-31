@@ -6,6 +6,7 @@ export interface Card {
   rank: Rank;
   color: string;
   isFaceUp: boolean;
+  isIt: boolean;
 }
 
 const SUITS: Suit[] = ["♠", "♥", "♦", "♣"];
@@ -18,7 +19,8 @@ export default function getDeck() {
         suit, 
         rank, 
         color: suit === "♠" || suit === "♣" ? "black" : "red", 
-        isFaceUp: false 
+        isFaceUp: false,
+        isIt: true
       }))
     );
 
