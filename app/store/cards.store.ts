@@ -2,7 +2,10 @@ import {create} from "zustand";
 import type { Card } from "../helpers/getDeck";
 import getDeck from "../helpers/getDeck";
 
-const initialCards = getDeck().shuffleDeck().slice(0,16);
+const initialCards = getDeck()
+    .shuffleDeck()
+    .slice(0,16)
+    .map((card,index) => ({...card, isFaceUp: index%2 == 0 ? true : false}));
 
 interface CardsStore {
     CardsFromPlayer1: {
@@ -21,23 +24,23 @@ interface CardsStore {
 
 export const useCardsStore = create<CardsStore>((set) => ({
     CardsFromPlayer1: {
-        FrontRow: initialCards.slice(0, 4).map((card,index) => ({...card, isFaceUp: index%2 == 0 ? true : false})),
-        BackRow: initialCards.slice(4, 8).map((card,index) => ({...card, isFaceUp: index%2 == 0 ? false : true})),
+        FrontRow: initialCards.slice(0, 4),
+        BackRow: initialCards.slice(4, 8).reverse(),
     },
     CardsFromPlayer2: {
-        FrontRow: initialCards.slice(8, 12).map((card,index) => ({...card, isFaceUp: index%2 == 0 ? true : false})),
-        BackRow: initialCards.slice(12, 16).map((card,index) => ({...card, isFaceUp: index%2 == 0 ? false : true})),
+        FrontRow: initialCards.slice(8, 12),
+        BackRow: initialCards.slice(12, 16).reverse(),
     },
     ShuffleCards: () => {
         const newCards = getDeck().shuffleDeck();
         set({
             CardsFromPlayer1: {
-                FrontRow: newCards.slice(0, 4).map((card,index) => ({...card, isFaceUp: index%2 == 0 ? true : false})),
-                BackRow: newCards.slice(4, 8).map((card,index) => ({...card, isFaceUp: index%2 == 0 ? false : true})),
+                FrontRow: newCards.slice(0, 4),
+                BackRow: newCards.slice(4, 8).reverse(),
             },
             CardsFromPlayer2: {
-                FrontRow: newCards.slice(8, 12).map((card,index) => ({...card, isFaceUp: index%2 == 0 ? true : false})),
-                BackRow: newCards.slice(12, 16).map((card,index) => ({...card, isFaceUp: index%2 == 0 ? false : true})),
+                FrontRow: newCards.slice(8, 12),
+                BackRow: newCards.slice(12, 16).reverse(),
             },
         });
     },
