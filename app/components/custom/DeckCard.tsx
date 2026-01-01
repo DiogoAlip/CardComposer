@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Card } from "../ui/card";
 
 export interface CardProps {
@@ -8,7 +9,7 @@ export interface CardProps {
     color: string;
 }
 
-export function DeckCard({rank, suit, isFaceUp, isIt, color}: CardProps) {
+export default memo(function DeckCard({rank, suit, isFaceUp, isIt, color}: CardProps) {
     if (isIt && !isFaceUp) {
         return (
             <Card className="w-[80px] h-[110px] flex flex-col bg-gradient-to-br from-primary to-accent">
@@ -25,4 +26,4 @@ export function DeckCard({rank, suit, isFaceUp, isIt, color}: CardProps) {
             </div>}
         </Card>
     )
-}
+})

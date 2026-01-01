@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
-import { DeckCard } from "../custom/DeckCard";
+import { memo, useEffect, useState } from "react";
+import DeckCard from "./DeckCard";
 import type { Card } from "~/helpers/getDeck";
 
-interface DeckTemplate {
+interface DeckLayout {
   CardsFromPlayer1: {FrontRow: Card[], BackRow: Card[]};
   CardsFromPlayer2: {FrontRow: Card[], BackRow: Card[]};
 }
 
-export default function DeckTemplate({CardsFromPlayer1, CardsFromPlayer2}: DeckTemplate) {
+export default memo(function DeckLayout({CardsFromPlayer1, CardsFromPlayer2}: DeckLayout) {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -44,4 +44,4 @@ export default function DeckTemplate({CardsFromPlayer1, CardsFromPlayer2}: DeckT
       </div>
     </div>
   );
-}
+})
