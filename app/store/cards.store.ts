@@ -18,7 +18,7 @@ interface CardsStore {
     };
     ShuffleCards: () => void;
     SwapFrontToBack: (player: 1 | 2) => void;
-    SetCardsInOnePlayer: (player: 1 | 2, FrontRow: Card[], BackRow: Card[]) => void;
+    SetCardsInOnePlayer: (player: 1 | 2, FrontRow: Card[], BackRow?: Card[]) => void;
     SetCardsInBothPlayers: (Player1Cards: Card[], Player2Cards: Card[]) => void;    
 }
 
@@ -57,20 +57,24 @@ export const useCardsStore = create<CardsStore>((set) => ({
             set({...state, CardsFromPlayer2: {FrontRow: BackRow, BackRow: FrontRow}});
         }
     },
-    SetCardsInOnePlayer: (player: 1 | 2, FrontRow: Card[], BackRow: Card[]) => {
+    SetCardsInOnePlayer: (player: 1 | 2, FrontRow: Card[], BackRow?: Card[]) => {
         if (player === 1) {
+            const CardsFromPlayer1 = useCardsStore((state) => state.CardsFromPlayer1);
             set({
                 CardsFromPlayer1: {
+                    ...CardsFromPlayer1,
                     FrontRow: FrontRow,
-                    BackRow: BackRow,
-                },
+                    BackRow: BackRow ?? CardsFromPlayer1.BackRow,
+                }
             });
         } else {
+            const CardsFromPlayer2 = useCardsStore((state) => state.CardsFromPlayer2);
             set({
                 CardsFromPlayer2: {
+                    ...CardsFromPlayer2,
                     FrontRow: FrontRow,
-                    BackRow: BackRow,
-                },
+                    BackRow: BackRow ?? CardsFromPlayer2.BackRow,
+                }
             });
         }
     },

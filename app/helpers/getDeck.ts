@@ -4,7 +4,7 @@ export type Rank = "A" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "10" | 
 export interface Card {
   suit: Suit;
   rank: Rank;
-  color: string;
+  color: "black" | "red";
   isFaceUp: boolean;
   isIt: boolean;
 }
