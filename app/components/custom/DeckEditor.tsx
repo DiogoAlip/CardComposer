@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState, memo } from "react";
 import DeckLayout from "./DeckLayout";
 import { useCardsStore } from "~/store/cards.store";
 import { Menu } from "lucide-react"
-import { Button } from "../ui/button";
+import {DeckCode} from "./DeckCode";
 
 export default memo(function DeckEditor() {
     const CardsFromPlayer1 = useCardsStore((state) => state.CardsFromPlayer1);
@@ -60,6 +60,7 @@ export default memo(function DeckEditor() {
                     <Menu onClick={closeBar} className="w-6 h-6 text-primary" />
                     <h3 className="text-primary font-bold mb-4">Deck Editor</h3>
                 </div>
+                <DeckCode />
             </div>
             <div
                 onMouseDown={startResizing}

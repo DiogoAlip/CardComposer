@@ -1,4 +1,3 @@
-import type { Card } from "~/helpers/getDeck";
 import { useCardsStore } from "./cards.store";
 
 export const SwapPrincipalPlayerCards = () => {
