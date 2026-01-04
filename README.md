@@ -1,59 +1,59 @@
 # CardComposer
 
-## Sobre qué trata el proyecto
+## About the Project
 
-**CardComposer** es una aplicación web interactiva diseñada para la composición y visualización de rutinas o secuencias de manipulación de cartas. La herramienta permite a los usuarios crear "programas" visuales mediante una interfaz de arrastrar y soltar (drag-and-drop), combinando funciones como voltear cartas, intercambiarlas o cambiar su estado (boca arriba/boca abajo).
+**CardComposer** is an interactive web application designed for composing and visualizing card manipulation routines or sequences. The tool allows users to create visual "programs" using a drag-and-drop interface, combining functions such as flipping cards, swapping them, or changing their state (face up/face down).
 
-El proyecto está construido utilizando un stack moderno que incluye:
-- **React 19 & React Router v7**: Para una arquitectura robusta y renderizado eficiente.
-- **TypeScript**: Para garantizar la seguridad de tipos y mejorar la experiencia de desarrollo.
-- **Tailwind CSS v4**: Para un diseño estilizado, responsivo y mantenible.
-- **@dnd-kit**: Para gestionar las interacciones complejas de arrastrar y soltar.
-- **Zustand**: Para una gestión del estado global ligera y potente.
+The project is built using a modern stack that includes:
+- **React 19 & React Router v7**: For robust architecture and efficient rendering.
+- **TypeScript**: To ensure type safety and improve the development experience.
+- **Tailwind CSS v4**: For a stylish, responsive, and maintainable design.
+- **@dnd-kit**: To manage complex drag-and-drop interactions.
+- **Zustand**: For lightweight and powerful global state management.
 
-## Instalacion del proyecto
+## Project Installation
 
-Sigue estos pasos para instalar y ejecutar el proyecto en tu entorno local:
+Follow these steps to install and run the project in your local environment:
 
-### 1. Prerrequisitos
-Asegúrate de tener instalado [Node.js](https://nodejs.org/) en tu sistema. Se recomienda usar un gestor de paquetes como `pnpm`, aunque `npm` también funcionará.
+### 1. Prerequisites
+Ensure you have [Node.js](https://nodejs.org/) installed on your system. It is recommended to use a package manager like `pnpm`, although `npm` will also work.
 
-### 2. Clonar el repositorio
-Abre tu terminal y clona el proyecto:
+### 2. Clone the Repository
+Open your terminal and clone the project:
 
 ```bash
-git clone <URL_DEL_REPOSITORIO>
+git clone <REPOSITORY_URL>
 cd CardComposer
 ```
 
-### 3. Instalar dependencias
-Instala las librerías necesarias. Recomendamos usar `pnpm` ya que el proyecto contiene un archivo `pnpm-lock.yaml`:
+### 3. Install Dependencies
+Install the necessary libraries. We recommend using `pnpm` as the project contains a `pnpm-lock.yaml` file:
 
 ```bash
 pnpm install
 ```
-*Si prefieres usar npm:*
+*If you prefer to use npm:*
 ```bash
 npm install
 ```
 
-### 4. Iniciar el servidor de desarrollo
-Ejecuta el siguiente comando para iniciar la aplicación en modo desarrollo:
+### 4. Start the Development Server
+Run the following command to start the application in development mode:
 
 ```bash
 pnpm dev
 ```
-*O con npm:*
+*Or with npm:*
 ```bash
 npm run dev
 ```
 
-### 5. Abrir la aplicación
-Una vez iniciado el servidor, verás una URL en la terminal (normalmente `http://localhost:5173`). Ábrela en tu navegador para ver la aplicación funcionando.
+### 5. Open the Application
+Once the server has started, you will see a URL in the terminal (usually `http://localhost:5173`). Open it in your browser to see the application running.
 
 ---
 
-## Otros Scripts
+## Other Scripts
 
-- **Construir para producción**: `npm run build` o `pnpm build`
-- **Previsualizar producción**: `npm run start` o `pnpm start`
+- **Build for production**: `npm run build` or `pnpm build`
+- **Preview production**: `npm run start` or `pnpm start`
