@@ -56,7 +56,7 @@ export default memo(function DeckEditor() {
                 }
         >
             <div className="flex flex-col">
-                <div className="flex flex-row gap-4">
+                <div className="flex flex-row gap-4 border-b border-border">
                     <Menu onClick={closeBar} className="w-6 h-6 text-primary" />
                     <h3 className="text-primary font-bold mb-4">Deck Editor</h3>
                 </div>
