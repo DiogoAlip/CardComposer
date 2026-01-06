@@ -1,5 +1,5 @@
 import {create} from "zustand";
-import type { Card } from "../helpers/getDeck";
+import type { Card } from "../interface/card.interface";
 import getDeck from "../helpers/getDeck";
 
 const initialCards = getDeck()
@@ -45,21 +45,21 @@ export const useCardsStore = create<CardsStore>((set) => ({
         });
     },
     SwapFrontToBack: (player: 1 | 2) => {
+        const state = useCardsStore.getState();
         if (player === 1) {
-            const state = useCardsStore((state) => state);
             const FrontRow = state.CardsFromPlayer1.FrontRow;
             const BackRow = state.CardsFromPlayer1.BackRow;
-            set({...state, CardsFromPlayer1: {FrontRow: BackRow, BackRow: FrontRow}});
+            set({CardsFromPlayer1: {FrontRow: BackRow, BackRow: FrontRow}});
         } else {
-            const state = useCardsStore((state) => state);
             const FrontRow = state.CardsFromPlayer2.FrontRow;
             const BackRow = state.CardsFromPlayer2.BackRow;
-            set({...state, CardsFromPlayer2: {FrontRow: BackRow, BackRow: FrontRow}});
+            set({CardsFromPlayer2: {FrontRow: BackRow, BackRow: FrontRow}});
         }
     },
     SetCardsInOnePlayer: (player: 1 | 2, FrontRow: Card[], BackRow?: Card[]) => {
+        const state = useCardsStore.getState();
         if (player === 1) {
-            const CardsFromPlayer1 = useCardsStore((state) => state.CardsFromPlayer1);
+            const CardsFromPlayer1 = state.CardsFromPlayer1;
             set({
                 CardsFromPlayer1: {
                     ...CardsFromPlayer1,
@@ -68,7 +68,7 @@ export const useCardsStore = create<CardsStore>((set) => ({
                 }
             });
         } else {
-            const CardsFromPlayer2 = useCardsStore((state) => state.CardsFromPlayer2);
+            const CardsFromPlayer2 = state.CardsFromPlayer2;
             set({
                 CardsFromPlayer2: {
                     ...CardsFromPlayer2,

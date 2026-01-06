@@ -1,6 +1,6 @@
 import { memo, useEffect, useState } from "react";
 import DeckCard from "./DeckCard";
-import type { Card } from "~/helpers/getDeck";
+import type { Card } from "~/interface/card.interface";
 
 interface DeckLayout {
   CardsFromPlayer1: {FrontRow: Card[], BackRow: Card[]};

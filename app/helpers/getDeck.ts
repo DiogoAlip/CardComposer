@@ -1,13 +1,4 @@
-export type Suit = "♠" | "♥" | "♦" | "♣";
-export type Rank = "A" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "10" | "J" | "Q" | "K";
-
-export interface Card {
-  suit: Suit;
-  rank: Rank;
-  color: "black" | "red";
-  isFaceUp: boolean;
-  isIt: boolean;
-}
+import type { Card, Suit, Rank } from "../interface/card.interface";
 
 const SUITS: Suit[] = ["♠", "♥", "♦", "♣"];
 const RANKS: Rank[] = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];

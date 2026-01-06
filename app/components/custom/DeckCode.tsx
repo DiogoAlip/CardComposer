@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DndContext, type DragEndEvent } from '@dnd-kit/core';
 import { Draggable } from './Draggable.layout';
 import { Droppable } from './Droppable.layout';
@@ -12,6 +12,14 @@ export function DeckCode() {
   const filterFunctionKeys = Object.keys(DeckFilterFunctions);
   const [program, setProgram] = useState<string[]>([]);
   const [filter, setFilter] = useState<string>();
+
+  const [isClient, setIsClient] = useState(false);
+  
+  useEffect(() => {
+    setIsClient(true)
+  },[])
+
+  if (!isClient) return null;
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
@@ -38,6 +46,16 @@ export function DeckCode() {
     } else {
       setProgram((prev) => prev.filter((block) => block !== instanceId));
     }
+  }
+
+  function runCode (){
+    const mapFunctionsForEject = program.map((key) => DeckMapFunctions[key]);
+    const filterFunctionForEject = filter ? DeckFilterFunctions[filter] : null;
+    
+    filterFunctionForEject?.()
+    mapFunctionsForEject.map((func) => {
+      func()
+    })
   }
 
   return (
@@ -77,6 +95,7 @@ export function DeckCode() {
                 <p className='text-sm'>Clear</p>
               </Button>
               <Button
+                onClick={runCode}
                 className='text-xs border text-green-400 bg-transparent hover:text-black hover:bg-green-400 border-green-400 rounded px-2 py-1'
               >
                 <Play/>
