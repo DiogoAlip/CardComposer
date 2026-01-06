@@ -7,15 +7,10 @@ import { DeckMapFunctions, DeckFilterFunctions } from '../../helpers/getFunction
 import { Button } from '../ui/button';
 import { Play, SendHorizonal, Trash } from 'lucide-react';
 
-interface ProgramBlock {
-  instanceId: string;
-  mapFunctionKey: string;
-}
-
 export function DeckCode() {
   const mapFunctionKeys = Object.keys(DeckMapFunctions);
   const filterFunctionKeys = Object.keys(DeckFilterFunctions);
-  const [program, setProgram] = useState<ProgramBlock[]>([]);
+  const [program, setProgram] = useState<string[]>([]);
   const [filter, setFilter] = useState<string>();
 
   function handleDragEnd(event: DragEndEvent) {
@@ -26,11 +21,7 @@ export function DeckCode() {
       over.id === 'mapDroppable' &&
       mapFunctionKeys.includes(active.id.toString())
     ) {
-      const newBlock: ProgramBlock = {
-        instanceId: `${active.id}-${Date.now()}`,
-        mapFunctionKey: active.id.toString(),
-      };
-      setProgram((prev) => [...prev, newBlock]);
+      setProgram((prev) => [...prev, active.id.toString()]);
     } else if (
       over &&
       over.id === 'filterDroppable' &&
@@ -45,7 +36,7 @@ export function DeckCode() {
     if (filter === instanceId) {
       setFilter(undefined);
     } else {
-      setProgram((prev) => prev.filter((block) => block.instanceId !== instanceId));
+      setProgram((prev) => prev.filter((block) => block !== instanceId));
     }
   }
 
@@ -55,7 +46,7 @@ export function DeckCode() {
         <div className='flex flex-row gap-2 w-full'>
           <div className='flex flex-col gap-2 w-1/2'>
             <h3 className="text-primary font-bold text-center">Map Functions</h3>
-            {mapFunctionKeys.map((key) => (
+            {mapFunctionKeys.map((key) => !program.includes(key) && (
               <Draggable key={key} id={key} className='hover:scale-150'>
                 {key}
               </Draggable>
@@ -123,10 +114,10 @@ export function DeckCode() {
                 )}
                 {program.map((block) => (
                   <DroppableButton 
-                    key={block.instanceId} 
-                    instanceId={block.instanceId} 
-                    paragraph={block.mapFunctionKey}
-                    handleRemoveBlock={() => handleRemoveBlock(block.instanceId)}
+                    key={block} 
+                    instanceId={block} 
+                    paragraph={block}
+                    handleRemoveBlock={() => handleRemoveBlock(block)}
                   />
                 ))}
               </div>
