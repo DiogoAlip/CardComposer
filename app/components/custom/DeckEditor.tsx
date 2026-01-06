@@ -52,7 +52,7 @@ export default memo(function DeckEditor() {
             style={{ width: `${width}px` }} 
             className=
                 {
-                    `absolute lg:relative border-r border-border bg-card p-4 h-[50%] lg:h-full ${barIcon ? "hidden" : ""}`
+                    `overflow-auto custom-scrollbar absolute lg:relative border-r border-border bg-black/85 p-4 h-full ${barIcon ? "hidden" : ""}`
                 }
         >
             <div className="flex flex-col">
@@ -62,12 +62,11 @@ export default memo(function DeckEditor() {
                 </div>
                 <DeckCode />
             </div>
-            <div
-                onMouseDown={startResizing}
-                className="absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-primary transition-colors"
-            />
         </div>
-
+        {!barIcon && <div
+            onMouseDown={startResizing}
+            className="top-0 hidden lg:block right-0 w-1 h-full cursor-col-resize hover:bg-primary transition-colors"
+        />}
         <div className="flex-1">
             <DeckLayout
                 CardsFromPlayer1={CardsFromPlayer1}

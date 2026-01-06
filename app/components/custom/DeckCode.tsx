@@ -5,7 +5,7 @@ import { Droppable } from './Droppable.layout';
 import { DroppableButton } from './DroppableButton';
 import { DeckMapFunctions, DeckFilterFunctions } from '../../helpers/getFunctions';
 import { Button } from '../ui/button';
-import { Play, SendHorizonal } from 'lucide-react';
+import { Play, SendHorizonal, Trash } from 'lucide-react';
 
 interface ProgramBlock {
   instanceId: string;
@@ -20,7 +20,7 @@ export function DeckCode() {
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
-    console.log(program.length > 0 || !!filter?.length);
+
     if (
       over &&
       over.id === 'mapDroppable' &&
@@ -41,11 +41,18 @@ export function DeckCode() {
     }
   }
 
+  function handleRemoveBlock(instanceId: string) {
+    if (filter === instanceId) {
+      setFilter(undefined);
+    } else {
+      setProgram((prev) => prev.filter((block) => block.instanceId !== instanceId));
+    }
+  }
+
   return (
     <DndContext onDragEnd={handleDragEnd}>
-      <div className='flex flex-col gap-8 p-6 bg-black/50 rounded-xl'>
-        
-        <div className='flex flex-rom gap-2 w-full'>
+      <div className='flex flex-col gap-8 px-6 py-4'>        
+        <div className='flex flex-row gap-2 w-full'>
           <div className='flex flex-col gap-2 w-1/2'>
             <h3 className="text-primary font-bold text-center">Map Functions</h3>
             {mapFunctionKeys.map((key) => (
@@ -66,35 +73,48 @@ export function DeckCode() {
 
         <div className='flex-1'>
           <h3 className="text-primary font-bold mb-3">Program (Composition)</h3>
-          <div className='flex flex-row gap-4'>
-            <Button
-              className='text-xs border text-green-400 bg-transparent hover:text-black hover:bg-green-400 border-green-400 rounded px-2 py-1'
-            >
-              <Play/>
-              Run
-            </Button>
-            <Button
-              className='text-xs border text-cyan-500 bg-transparent hover:text-black hover:bg-cyan-500 border-cyan-500 rounded px-2 py-1'
-            >
-              <SendHorizonal/>
-              Send
-            </Button>
-          </div>
-          <p className="text-sm my-2 mt-4">{"filter ("}</p>
+          {(program.length > 0 || !!filter?.length) && (
+            <div className='flex flex-row gap-4'>
+              <Button 
+                onClick={() => {
+                  setProgram([])
+                  setFilter('')
+                }}
+                className="text-xs border text-red-400 bg-transparent hover:text-black hover:bg-red-400 border-red-400 rounded px-2 py-1"
+              >
+                <Trash/>
+                <p className='text-sm'>Clear</p>
+              </Button>
+              <Button
+                className='text-xs border text-green-400 bg-transparent hover:text-black hover:bg-green-400 border-green-400 rounded px-2 py-1'
+              >
+                <Play/>
+                <p className='text-sm'>Run</p>
+              </Button>
+              <Button
+                className='text-xs border text-cyan-500 bg-transparent hover:text-black hover:bg-cyan-500 border-cyan-500 rounded px-2 py-1'
+              >
+                <SendHorizonal/>
+                <p className='text-sm'>Send</p>
+              </Button>
+            </div>
+          )}
+          <p className="text-base my-2 mt-4">{"filter ("}</p>
           <div className="ml-8">
             <Droppable id="filterDroppable">
               {filter ? (
                 <DroppableButton 
-                    key={filter} 
-                    instanceId={filter}
-                    paragraph={filter}
-                  />
+                  key={filter} 
+                  instanceId={filter}
+                  paragraph={filter}
+                  handleRemoveBlock={() => handleRemoveBlock(filter)}
+                />
               ) : (
                 <p className="text-sm text-gray-500 italic">Filter function here...</ p>
               )}
             </Droppable>
           </div>
-          <p className="text-sm my-2 ml-8">{"map ("}</p>
+          <p className="text-base my-2 ml-8">{"map ("}</p>
           <div className="ml-16">
             <Droppable id="mapDroppable">
               <div className="flex flex-col gap-2">
@@ -106,24 +126,14 @@ export function DeckCode() {
                     key={block.instanceId} 
                     instanceId={block.instanceId} 
                     paragraph={block.mapFunctionKey}
+                    handleRemoveBlock={() => handleRemoveBlock(block.instanceId)}
                   />
                 ))}
               </div>
             </Droppable>
           </div>
-          <p className="text-sm my-2 ml-8">{")"}</p>
-          <p className="text-sm my-2">{");"}</p>
-          {(program.length > 0 || !!filter?.length) && (
-            <button 
-              onClick={() => {
-                setProgram([])
-                setFilter('')
-              }}
-              className="text-xs text-red-400 hover:underline"
-            >
-              Clear sequence
-            </button>
-          )}
+          <p className="text-base my-2 ml-8">{")"}</p>
+          <p className="text-base my-2">{");"}</p>
         </div>
       </div>
     </DndContext>
