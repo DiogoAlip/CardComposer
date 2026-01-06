@@ -49,3 +49,8 @@ export const extractByColor = (player: 1 | 2, color: "black" | "red") => {
     );
     SetCardsInOnePlayer(player, newFront);
 }
+
+export const resetCode = () => {
+    const SetInitialState = useCardsStore.getState().SetInitialState;
+    SetInitialState(2);
+}

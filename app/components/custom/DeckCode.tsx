@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import { DndContext, type DragEndEvent } from '@dnd-kit/core';
 import { Draggable } from './Draggable.layout';
 import { Droppable } from './Droppable.layout';
@@ -6,6 +6,7 @@ import { DroppableButton } from './DroppableButton';
 import { DeckMapFunctions, DeckFilterFunctions } from '../../helpers/getFunctions';
 import { Button } from '../ui/button';
 import { Play, SendHorizonal, Trash } from 'lucide-react';
+import { resetCode } from '../../store/cards.thunk';
 
 export function DeckCode() {
   const mapFunctionKeys = Object.keys(DeckMapFunctions);
@@ -18,6 +19,12 @@ export function DeckCode() {
   useEffect(() => {
     setIsClient(true)
   },[])
+
+  useEffect(() => {
+    if(program.length === 0 || !filter?.length){
+      resetCode()
+    }
+  },[program, filter])
 
   if (!isClient) return null;
 
@@ -52,10 +59,10 @@ export function DeckCode() {
     const mapFunctionsForEject = program.map((key) => DeckMapFunctions[key]);
     const filterFunctionForEject = filter ? DeckFilterFunctions[filter] : null;
     
-    filterFunctionForEject?.()
     mapFunctionsForEject.map((func) => {
       func()
     })
+    filterFunctionForEject?.()
   }
 
   return (

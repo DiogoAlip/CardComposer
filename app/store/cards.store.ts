@@ -16,10 +16,19 @@ interface CardsStore {
         FrontRow: Card[],
         BackRow: Card[]
     };
+    InitialCardsFromPlayer1: {
+        FrontRow: Card[],
+        BackRow: Card[]
+    };
+    InitialCardsFromPlayer2: {
+        FrontRow: Card[],
+        BackRow: Card[]
+    };
     ShuffleCards: () => void;
     SwapFrontToBack: (player: 1 | 2) => void;
     SetCardsInOnePlayer: (player: 1 | 2, FrontRow: Card[], BackRow?: Card[]) => void;
     SetCardsInBothPlayers: (Player1Cards: Card[], Player2Cards: Card[]) => void;    
+    SetInitialState: (player: 1 | 2) => void;
 }
 
 export const useCardsStore = create<CardsStore>((set) => ({
@@ -28,6 +37,14 @@ export const useCardsStore = create<CardsStore>((set) => ({
         BackRow: initialCards.slice(4, 8).reverse(),
     },
     CardsFromPlayer2: {
+        FrontRow: initialCards.slice(8, 12),
+        BackRow: initialCards.slice(12, 16).reverse(),
+    },
+    InitialCardsFromPlayer1: {
+        FrontRow: initialCards.slice(0, 4),
+        BackRow: initialCards.slice(4, 8).reverse(),
+    },
+    InitialCardsFromPlayer2: {
         FrontRow: initialCards.slice(8, 12),
         BackRow: initialCards.slice(12, 16).reverse(),
     },
@@ -89,5 +106,25 @@ export const useCardsStore = create<CardsStore>((set) => ({
                 BackRow: Player2Cards.slice(4, 8),
             },
         });
+    },
+    SetInitialState: (player: 1 | 2) => {
+        const state = useCardsStore.getState();
+        if (player === 1) {
+            const initialCardsFromPlayer1 = state.InitialCardsFromPlayer1;
+            set({
+                CardsFromPlayer1: {
+                    FrontRow: initialCardsFromPlayer1.FrontRow,
+                    BackRow: initialCardsFromPlayer1.BackRow,
+                },
+            });
+        } else {
+            const initialCardsFromPlayer2 = state.InitialCardsFromPlayer2;
+            set({
+                CardsFromPlayer2: {
+                    FrontRow: initialCardsFromPlayer2.FrontRow,
+                    BackRow: initialCardsFromPlayer2.BackRow,
+                },
+            });
+        }
     },
 }));
