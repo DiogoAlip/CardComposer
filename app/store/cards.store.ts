@@ -50,14 +50,26 @@ export const useCardsStore = create<CardsStore>((set) => ({
     },
     ShuffleCards: () => {
         const newCards = getDeck().shuffleDeck();
+        const P1FrontCards = newCards.slice(0, 4);
+        const P1BackCards = newCards.slice(4, 8).reverse();
+        const P2FrontCards = newCards.slice(8, 12);
+        const P2BackCards = newCards.slice(12, 16).reverse();
         set({
             CardsFromPlayer1: {
-                FrontRow: newCards.slice(0, 4),
-                BackRow: newCards.slice(4, 8).reverse(),
+                FrontRow: P1FrontCards,
+                BackRow: P1BackCards,
             },
             CardsFromPlayer2: {
-                FrontRow: newCards.slice(8, 12),
-                BackRow: newCards.slice(12, 16).reverse(),
+                FrontRow: P2FrontCards,
+                BackRow: P2BackCards,
+            },
+            InitialCardsFromPlayer1: {
+                FrontRow: P1FrontCards,
+                BackRow: P1BackCards,
+            },
+            InitialCardsFromPlayer2: {
+                FrontRow: P2FrontCards,
+                BackRow: P2BackCards,
             },
         });
     },
