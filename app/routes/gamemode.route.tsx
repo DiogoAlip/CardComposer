@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { Children, useEffect, useState } from "react";
 import type { Route } from "./+types/gamemode.route";
 import {Navbar} from "~/ui/NavBar.ui";
 import { Link } from "react-router";
-import { Footer } from "~/ui/Footer.ui";
-import { Card } from "~/components/ui/card";
-import { BrainCircuit, Share2, UserPlus } from "lucide-react";
+import { Bot, Mail, DoorOpen, X, Clipboard } from "lucide-react";
+import { CardGameMode } from "~/ui/CardGameMode.ui";
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -13,84 +14,108 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-const gameModes = [
-  {
-    id: "vs-computer",
-    title: "Solo",
-    description: "Desafía la inteligencia artificial y demuestra tu dominio de la programación funcional",
-    icon: BrainCircuit,
-    href: "/play/vs-computer",
-  },
-  {
-    id: "invite",
-    title: "Invitar jugador",
-    description: "Reta a un amigo a jugar mediante un enlace de invitación",
-    icon: Share2,
-    href: "/play/invite",
-  },
-  {
-    id: "join",
-    title: "Unirse a partida",
-    description: "Accede a una partida existente usando un código de invitación compartido",
-    icon: UserPlus,
-    href: "/play/join",
-  },
-]
-
 export default function GameMode() {
-  return (
-    <>
-    <Navbar />
-    <div className="min-h-screen bg-black flex flex-col">
-      <main className="flex-1 pt-24 pb-20 px-4">
-        <div className="container mx-auto max-w-6xl">
-          {/* Header */}
-          <div className="mb-16 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 text-balance">Elige tu modo de juego</h1>
-            <p className="text-white/70 text-lg max-w-2xl mx-auto">
-              Selecciona cómo deseas jugar y comienza tu aventura en FuncCards
-            </p>
+  const [gameModeSelected, setGameModeSelected] = useState<string>("");
+  const handleGameMode = (gameModeId: string) => {
+    return () => {
+      setGameModeSelected(gameModeId);
+    }
+  }
+  
+  const cancelGameMode = () => {
+    setGameModeSelected("");
+  }
+  
+  const gameModes = [
+    {
+      id: "vs-computer",
+      title: "Solo",
+      description: "Desafía al Bot y demuestra tu dominio de la programación funcional",
+      icon: Bot,
+      href: "/play/vs-computer",
+      children: (
+        <div className="flex flex-col gap-2">
+          <Button
+            className="bg-transparent text-white border-primary bg-black/50 hover:bg-black/30"
+            onClick={cancelGameMode}
+          >
+            Avanzado
+          </Button>
+          <Button
+            className="bg-transparent text-white border-primary bg-black/50 hover:bg-black/30"
+            onClick={cancelGameMode}
+          >
+            Normal
+          </Button>
+          <Button
+            className="bg-transparent text-white border-primary bg-black/50 hover:bg-black/30"
+            onClick={cancelGameMode}
+          >
+            Facil
+          </Button>
+        </div>
+      )
+    },
+    {
+      id: "invite",
+      title: "Invitar jugador",
+      description: "Reta a un amigo a jugar mediante un enlace de invitación",
+      icon: Mail,
+      href: "/play/invite",
+      children: (
+        <>
+          <p className="text-white/70">Código de invitación</p>
+          <div className="flex flex-row text-center py-2 px-8 bg-black/50 rounded-lg">
+            <p className="text-white">21K2-1A3J</p>
+            <button className="relative hover:text-white/70">
+              <span><Clipboard className="absolute bottom-1 top-1 left-2 h-4 w-4"/></span>
+            </button>
           </div>
+        </>
+      )
+    },
+    {
+      id: "join",
+      title: "Unirse a partida",
+      description: "Accede a una partida existente usando un código de invitación compartido",
+      icon: DoorOpen,
+      href: "/play/join",
+      children: (
+        <Input placeholder="Código de invitación" className="bg-black/80 text-white border-primary text-center focus:border-primary" />
+      )
+    },
+  ]
 
-          {/* Game Mode Cards */}
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
-            {gameModes.map((mode) => {
-              const IconComponent = mode.icon
+  return (
+  <>
+  <Navbar />
+  <div className="min-h-screen bg-black flex flex-col">
+    <main className="flex-1 pt-24 px-4">
+      <div className="container mx-auto max-w-6xl">
+        {/* Header */}
+        <div className="mb-16 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 text-balance">Elije tu modo de juego</h1>
+          <p className="text-white/70 text-lg max-w-2xl mx-auto">
+            Selecciona cómo deseas jugar y comienza tu aventura en CardComposer
+          </p>
+        </div>
 
-              return (
-                <Link key={mode.id} to={mode.href} className="group cursor-pointer">
-                  <Card
-                    className={`p-8 h-full border-2 transition-all duration-300 border-white/10 bg-white/5 hover:border-[#FFD428] hover:bg-white/10`}
-                  >
-                    <div className="flex flex-col h-full justify-center items-center">
-                      {/* Icon */}
-                      <div
-                        className="mb-6 p-4 rounded-full w-fit transition-all duration-300 bg-gradient-to-br from-[#FAD126] to-[#FF564E]"
-                      >
-                        <IconComponent className="h-8 w-8 text-white" />
-                      </div>
-
-                      {/* Content */}
-                      <h3
-                        className="text-2xl font-bold mb-3 text-balance text-white"
-                      >
-                        {mode.title}
-                      </h3>
-                      <p className="text-sm mb-6 flex-1 text-white/60">
-                        {mode.description}
-                      </p>
-
-                      {/* Arrow indicator */}
-                      <div
-                        className="text-sm font-semibold flex items-center gap-2 transition-all duration-300 text-[#FFD428] group-hover:translate-x-2"
-                      >
-                        Comenzar
-                        <span>→</span>
-                      </div>
-                    </div>
-                  </Card>
-                </Link>
-              )
+          
+        <div className={`${gameModeSelected.length ? "flex flex-col justify-center items-center" : "grid md:grid-cols-3 gap-6 mb-12"}`}>
+          {gameModes.map((mode) => {
+            if (gameModeSelected.length && mode.id !== gameModeSelected) {
+              return null;
+            }
+            return (
+              <CardGameMode
+                mode={mode}
+                gameModeSelected={gameModeSelected}
+                handleGameMode={handleGameMode}
+                cancelGameMode={cancelGameMode}
+                key={mode.id}
+                children={mode.children}
+              />
+          )
             })}
           </div>
         </div>
