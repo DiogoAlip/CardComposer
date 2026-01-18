@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState, memo } from "react";
+import { Menu } from "lucide-react"
 import DeckLayout from "./DeckLayout";
 import { useCardsStore } from "~/store/cards.store";
-import { Menu } from "lucide-react"
 import {DeckCode} from "./DeckCode";
 
 export default memo(function DeckEditor() {

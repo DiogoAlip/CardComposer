@@ -7,14 +7,17 @@ import { DeckMapFunctions, DeckFilterFunctions } from '../../helpers/getFunction
 import { Button } from '../ui/button';
 import { Play, SendHorizonal, Trash } from 'lucide-react';
 import { resetCode } from '../../store/cards.thunk';
+import { useParams } from "react-router";
 
 export function DeckCode() {
   const mapFunctionKeys = Object.keys(DeckMapFunctions);
   const filterFunctionKeys = Object.keys(DeckFilterFunctions);
   const [program, setProgram] = useState<string[]>([]);
   const [filter, setFilter] = useState<string>();
-
   const [isClient, setIsClient] = useState(false);
+  const {dificulty} = useParams();
+
+  console.log(dificulty)
   
   useEffect(() => {
     setIsClient(true)

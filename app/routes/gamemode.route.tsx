@@ -1,8 +1,8 @@
-import { Children, useEffect, useState } from "react";
+import { useState } from "react";
 import type { Route } from "./+types/gamemode.route";
 import {Navbar} from "~/ui/NavBar.ui";
-import { Link } from "react-router";
-import { Bot, Mail, DoorOpen, X, Clipboard } from "lucide-react";
+import { Link, useNavigate } from "react-router";
+import { Bot, Mail, DoorOpen, Clipboard, ArrowRight } from "lucide-react";
 import { CardGameMode } from "~/ui/CardGameMode.ui";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
@@ -16,6 +16,8 @@ export function meta({}: Route.MetaArgs) {
 
 export default function GameMode() {
   const [gameModeSelected, setGameModeSelected] = useState<string>("");
+  const navigate = useNavigate();
+
   const handleGameMode = (gameModeId: string) => {
     return () => {
       setGameModeSelected(gameModeId);
@@ -32,24 +34,17 @@ export default function GameMode() {
       title: "Solo",
       description: "Desafía al Bot y demuestra tu dominio de la programación funcional",
       icon: Bot,
-      href: "/play/vs-computer",
       children: (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-row gap-2">
           <Button
-            className="bg-transparent text-white border-primary bg-black/50 hover:bg-black/30"
-            onClick={cancelGameMode}
+            className="w-28 bg-transparent text-white border-primary bg-black/50 hover:bg-black/30"
+            onClick={() => navigate("/play/vs-computer/competitive")}
           >
-            Avanzado
+            Competitivo
           </Button>
           <Button
-            className="bg-transparent text-white border-primary bg-black/50 hover:bg-black/30"
-            onClick={cancelGameMode}
-          >
-            Normal
-          </Button>
-          <Button
-            className="bg-transparent text-white border-primary bg-black/50 hover:bg-black/30"
-            onClick={cancelGameMode}
+            className="w-28 bg-transparent text-white border-primary bg-black/50 hover:bg-black/30"
+            onClick={() => navigate("/play/vs-computer/easy")}
           >
             Facil
           </Button>
@@ -61,17 +56,23 @@ export default function GameMode() {
       title: "Invitar jugador",
       description: "Reta a un amigo a jugar mediante un enlace de invitación",
       icon: Mail,
-      href: "/play/invite",
       children: (
-        <>
-          <p className="text-white/70">Código de invitación</p>
-          <div className="flex flex-row text-center py-2 px-8 bg-black/50 rounded-lg">
-            <p className="text-white">21K2-1A3J</p>
-            <button className="relative hover:text-white/70">
-              <span><Clipboard className="absolute bottom-1 top-1 left-2 h-4 w-4"/></span>
-            </button>
-          </div>
-        </>
+        <div className="flex flex-col gap-2">
+          <p className="text-white text-center">Código de invitación</p>
+            <div className="flex flex-row text-center py-2 px-10 bg-black/50 rounded-lg">
+              <p className="text-white">21K2-1A3J</p>
+              <button className="relative hover:text-white/70" onClick={() => navigator.clipboard.writeText("21K2-1A3J")}>
+                <span><Clipboard className="absolute bottom-1 top-1 left-4 h-4 w-4"/></span>
+              </button>
+            </div>
+            <Link
+              to="/play/invite"
+              className="text-center flex flex-row items-center justify-center gap-2 rounded-lg py-2 px-4 bg-black/50 hover:bg-black/30"
+            >
+              <p className="text-white text-[16px] text-font-bold">Entrar a la Sala</p>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+        </div>
       )
     },
     {
@@ -79,9 +80,17 @@ export default function GameMode() {
       title: "Unirse a partida",
       description: "Accede a una partida existente usando un código de invitación compartido",
       icon: DoorOpen,
-      href: "/play/join",
       children: (
-        <Input placeholder="Código de invitación" className="bg-black/80 text-white border-primary text-center focus:border-primary" />
+        <Input
+          placeholder="Código de invitación"
+          className="bg-black/80 text-white border-primary text-center focus:border-primary"
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              //function -> RoomComprober
+              navigate("/play/join");
+            }
+          }}
+        />
       )
     },
   ]

@@ -8,7 +8,7 @@ export default [
   ]),
   route("play", "routes/play.route.tsx", [
     index("routes/gamemode.route.tsx"),
-    route("vs-computer", "routes/playVsComputer.route.tsx"),
+    route("vs-computer/:dificulty", "routes/playVsComputer.route.tsx"),
     route("invite", "routes/playInvite.route.tsx"),
     route("join", "routes/playJoin.route.tsx"),
   ]),

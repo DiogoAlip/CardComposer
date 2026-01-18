@@ -1,10 +1,11 @@
 import DeckEditor from "~/components/custom/DeckEditor";
+import { DificultyProvider } from "~/context/Dificulty.context";
 
 export default function PlayVsComputerRoute() {
   
   return (
-    <div>
+    <DificultyProvider>
       <DeckEditor />
-    </div>
+    </DificultyProvider>
   );
 }

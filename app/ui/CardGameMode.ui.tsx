@@ -1,7 +1,7 @@
 import { Card } from "~/components/ui/card"
 import type { ForwardRefExoticComponent, RefAttributes } from "react"
 import type { LucideProps } from "lucide-react"
-import { SendHorizontal, X } from "lucide-react"
+import { X } from "lucide-react"
 import { Button } from "~/components/ui/button"
 
 export const CardGameMode = ({
@@ -16,7 +16,6 @@ export const CardGameMode = ({
     title: string;
     description: string;
     icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>;
-    href: string;
   };
   gameModeSelected: string;
   handleGameMode: (gameModeId: string) => () => void;
