@@ -1,4 +1,6 @@
 import type { Card, Rank } from "~/interface/card.interface";
+import { simulateMap, simulateFilter } from "./card.functions";
+import type { filterFunctions, mapFunctions } from "~/interface/functions.type";
 
 const rankToValue = (rank: Rank): number => {
     const values: Record<string, number> = {
@@ -16,44 +18,15 @@ const evaluateHand = (frontRow: Card[]): number => {
     }, 0);
 };
 
-function simulateMap(cards: { FrontRow: Card[], BackRow: Card[] }, type: string) {
-    if (type === "swap") {
-        return { FrontRow: cards.BackRow, BackRow: cards.FrontRow };
-    }
-    const newFront = cards.FrontRow.map((card: Card) => {
-        if (type === "faceUp") return { ...card, isFaceUp: true };
-        if (type === "faceDown") return { ...card, isFaceUp: false };
-        if (type === "flipOver") return { ...card, isFaceUp: !card.isFaceUp };
-        return card;
-    });
-    return { ...cards, FrontRow: newFront };
-}
-
-function simulateFilter(FrontRow: Card[], type: string) {
-    const newFront = FrontRow.map((card: Card) => {
-        if (type === "isRed")
-            return card.color === "red" && card.isFaceUp ? card : {...card, isIt: false};
-        if (type === "isBlack")
-            return card.color === "black" && card.isFaceUp ? card : {...card, isIt: false};
-        if (type === "isUp")
-            return card.isFaceUp ? card : {...card, isIt: false};
-        if (type === "isDown")
-            return !card.isFaceUp ? card : {...card, isIt: false};
-        return card;
-    });
-    
-    return newFront;
-}
-
-const mapOptions: string[] = ["swap", "faceUp", "faceDown", "flipOver", "none"];
-const filterOptions: string[] = ["isRed", "isBlack", "isUp", "isDown", "none"];
+const mapOptions: mapFunctions[] = ["swap", "faceUp", "faceDown", "flipOver", "none"];
+const filterOptions: filterFunctions[] = ["isRed", "isBlack", "isUp", "isDown", "none"];
 
 function getRandomMove(cards: { FrontRow: Card[], BackRow: Card[] }) {
     const randomMap = mapOptions[Math.floor(Math.random() * mapOptions.length)];
     const randomFilter = filterOptions[Math.floor(Math.random() * filterOptions.length)];
     return {
         score: -Infinity,
-        finalCards: simulateMap(cards, randomMap),
+        finalCards: simulateMap(cards, [randomMap]),
         filter: randomFilter,
         map: [randomMap]
     };
@@ -72,28 +45,30 @@ export function Bot ({cards, difficulty}: BotProps) {
 
     let bestResult = {
         score: -Infinity,
-        map: [] as string[],
+        map: [] as mapFunctions[],
         filter: "none",
         finalCards: cards
     };
 
     filterOptions.forEach(filterFunc => {
-        mapOptions.forEach(mapFunc => {
-            let tempCards = structuredClone(cards);
-
-            tempCards = simulateMap(tempCards, mapFunc);
-
-            tempCards = {...tempCards, FrontRow: simulateFilter(tempCards.FrontRow, filterFunc)};
-
-            const currentScore = evaluateHand(tempCards.FrontRow);
-            if (currentScore > bestResult.score) {
-                bestResult = {
-                    score: currentScore,
-                    map: mapFunc === "none" ? [] : [mapFunc],
-                    filter: filterFunc,
-                    finalCards: tempCards
-                };
-            }
+        mapOptions.forEach(mapFunc1 => {
+            mapOptions.forEach(mapFunc2 => {
+                let tempCards = structuredClone(cards);
+                
+                tempCards = simulateMap(tempCards, [mapFunc1, mapFunc2]);
+                
+                tempCards = {...tempCards, FrontRow: simulateFilter(tempCards.FrontRow, filterFunc)};
+                
+                const currentScore = evaluateHand(tempCards.FrontRow);
+                if (currentScore > bestResult.score) {
+                    bestResult = {
+                        score: currentScore,
+                        map: mapFunc1 === "none" || mapFunc2 === "none" ? [] : [mapFunc1, mapFunc2],
+                        filter: filterFunc,
+                        finalCards: tempCards
+                    };
+                }
+            })
         });
     });
 

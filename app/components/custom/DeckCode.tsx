@@ -73,14 +73,15 @@ export function DeckCode() {
     
     if (dificulty) {
       const { FrontRow, BackRow } = CardsFromPlayer1
-      const botCards = Bot({
+      const { finalCards, map, filter } = Bot({
         cards: {
           FrontRow,
           BackRow
         },
         difficulty: dificulty
       })
-      SetCardsInOnePlayer(1, botCards.finalCards.FrontRow, botCards.finalCards.BackRow)
+      SetCardsInOnePlayer(1, finalCards.FrontRow, finalCards.BackRow)
+      console.log(map, filter)
     }else{
       console.log('TODO: No connection to server')
     }
