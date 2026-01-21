@@ -60,7 +60,10 @@ export default memo(function DeckEditor() {
                     <Menu onClick={closeBar} className="w-6 h-6 text-primary" />
                     <h3 className="text-primary font-bold mb-4">Deck Editor</h3>
                 </div>
-                <DeckCode />
+                <DeckCode 
+                    CardsFromPlayer1={CardsFromPlayer1}
+                    CardsFromPlayer2={CardsFromPlayer2}
+                />
             </div>
         </div>
         {!barIcon && <div

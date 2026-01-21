@@ -1,6 +1,9 @@
 import type { Card } from "~/interface/card.interface";
 import type { mapFunctions, filterFunctions } from "~/interface/functions.type";
 
+export const MapFunctions = ["swap", "faceUp", "faceDown", "flipOver", "none"];
+export const FilterFunctions = ["isRed", "isBlack", "isUp", "isDown", "none"];
+
 export function simulateMap(cards: {
   FrontRow: Card[];
   BackRow: Card[];

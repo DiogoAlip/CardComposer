@@ -1,24 +1,37 @@
+import { useParams } from "react-router";
 import { useEffect, useState } from 'react';
 import { DndContext, type DragEndEvent } from '@dnd-kit/core';
+import { Play, SendHorizonal, Trash } from 'lucide-react';
 import { Draggable } from './Draggable.layout';
 import { Droppable } from './Droppable.layout';
 import { DroppableButton } from './DroppableButton';
-import { DeckMapFunctions, DeckFilterFunctions } from '../../helpers/getFunctions';
 import { Button } from '../ui/button';
-import { Play, SendHorizonal, Trash } from 'lucide-react';
 import { resetCode } from '../../store/cards.thunk';
-import { useParams } from "react-router";
 import { Bot } from '~/helpers/player.bot';
 import { useCardsStore } from '~/store/cards.store';
+import {
+  MapFunctions as MapFunctionsWithNone,
+  FilterFunctions as FilterFunctionsWithNone,
+  simulateMap,
+  simulateFilter
+} from '~/helpers/card.functions';
+import type { filterFunctions, mapFunctions } from "~/interface/functions.type";
+import type { Card } from "~/interface/card.interface";
 
-export function DeckCode() {
-  const mapFunctionKeys = Object.keys(DeckMapFunctions);
-  const filterFunctionKeys = Object.keys(DeckFilterFunctions);
+interface DeckCodeProps {
+  CardsFromPlayer1: {FrontRow: Card[], BackRow: Card[]}
+  CardsFromPlayer2: {FrontRow: Card[], BackRow: Card[]}
+}
+
+export function DeckCode({CardsFromPlayer1, CardsFromPlayer2}: DeckCodeProps) {
   const [mapFunctions, setMapFunctions] = useState<string[]>([]);
   const [filterFunction, setFilterFunction] = useState<string>();
   const [isClient, setIsClient] = useState(false);
-  const {SetCardsInOnePlayer, CardsFromPlayer1} = useCardsStore()
+  const {SetCardsInOnePlayer} = useCardsStore()
   const {dificulty} = useParams();
+
+  const MapFunctions = MapFunctionsWithNone.filter((func) => func !== 'none')
+  const FilterFunctions = FilterFunctionsWithNone.filter((func) => func !== 'none')
   
   useEffect(() => {
     setIsClient(true)
@@ -38,14 +51,14 @@ export function DeckCode() {
     if (
       over &&
       over.id === 'mapDroppable' &&
-      mapFunctionKeys.includes(active.id.toString())
+      MapFunctions.includes(active.id.toString())
     ) {
       setMapFunctions((prev) => [...prev, active.id.toString()]);
     } else if (
       over &&
       over.id === 'filterDroppable' &&
       !filterFunction?.length &&
-      filterFunctionKeys.includes(active.id.toString())
+      FilterFunctions.includes(active.id.toString())
     ) {
       setFilterFunction(active.id.toString());
     }
@@ -60,20 +73,16 @@ export function DeckCode() {
   }
 
   function runCode (){
-    const mapFunctionsForEject = mapFunctions.map((key) => DeckMapFunctions[key as keyof typeof DeckMapFunctions]);
-    const filterFunctionForEject = filterFunction ? DeckFilterFunctions[filterFunction as keyof typeof DeckFilterFunctions] : null;
-    
-    filterFunctionForEject?.()
-    mapFunctionsForEject.map((func) => {
-      func()
-    })
+    const MapedCards = simulateMap(CardsFromPlayer2, mapFunctions as mapFunctions[])
+    const FilteredCards = simulateFilter(MapedCards.FrontRow, filterFunction as filterFunctions)
+    SetCardsInOnePlayer(2, FilteredCards, MapedCards.BackRow)
   }
 
   function sendCode (){
     
     if (dificulty) {
       const { FrontRow, BackRow } = CardsFromPlayer1
-      const { finalCards, map, filter } = Bot({
+      const { finalCards } = Bot({
         cards: {
           FrontRow,
           BackRow
@@ -81,7 +90,6 @@ export function DeckCode() {
         difficulty: dificulty
       })
       SetCardsInOnePlayer(1, finalCards.FrontRow, finalCards.BackRow)
-      console.log(map, filter)
     }else{
       console.log('TODO: No connection to server')
     }
@@ -93,7 +101,7 @@ export function DeckCode() {
         <div className='flex flex-row gap-2 w-full'>
           <div className='flex flex-col gap-2 w-1/2'>
             <h3 className="text-primary font-bold text-center">Map Functions</h3>
-            {mapFunctionKeys.map((key) => !mapFunctions.includes(key) && (
+            {MapFunctions.map((key) => !mapFunctions.includes(key) && (
               <Draggable key={key} id={key} className='hover:scale-150'>
                 {key}
               </Draggable>
@@ -101,7 +109,7 @@ export function DeckCode() {
           </div>
           <div className={`flex flex-col gap-2 w-1/2 ${filterFunction ? 'hidden' : ''}`}>
             <h3 className="text-primary font-bold text-center">Filter Functions</h3>
-            {filterFunctionKeys.map((key) => (
+            {FilterFunctions.map((key) => (
               <Draggable key={key} id={key} className='hover:scale-150'>
                 {key}
               </Draggable>
