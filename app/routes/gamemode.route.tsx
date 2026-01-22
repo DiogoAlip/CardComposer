@@ -35,12 +35,18 @@ export default function GameMode() {
       description: "Desafía al Bot y demuestra tu dominio de la programación funcional",
       icon: Bot,
       children: (
-        <div className="flex flex-row gap-2">
+        <div className="flex flex-row-reverse gap-2">
           <Button
             className="w-28 bg-transparent text-white border-primary bg-black/50 hover:bg-black/30"
-            onClick={() => navigate("/play/vs-computer/competitive")}
+            onClick={() => navigate("/play/vs-computer/advanced")}
           >
-            Competitivo
+            Avanzado
+          </Button>
+          <Button
+            className="w-28 bg-transparent text-white border-primary bg-black/50 hover:bg-black/30"
+            onClick={() => navigate("/play/vs-computer/normal")}
+          >
+            Normal
           </Button>
           <Button
             className="w-28 bg-transparent text-white border-primary bg-black/50 hover:bg-black/30"

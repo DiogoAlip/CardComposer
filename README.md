@@ -11,6 +11,22 @@ The project is built using a modern stack that includes:
 - **@dnd-kit**: To manage complex drag-and-drop interactions.
 - **Zustand**: For lightweight and powerful global state management.
 
+
+### Game Modes
+
+CardComposer offers different ways to play, allowing you to challenge yourself or others.
+
+#### Solo (vs-computer)
+Challenge the Bot and demonstrate your mastery of functional programming. You can choose from three difficulty levels, each with a distinct bot behavior:
+
+- **Easy**: The Bot plays unpredictably, choosing random functions and filters. Perfect for beginners or casual play.
+- **Normal**: The Bot plays strategically by simulating possible moves to maximize the score of its own hand.
+- **Advanced**: The ultimate challenge. The Bot anticipates the matchup, simulating moves to maximize its advantage specifically against your current hand.
+
+#### Multiplayer
+- **Invite Player**: Create a room and share an invitation code to challenge a friend.
+- **Join Game**: Enter an invitation code to join an existing lobby and face off against another player.
+
 ## Project Installation
 
 Follow these steps to install and run the project in your local environment:

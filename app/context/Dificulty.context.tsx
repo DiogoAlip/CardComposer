@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
 
-type Dificulty = "unselected" | "competitive" | "easy";
+type Dificulty = "unselected" | "advanced" | "normal" | "easy";
 
 interface DificultyInterface {
     dificulty: Dificulty;

@@ -1,20 +1,14 @@
 import type { Card, Rank } from "~/interface/card.interface";
 import { simulateMap, simulateFilter } from "./card.functions";
 import type { filterFunctions, mapFunctions } from "~/interface/functions.type";
-
-const rankToValue = (rank: Rank): number => {
-    const values: Record<string, number> = {
-        "K": 13, "Q": 12, "J": 11, "10": 10, "9": 9, "8": 8,
-        "7": 7, "6": 6, "5": 5, "4": 4, "3": 3, "2": 2, "A": 1,
-    };
-    return values[rank];
-};
+import { getRankToValue } from "./getRankToValue";
+import { evaluateMatchup } from "./getMatch";
 
 const evaluateHand = (frontRow: Card[]): number => {
     return frontRow.reduce((score, card) => {
         if (!card.isIt) return score - 5;
         if (!card.isFaceUp) return score + 1;
-        return score + rankToValue(card.rank);
+        return score + getRankToValue(card.rank);
     }, 0);
 };
 
@@ -39,7 +33,7 @@ interface BotProps {
 
 export function Bot ({cards, difficulty}: BotProps) {
 
-    if (difficulty === "Easy") {
+    if (difficulty === "easy") {
         return getRandomMove(cards);
     }
 
@@ -50,6 +44,7 @@ export function Bot ({cards, difficulty}: BotProps) {
         finalCards: cards
     };
 
+    //When difficulty is "Normal"
     filterOptions.forEach(filterFunc => {
         mapOptions.forEach(mapFunc1 => {
             mapOptions.forEach(mapFunc2 => {
@@ -59,7 +54,10 @@ export function Bot ({cards, difficulty}: BotProps) {
                 
                 tempCards = {...tempCards, FrontRow: simulateFilter(tempCards.FrontRow, filterFunc)};
                 
-                const currentScore = evaluateHand(tempCards.FrontRow);
+                const currentScore = difficulty === "advanced" ? 
+                evaluateMatchup(tempCards.FrontRow, cards.FrontRow) :
+                evaluateHand(tempCards.FrontRow);
+                
                 if (currentScore > bestResult.score) {
                     bestResult = {
                         score: currentScore,
