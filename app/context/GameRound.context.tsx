@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
 
-interface GameRoundInterface {
+export interface GameRoundInterface {
     gameRound: number;
     nextGameRound: () => void;
     Winner: string | null;
@@ -8,6 +8,8 @@ interface GameRoundInterface {
     addScore: (score: number, player: 1 | 2) => void;
     scoreP1: number;
     scoreP2: number;
+    dialogOpen: boolean;
+    setDialogOpen: (open: boolean) => void;
 }
 
 export const GameRoundContext = createContext<GameRoundInterface | null>(null);
@@ -17,6 +19,7 @@ export const GameRoundProvider = ({children}: {children: React.ReactNode}) => {
     const [Winner, setWinner] = useState<string | null>(null);
     const [scoreP1, setScoreP1] = useState(0);
     const [scoreP2, setScoreP2] = useState(0);
+    const [dialogOpen, setDialogOpen] = useState(false)
 
     const nextGameRound = () => {
         setGameRound(gameRound + 1);
@@ -35,7 +38,7 @@ export const GameRoundProvider = ({children}: {children: React.ReactNode}) => {
     }
 
     return (
-        <GameRoundContext.Provider value={{
+        <GameRoundContext value={{
             gameRound,
             Winner,
             scoreP1,
@@ -43,8 +46,10 @@ export const GameRoundProvider = ({children}: {children: React.ReactNode}) => {
             nextGameRound,
             endGameRound,
             addScore,
+            dialogOpen,
+            setDialogOpen
         }}>
             {children}
-        </GameRoundContext.Provider>
+        </GameRoundContext>
     );
 }

@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router";
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import { DndContext, type DragEndEvent } from '@dnd-kit/core';
 import { Play, SendHorizonal, Trash } from 'lucide-react';
 import { Draggable } from './Draggable.layout';
@@ -17,6 +17,7 @@ import {
 } from '~/helpers/card.functions';
 import type { filterFunctions, mapFunctions } from "~/interface/functions.type";
 import type { Card } from "~/interface/card.interface";
+import { GameRoundContext } from '~/context/GameRound.context';
 
 interface DeckCodeProps {
   CardsFromPlayer1: {FrontRow: Card[], BackRow: Card[]}
@@ -30,6 +31,7 @@ export function DeckCode({CardsFromPlayer1, CardsFromPlayer2}: DeckCodeProps) {
   const {SetCardsInOnePlayer} = useCardsStore()
   const navigate = useNavigate()
   const {dificulty, room} = useParams();
+  const {setDialogOpen} = use(GameRoundContext);
   
   const MapFunctions = MapFunctionsWithNone.filter((func) => func !== 'none')
   const FilterFunctions = FilterFunctionsWithNone.filter((func) => func !== 'none')
@@ -87,7 +89,6 @@ export function DeckCode({CardsFromPlayer1, CardsFromPlayer2}: DeckCodeProps) {
   }
 
   function sendCode (){
-    
     if (dificulty) {
       const { FrontRow, BackRow } = CardsFromPlayer1
       const { finalCards } = Bot({
@@ -98,9 +99,11 @@ export function DeckCode({CardsFromPlayer1, CardsFromPlayer2}: DeckCodeProps) {
         difficulty: dificulty
       })
       SetCardsInOnePlayer(1, finalCards.FrontRow, finalCards.BackRow)
-    }else{
-      console.log('TODO: No connection to server')
+
+    }else if (room){
+      console.log(`TODO: No connection to ${room}`)
     }
+    setDialogOpen(true)
   }
 
   return (

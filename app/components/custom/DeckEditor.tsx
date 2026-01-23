@@ -1,8 +1,10 @@
-import { useCallback, useEffect, useRef, useState, memo } from "react";
+import { useCallback, useEffect, useRef, useState, memo, use } from "react";
 import { Menu } from "lucide-react"
 import DeckLayout from "./DeckLayout";
 import { useCardsStore } from "~/store/cards.store";
 import {DeckCode} from "./DeckCode";
+import { GameRoundContext} from "~/context/GameRound.context";
+import { MatchDialog } from "~/ui/MatchDialog";
 
 export default memo(function DeckEditor() {
     const CardsFromPlayer1 = useCardsStore((state) => state.CardsFromPlayer1);
@@ -10,7 +12,8 @@ export default memo(function DeckEditor() {
     const [width, setWidth] = useState(375);
     const [barIcon, setBarIcon] = useState(false);
     const isResizing = useRef(false);
-
+    const {dialogOpen, setDialogOpen} = use(GameRoundContext);
+    
     const startResizing = useCallback((e: React.MouseEvent) => {
         e.preventDefault();
         isResizing.current = true;
@@ -28,9 +31,14 @@ export default memo(function DeckEditor() {
             }
         }
     }, []);
-
+    
     const closeBar = useCallback(() => {
         setBarIcon((prev) => !prev);
+    }, []);
+
+    const onFinish = useCallback(() => {
+        setDialogOpen(false);
+        setBarIcon(false);
     }, []);
 
     useEffect(() => {
@@ -42,11 +50,24 @@ export default memo(function DeckEditor() {
         };
     }, [resize, stopResizing]);
 
+    useEffect(() => {
+        if(dialogOpen){//quitar el !
+            setBarIcon(true)
+        }
+    }, [dialogOpen]);
+    
     return (
     <div className="flex h-screen">
         {barIcon && (
                 <Menu onClick={closeBar} className="w-6 h-6 text-primary absolute top-4 left-4" />
         )}
+
+        {dialogOpen &&
+        <MatchDialog
+            onFinish={onFinish}
+            CardsFromPlayer1={CardsFromPlayer1}
+            CardsFromPlayer2={CardsFromPlayer2}
+        />}
 
         <div 
             style={{ width: `${width}px` }} 
