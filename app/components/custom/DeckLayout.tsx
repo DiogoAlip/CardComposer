@@ -23,23 +23,23 @@ export default memo(function DeckLayout({CardsFromPlayer1, CardsFromPlayer2}: De
   return (
     <div className="flex flex-col h-[100vh] w-full">
       <div className="bg-black/95 h-[50%] w-full flex flex-row justify-center items-center">
-      <div className="grid grid-cols-4 w-fit gap-2">
-        {CardsFromPlayer1.FrontRow.map((card, index) => (
+        <div className="grid grid-cols-4 gap-2">
+          {CardsFromPlayer1.FrontRow.map((card, index) => (
             <DeckCard key={index} {...card} />
-        ))}
-        {CardsFromPlayer1.BackRow.map((card, index) => (
+          ))}
+          {CardsFromPlayer1.BackRow.map((card, index) => (
             <DeckCard key={index} {...card} />
-        ))}
-      </div>
+          ))}
+        </div>
       </div>
       <div className="bg-white/10 h-[50%] w-full flex flex-row justify-center items-center">
-        <div className="grid grid-cols-4 w-fit gap-2">
-        {CardsFromPlayer2.FrontRow.map((card, index) => (
+        <div className="grid grid-cols-4 gap-2">
+          {CardsFromPlayer2.FrontRow.map((card, index) => (
             <DeckCard key={index} {...card} />
-        ))}
-        {CardsFromPlayer2.BackRow.map((card, index) => (
+          ))}
+          {CardsFromPlayer2.BackRow.map((card, index) => (
             <DeckCard key={index} {...card} />
-        ))}
+          ))}
         </div>
       </div>
     </div>

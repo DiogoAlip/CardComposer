@@ -17,14 +17,18 @@ export default memo(function DeckCard({rank, suit, isFaceUp, isIt, color, size}:
 
     if (isIt && !isFaceUp) {
         return (
-            <Card className={`w-[${width}px] h-[${height}px] flex flex-col bg-gradient-to-br from-primary to-accent`}>
+            <Card 
+                style={{ width, height }}
+                className={`flex flex-col bg-gradient-to-br from-primary to-accent`}
+            >
             </Card>
         )
     }
 
     return (
         <Card
-            className={`w-[${width}px] h-[${height}px] flex flex-col ${ isIt ? "bg-white/95" : "bg-transparent border-0"} ${color === "black" ? "text-black/85" : "text-accent"} ${paddingTop}`}
+            style={{ width, height }}
+            className={`flex flex-col ${ isIt ? "bg-white/95" : "bg-transparent border-0"} ${color === "black" ? "text-black/85" : "text-accent"} ${paddingTop}`}
         >
             {
             isIt &&
