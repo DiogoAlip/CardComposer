@@ -45,7 +45,7 @@ export function DeckCode({CardsFromPlayer1, CardsFromPlayer2}: DeckCodeProps) {
   },[mapFunctions, filterFunction])
 
   useEffect(() => {
-    const dificultyValidator = dificulty === 'easy' || dificulty === 'medium' || dificulty === 'hard'
+    const dificultyValidator = dificulty === 'easy' || dificulty === 'normal' || dificulty === 'advanced'
     if (!dificultyValidator && !room) {
       navigate('/play')
     }
