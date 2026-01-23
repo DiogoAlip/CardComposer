@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import { useEffect, useState } from 'react';
 import { DndContext, type DragEndEvent } from '@dnd-kit/core';
 import { Play, SendHorizonal, Trash } from 'lucide-react';
@@ -28,8 +28,9 @@ export function DeckCode({CardsFromPlayer1, CardsFromPlayer2}: DeckCodeProps) {
   const [filterFunction, setFilterFunction] = useState<string>();
   const [isClient, setIsClient] = useState(false);
   const {SetCardsInOnePlayer} = useCardsStore()
-  const {dificulty} = useParams();
-
+  const navigate = useNavigate()
+  const {dificulty, room} = useParams();
+  
   const MapFunctions = MapFunctionsWithNone.filter((func) => func !== 'none')
   const FilterFunctions = FilterFunctionsWithNone.filter((func) => func !== 'none')
   
@@ -42,6 +43,13 @@ export function DeckCode({CardsFromPlayer1, CardsFromPlayer2}: DeckCodeProps) {
       resetCode()
     }
   },[mapFunctions, filterFunction])
+
+  useEffect(() => {
+    const dificultyValidator = dificulty === 'easy' || dificulty === 'medium' || dificulty === 'hard'
+    if (!dificultyValidator && !room) {
+      navigate('/play')
+    }
+  }, [])
   
   if (!isClient) return null;
   
