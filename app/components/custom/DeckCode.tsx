@@ -31,7 +31,7 @@ export function DeckCode({CardsFromPlayer1, CardsFromPlayer2}: DeckCodeProps) {
   const {SetCardsInOnePlayer} = useCardsStore()
   const navigate = useNavigate()
   const {dificulty, room} = useParams();
-  const {setDialogOpen} = use(GameRoundContext);
+  const {setDialogOpen, setBothPlayersNames} = use(GameRoundContext);
   
   const MapFunctions = MapFunctionsWithNone.filter((func) => func !== 'none')
   const FilterFunctions = FilterFunctionsWithNone.filter((func) => func !== 'none')
@@ -50,6 +50,10 @@ export function DeckCode({CardsFromPlayer1, CardsFromPlayer2}: DeckCodeProps) {
     const dificultyValidator = dificulty === 'easy' || dificulty === 'normal' || dificulty === 'advanced'
     if (!dificultyValidator && !room) {
       navigate('/play')
+    }else{
+      if(!room){
+        setBothPlayersNames({player1: 'Bot', player2: 'Human'})
+      }
     }
   }, [])
   

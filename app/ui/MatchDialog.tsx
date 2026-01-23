@@ -21,7 +21,7 @@ export const MatchDialog = ({CardsFromPlayer1, CardsFromPlayer2, onFinish}: Matc
     useEffect(()=>{
         const time = setInterval(
             () => onFinish(), 
-            2000
+            5000
         )
         return () => clearInterval(time)
     },[])
