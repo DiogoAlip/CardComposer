@@ -4,6 +4,7 @@ import type { Card } from "~/interface/card.interface";
 import { use } from "react";
 import { GameRoundContext } from "~/context/GameRound.context";
 import { User, Bot } from "lucide-react"
+import { PlayerNameTag } from "~/ui/PlayerNameTag.ui";
 
 interface DeckLayout {
   CardsFromPlayer1: {FrontRow: Card[], BackRow: Card[]};
@@ -28,19 +29,8 @@ export default memo(function DeckLayout({CardsFromPlayer1, CardsFromPlayer2, sho
   return (
     <div className="flex flex-col h-[100vh] w-full">
       <div className="bg-black/95 h-[50%] w-full flex flex-row justify-center items-center">
-      <div className="absolute top-4 right-4">
-        {showNames && <div className="bg-primary/20 py-2 rounded-full flex flex-row gap-2 px-4 z-5">
-        {
-          player1.name === "Bot" ? (
-            <>
-              <h2 className="text-primary font-bold">Opponent</h2>
-              <Bot className="w-6 h-6 text-primary"/>
-            </>
-            ) : (
-              <h2 className="text-primary font-bold">{`Opponent (${player1.name})`}</h2>
-            )
-          }
-        </div>}
+      <div className={`absolute ${showNames ? "block" : "hidden"} sm:block top-0 sm:top-4 right-auto sm:right-6`}>
+        <PlayerNameTag name={player1.name} firstPlayer={false}/>
       </div>
         <div className="grid grid-cols-4 gap-2">
           {CardsFromPlayer1.FrontRow.map((card, index) => (
@@ -52,19 +42,8 @@ export default memo(function DeckLayout({CardsFromPlayer1, CardsFromPlayer2, sho
         </div>
       </div>
       <div className="bg-white/10 h-[50%] w-full flex flex-row justify-center items-center">
-      <div className="absolute top-[calc(50%+2rem)] right-4">
-        {showNames && <div className="bg-primary/20 py-2 rounded-full flex flex-row gap-2 px-4 z-5">
-        {
-          player2.name === "Human" ? (
-            <>
-              <h2 className="text-primary font-bold">You</h2>
-              <User className="w-6 h-6 text-primary"/>
-            </>
-            ) : (
-              <h2 className="text-primary font-bold">{`Opponent (${player2.name})`}</h2>
-            )
-          }
-        </div>}
+      <div className={`absolute ${showNames ? "block" : "hidden"} sm:block top-[calc(50%)] sm:top-[calc(50%+2rem)] right-auto sm:right-6`}>
+        <PlayerNameTag name={player2.name} firstPlayer={true}/>
       </div>
         <div className="grid grid-cols-4 gap-2">
           {CardsFromPlayer2.FrontRow.map((card, index) => (
