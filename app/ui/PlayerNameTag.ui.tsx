@@ -5,7 +5,7 @@ export const ReservedNames = ["Bot", "Human"];
 export function PlayerNameTag({name, firstPlayer}: {name: string, firstPlayer: boolean}) {
     return (
         <div
-            className={`bg-primary/20 py-2 rounded-full flex flex-row gap-2 px-4 z-5 opacity-50 hover:opacity-100 transition-opacity ${ReservedNames.includes(name) ? "" : ""}`}
+            className={`bg-primary/20 py-2 rounded-full flex flex-row gap-2 px-4 z-5 ${ReservedNames.includes(name) ? "" : ""}`}
         >
         {
           ReservedNames.includes(name) ? (

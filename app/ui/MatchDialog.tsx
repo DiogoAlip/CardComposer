@@ -19,16 +19,16 @@ export const MatchDialog = ({CardsFromPlayer1, CardsFromPlayer2, onFinish}: Matc
     },[])
     
     useEffect(()=>{
-        const time = setInterval(
-            () => onFinish(), 
+        const time = setTimeout(
+            onFinish, 
             5000
         )
-        return () => clearInterval(time)
+        return () => clearTimeout(time)
     },[])
     
     if (!isClient) return null;
     return (
-        <div className="absolute inset-0 bg-black/85 flex items-center justify-center">
+        <div className="absolute inset-0 bg-black/85 flex items-center justify-center z-60">
             <div className="min-w-[600px] min-h-[400px] fixed bg-background border border-border rounded-lg px-8 py-4">
                 <h1 className="text-primary font-bold mb-4 text-center">Match Dialog</h1>
                 <hr />

@@ -32,6 +32,7 @@ export function DeckCode({CardsFromPlayer1, CardsFromPlayer2}: DeckCodeProps) {
   const navigate = useNavigate()
   const {dificulty, room} = useParams();
   const {setDialogOpen, setBothPlayersNames} = use(GameRoundContext);
+  const [ isRuned, setIsRuned ] = useState(false)
   
   const MapFunctions = MapFunctionsWithNone.filter((func) => func !== 'none')
   const FilterFunctions = FilterFunctionsWithNone.filter((func) => func !== 'none')
@@ -42,8 +43,10 @@ export function DeckCode({CardsFromPlayer1, CardsFromPlayer2}: DeckCodeProps) {
   
   useEffect(() => {
     if(mapFunctions.length === 0 || !filterFunction?.length){
-      resetCode()
+      setIsRuned(false)
     }
+    resetCode()
+    setIsRuned(false)
   },[mapFunctions, filterFunction])
 
   useEffect(() => {
@@ -90,9 +93,17 @@ export function DeckCode({CardsFromPlayer1, CardsFromPlayer2}: DeckCodeProps) {
     const MapedCards = simulateMap(CardsFromPlayer2, mapFunctions as mapFunctions[])
     const FilteredCards = simulateFilter(MapedCards.FrontRow, filterFunction as filterFunctions)
     SetCardsInOnePlayer(2, FilteredCards, MapedCards.BackRow)
+    setIsRuned(true)
   }
 
   function sendCode (){
+    if(mapFunctions.length === 0 || !filterFunction?.length){
+      console.log("No map functions or filter function", "Is necesary to have at least one map function and one filter function")
+      return
+    }
+    if(!isRuned){
+      runCode()
+    }
     if (dificulty) {
       const { FrontRow, BackRow } = CardsFromPlayer1
       const { finalCards } = Bot({

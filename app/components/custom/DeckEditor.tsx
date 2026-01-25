@@ -51,7 +51,7 @@ export default memo(function DeckEditor() {
     }, [resize, stopResizing]);
 
     useEffect(() => {
-        if(dialogOpen){//quitar el !
+        if(dialogOpen){
             setBarIcon(true)
         }
     }, [dialogOpen]);
@@ -76,7 +76,7 @@ export default memo(function DeckEditor() {
                     `overflow-auto custom-scrollbar absolute lg:relative border-r border-border bg-black/85 p-4 h-full ${barIcon ? "hidden" : ""}`
                 }
         >
-            <div className="flex flex-col z-20">
+            <div className="flex flex-col">
                 <div className="flex flex-row gap-4 border-b border-border">
                     <Menu onClick={closeBar} className="w-6 h-6 text-primary" />
                     <h3 className="text-primary font-bold mb-4">Deck Editor</h3>
@@ -87,11 +87,12 @@ export default memo(function DeckEditor() {
                 />
             </div>
         </div>
-        {!barIcon && <div
+        {!barIcon &&
+        <div
             onMouseDown={startResizing}
             className="top-0 hidden lg:block right-0 w-1 h-full cursor-col-resize hover:bg-primary transition-colors"
         />}
-        <div className="flex-1">
+        <div className={`flex-1 ${dialogOpen ? "z-10" : ""}`}>
             <DeckLayout
                 CardsFromPlayer1={CardsFromPlayer1}
                 CardsFromPlayer2={CardsFromPlayer2}
