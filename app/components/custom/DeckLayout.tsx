@@ -15,7 +15,6 @@ interface DeckLayout {
 export default memo(function DeckLayout({CardsFromPlayer1, CardsFromPlayer2, showNames}: DeckLayout) {
   const [isClient, setIsClient] = useState(false);
   const {player1, player2} = use(GameRoundContext);
-  console.log(showNames)
 
   useEffect(() => {
     setIsClient(true)
