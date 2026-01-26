@@ -1,6 +1,7 @@
 import type { Card } from "~/interface/card.interface";
 import DeckCard from "~/components/custom/DeckCard";
 import { useEffect, useState } from "react";
+import { evaluateMatchup } from "~/helpers/getMatch";
 
 interface MatchDialogProps {
     CardsFromPlayer1: {FrontRow: Card[], BackRow: Card[]}
@@ -11,8 +12,12 @@ interface MatchDialogProps {
 const cardSize = {width: 50, height: 80};
 
 export const MatchDialog = ({CardsFromPlayer1, CardsFromPlayer2, onFinish}: MatchDialogProps) => {
-    
+    const [cards, setCarts] = useState({
+        player1: {...CardsFromPlayer1},
+        player2: {...CardsFromPlayer2}
+    })
     const [isClient, setIsClient] = useState(false);
+    const matchs = evaluateMatchup({P1Cards: cards.player1, P2Cards: cards.player2})
     
     useEffect(() => {
         setIsClient(true)
@@ -34,23 +39,23 @@ export const MatchDialog = ({CardsFromPlayer1, CardsFromPlayer2, onFinish}: Matc
                 <hr />
                 <div className="flex flex-col gap-4 py-10 w-full items-center">
                     <div className="grid grid-cols-4 gap-2">
-                        {CardsFromPlayer1.FrontRow.map((card, index) => (
+                        {cards.player1.FrontRow.map((card, index) => (
                             <DeckCard key={index} {...card} size={cardSize}/>
                         ))}
                     </div>
                     <div className="grid grid-cols-4 gap-2">
-                        {CardsFromPlayer1.BackRow.map((card, index) => (
+                        {cards.player1.BackRow.map((card, index) => (
                             <DeckCard key={index} {...card} size={cardSize}/>
                         ))}
                     </div>
                     <hr className="w-[80%]"/>
                     <div className="grid grid-cols-4 gap-2">
-                        {CardsFromPlayer2.FrontRow.map((card, index) => (
+                        {cards.player2.FrontRow.map((card, index) => (
                             <DeckCard key={index} {...card} size={cardSize}/>
                         ))}
                     </div>
                     <div className="grid grid-cols-4 gap-2">
-                        {CardsFromPlayer2.BackRow.map((card, index) => (
+                        {cards.player2.BackRow.map((card, index) => (
                             <DeckCard key={index} {...card} size={cardSize}/>
                         ))}
                     </div>

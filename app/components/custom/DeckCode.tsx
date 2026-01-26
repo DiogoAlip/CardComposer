@@ -15,9 +15,10 @@ import {
   simulateMap,
   simulateFilter
 } from '~/helpers/card.functions';
+import { GameRoundContext } from '~/context/GameRound.context';
 import type { filterFunctions, mapFunctions } from "~/interface/functions.type";
 import type { Card } from "~/interface/card.interface";
-import { GameRoundContext } from '~/context/GameRound.context';
+import type { difficultyType } from '~/interface/difficulty.type';
 
 interface DeckCodeProps {
   CardsFromPlayer1: {FrontRow: Card[], BackRow: Card[]}
@@ -105,15 +106,21 @@ export function DeckCode({CardsFromPlayer1, CardsFromPlayer2}: DeckCodeProps) {
       runCode()
     }
     if (dificulty) {
-      const { FrontRow, BackRow } = CardsFromPlayer1
-      const { finalCards } = Bot({
-        cards: {
-          FrontRow,
-          BackRow
+      const { FrontRow: P1FrontRow, BackRow: P1BackRow } = CardsFromPlayer1
+      const { FrontRow: P2FrontRow, BackRow: P2BackRow } = CardsFromPlayer2
+      const { finalCards, map, filter } = Bot({
+        P1Cards: {
+          FrontRow: P1FrontRow,
+          BackRow: P1BackRow
         },
-        difficulty: dificulty
+        P2Cards: {
+          FrontRow: P2FrontRow,
+          BackRow: P2BackRow
+        },
+        difficulty: dificulty as difficultyType
       })
       SetCardsInOnePlayer(1, finalCards.FrontRow, finalCards.BackRow)
+      console.log(map, filter)
 
     }else if (room){
       console.log(`TODO: No connection to ${room}`)

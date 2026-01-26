@@ -3,6 +3,7 @@ import { simulateMap, simulateFilter } from "./card.functions";
 import type { filterFunctions, mapFunctions } from "~/interface/functions.type";
 import { getRankToValue } from "./getRankToValue";
 import { evaluateMatchup } from "./getMatch";
+import type { difficultyType } from "~/interface/difficulty.type";
 
 const evaluateHand = (frontRow: Card[]): number => {
     return frontRow.reduce((score, card) => {
@@ -27,41 +28,44 @@ function getRandomMove(cards: { FrontRow: Card[], BackRow: Card[] }) {
 }
 
 interface BotProps {
-    cards: { FrontRow: Card[], BackRow: Card[] },
-    difficulty: string;
+    P1Cards: { FrontRow: Card[], BackRow: Card[] },
+    P2Cards?: { FrontRow: Card[], BackRow: Card[] },
+    difficulty: difficultyType;
 }
 
-export function Bot ({cards, difficulty}: BotProps) {
+export function Bot ({P1Cards, P2Cards, difficulty}: BotProps) {
 
     if (difficulty === "easy") {
-        return getRandomMove(cards);
+        return getRandomMove(P1Cards);
     }
 
     let bestResult = {
         score: -Infinity,
         map: [] as mapFunctions[],
         filter: "none",
-        finalCards: cards
+        finalCards: P1Cards
     };
 
     //When difficulty is "Normal"
     filterOptions.forEach(filterFunc => {
         mapOptions.forEach(mapFunc1 => {
             mapOptions.forEach(mapFunc2 => {
-                let tempCards = structuredClone(cards);
+                let tempCards = structuredClone(P1Cards);
                 
                 tempCards = simulateMap(tempCards, [mapFunc1, mapFunc2]);
                 
                 tempCards = {...tempCards, FrontRow: simulateFilter(tempCards.FrontRow, filterFunc)};
                 
                 const currentScore = difficulty === "advanced" ? 
-                evaluateMatchup(tempCards.FrontRow, cards.FrontRow) :
+                evaluateMatchup({P1Cards: tempCards, P2Cards: P2Cards ?? P1Cards}).reduce(
+                    (matchScore, match) => matchScore + (match.matchWinner === "P1" ? match.score : -match.score), 0
+                ) :
                 evaluateHand(tempCards.FrontRow);
-                
+
                 if (currentScore > bestResult.score) {
                     bestResult = {
                         score: currentScore,
-                        map: mapFunc1 === "none" || mapFunc2 === "none" ? [] : [mapFunc1, mapFunc2],
+                        map: [mapFunc1, mapFunc2].filter(m => m !== "none"),
                         filter: filterFunc,
                         finalCards: tempCards
                     };

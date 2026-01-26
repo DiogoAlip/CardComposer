@@ -6,6 +6,7 @@ import { Bot, Mail, DoorOpen, Clipboard, ArrowRight } from "lucide-react";
 import { CardGameMode } from "~/ui/CardGameMode.ui";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
+import { difficulty } from "~/interface/difficulty.type";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -38,19 +39,19 @@ export default function GameMode() {
         <div className="flex flex-row-reverse gap-2">
           <Button
             className="w-28 bg-transparent text-white border-primary bg-black/50 hover:bg-black/30"
-            onClick={() => navigate("/play/vs-computer/advanced")}
+            onClick={() => navigate(`/play/vs-computer/${difficulty.advanced}`)}
           >
             Avanzado
           </Button>
           <Button
             className="w-28 bg-transparent text-white border-primary bg-black/50 hover:bg-black/30"
-            onClick={() => navigate("/play/vs-computer/normal")}
+            onClick={() => navigate(`/play/vs-computer/${difficulty.normal}`)}
           >
             Normal
           </Button>
           <Button
             className="w-28 bg-transparent text-white border-primary bg-black/50 hover:bg-black/30"
-            onClick={() => navigate("/play/vs-computer/easy")}
+            onClick={() => navigate(`/play/vs-computer/${difficulty.easy}`)}
           >
             Facil
           </Button>
