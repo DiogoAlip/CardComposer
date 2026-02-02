@@ -120,7 +120,6 @@ export function DeckCode({CardsFromPlayer1, CardsFromPlayer2}: DeckCodeProps) {
         difficulty: dificulty as difficultyType
       })
       SetCardsInOnePlayer(1, finalCards.FrontRow, finalCards.BackRow)
-      console.log(map, filter)
 
     }else if (room){
       console.log(`TODO: No connection to ${room}`)

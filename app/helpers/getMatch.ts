@@ -10,7 +10,7 @@ export const getMatchCards = (Player1: Player, Player2: Player) => {
     const player1Val = getRankToValue(Player1.rank);
     const player2Val = getRankToValue(Player2.rank);
     return {
-        winner: player1Val > player2Val ? Player1 : Player2,
+        winner: player1Val === player2Val ? {name: "None", rank: 1} : (player1Val > player2Val ? Player1 : Player2),
         score: Math.abs(player1Val - player2Val)
     };
 }
@@ -44,11 +44,11 @@ export const evaluateMatchup = ({P1Cards, P2Cards}: {P1Cards: Cards, P2Cards: Ca
                 {name: "Oppnent", rank: P1Card.rank},
                 {name: "Player", rank: P2Card.rank}
             );
-            matchScore += winner.name === "Oppnent" ? score : -score;
+            matchScore += score;
             matchs.push({
                 cardFromP1: P1Cards.FrontRow[i].isIt ? "FrontRow" : "BackRow",
                 cardFromP2: P2Cards.FrontRow[i].isIt ? "FrontRow" : "BackRow",
-                matchWinner: winner.name === "Oppnent" ? "P1" : "P2",
+                matchWinner: winner.name === "None" ? "None" : (winner.name === "Oppnent" ? "P1" : "P2"),
                 score: matchScore
             })
         }       
