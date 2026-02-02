@@ -4,7 +4,7 @@ import DeckLayout from "./DeckLayout";
 import { useCardsStore } from "~/store/cards.store";
 import {DeckCode} from "./DeckCode";
 import { GameRoundContext} from "~/context/GameRound.context";
-import { MatchDialog } from "~/ui/MatchDialog";
+import { MatchDialog } from "~/components/custom/MatchDialog";
 
 export default memo(function DeckEditor() {
     const CardsFromPlayer1 = useCardsStore((state) => state.CardsFromPlayer1);
@@ -12,7 +12,7 @@ export default memo(function DeckEditor() {
     const [width, setWidth] = useState(375);
     const [barIcon, setBarIcon] = useState(false);
     const isResizing = useRef(false);
-    const {dialogOpen, setDialogOpen} = use(GameRoundContext);
+    const {dialogOpen} = use(GameRoundContext);
     
     const startResizing = useCallback((e: React.MouseEvent) => {
         e.preventDefault();
@@ -37,7 +37,6 @@ export default memo(function DeckEditor() {
     }, []);
 
     const onFinish = useCallback(() => {
-        setDialogOpen(false);
         setBarIcon(false);
     }, []);
 

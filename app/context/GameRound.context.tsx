@@ -1,10 +1,8 @@
 import { createContext, useState } from "react";
 
-export interface GameRoundInterface extends playersInterface{
-    gameRound: number;
-    nextGameRound: () => void;
-    Winner: string | null;
-    endGameRound: (winner: string) => void;
+export interface GameRoundsInterface extends playersInterface{
+    gameRounds: RoundInterface[];
+    nextGameRounds: (winner: string, P1score: number, P2score: number) => void;
     addScore: (score: number, player: 1 | 2) => void;
     setOnePlayerName: (name: string, player: 1 | 2) => void;
     setBothPlayersNames: ({player1, player2}: {player1: string, player2: string}) => void;
@@ -23,40 +21,47 @@ export interface playersInterface {
     };
 }
 
-export const GameRoundContext = createContext({} as GameRoundInterface);
+export interface RoundInterface {
+    round: number;
+    winner: string | null;
+    scorePerRound: {
+        player1: number;
+        player2: number;
+    };
+}
+
+export const GameRoundContext = createContext({} as GameRoundsInterface);
 
 export const GameRoundProvider = ({children}: {children: React.ReactNode}) => {
-    const [gameRound, setGameRound] = useState(1);
-    const [Winner, setWinner] = useState<string | null>(null);
+    const [gameRounds, setGameRounds] = useState([{round: 1, winner: null, scorePerRound: {player1: 0, player2: 0}}] as RoundInterface[]);
     const [players, setPlayers] = useState({} as playersInterface);
     const [dialogOpen, setDialogOpen] = useState(false)
 
-    const nextGameRound = () => {
-        setGameRound(gameRound + 1);
+    const nextGameRounds = (winner: string, P1score: number, P2score: number) => {
+        const newGameRounds = [...gameRounds.slice(0, -1), {
+            round: gameRounds.length,
+            winner: winner,
+            scorePerRound: {player1: P1score, player2: P2score}
+        }]
+        setGameRounds([...newGameRounds, {
+            round: gameRounds.length + 1,
+            winner: null,
+            scorePerRound: {player1: 0, player2: 0}
+        }]);
+        setDialogOpen(false);
     }
 
-    const endGameRound = (winner: string) => {
-        setWinner(winner);
-    }
-
-    const addScore = (newScore: number, player: 1 | 2) => {
-        if (player === 1) {
-            setPlayers(
-                {...players,
+    const addScore = (P1Score: number, P2Score: number) => {
+            setPlayers({
                 player1: {
                     name: 'Player 1',
-                    score: players.player1.score + newScore
-                }}
-            );
-        } else {
-            setPlayers(
-                {...players,
+                    score: players.player1.score + P1Score
+                },
                 player2: {
                     name: 'Player 2',
-                    score: players.player2.score + newScore
+                    score: players.player2.score + P2Score
                 }}
             );
-        }
     }
 
     const setOnePlayerName = (name: string, player: 1 | 2) => {
@@ -95,11 +100,9 @@ export const GameRoundProvider = ({children}: {children: React.ReactNode}) => {
 
     return (
         <GameRoundContext value={{
-            gameRound,
-            Winner,
+            gameRounds,
             ...players,
-            nextGameRound,
-            endGameRound,
+            nextGameRounds,
             addScore,
             setOnePlayerName,
             setBothPlayersNames,
