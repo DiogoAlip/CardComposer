@@ -49,7 +49,7 @@ export const useCardsStore = create<CardsStore>((set) => ({
         BackRow: initialCards.slice(12, 16).reverse(),
     },
     ShuffleCards: () => {
-        const newCards = getDeck().shuffleDeck();
+        const newCards = getDeck().shuffleDeck().map((card,index) => ({...card, isFaceUp: index%2 == 0 ? true : false}));
         const P1FrontCards = newCards.slice(0, 4);
         const P1BackCards = newCards.slice(4, 8).reverse();
         const P2FrontCards = newCards.slice(8, 12);

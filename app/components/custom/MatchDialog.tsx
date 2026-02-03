@@ -5,6 +5,7 @@ import { SquareChevronLeft, SquareChevronRight } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { MatchDeckLayout } from "../../ui/MatchDeck.ui";
 import { GameRoundContext } from "~/context/GameRound.context";
+import { ComposeCode } from "~/ui/ComposeCode.ui";
 
 interface MatchDialogProps {
     CardsFromPlayer1: {FrontRow: Card[], BackRow: Card[]}
@@ -114,13 +115,20 @@ export const MatchDialog = ({CardsFromPlayer1, CardsFromPlayer2, onFinish}: Matc
                     {
                         stage === stages[2] &&
                         <div className="flex flex-col gap-4 py-4 w-full items-center">
-                            <h1 className="text-bold text-lg">Match Code</h1>
-                            <div className="flex flex-col items-center gap-2">
-                                <h1 className="text-bold text-accent text-xl">{player1.name}</h1>
+                            <h1 className="text-center w-full text-bold text-accent text-xl">{player1.name}</h1>
+                            <div className="w-[300px] flex flex-col gap-2">
+                                <ComposeCode
+                                    mapFunctions={gameRounds[gameRounds.length-2]?.codePerRound.player1.mapFunctions}
+                                    filterFunction={gameRounds[gameRounds.length-2]?.codePerRound.player1.filterFunction}
+                                />
                             </div>
                             <hr className="w-full my-4"/>
-                            <div className="flex flex-col items-center gap-2">
-                                <h1 className="text-bold text-primary text-xl">{player2.name}</h1>
+                            <h1 className="text-center w-full text-bold text-primary text-xl">{player2.name}</h1>
+                            <div className="w-[300px] flex flex-col gap-2">
+                                <ComposeCode
+                                    mapFunctions={gameRounds[gameRounds.length-2]?.codePerRound.player2.mapFunctions}
+                                    filterFunction={gameRounds[gameRounds.length-2]?.codePerRound.player2.filterFunction}
+                                />
                             </div>
                         </div>
                     }

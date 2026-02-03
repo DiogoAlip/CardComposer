@@ -9,10 +9,11 @@ import { MatchDialog } from "~/components/custom/MatchDialog";
 export default memo(function DeckEditor() {
     const CardsFromPlayer1 = useCardsStore((state) => state.CardsFromPlayer1);
     const CardsFromPlayer2 = useCardsStore((state) => state.CardsFromPlayer2);
+    const shuffleCards = useCardsStore((state) => state.ShuffleCards);
     const [width, setWidth] = useState(375);
     const [barIcon, setBarIcon] = useState(false);
     const isResizing = useRef(false);
-    const {dialogOpen} = use(GameRoundContext);
+    const {dialogOpen, setDialogOpen} = use(GameRoundContext);
     
     const startResizing = useCallback((e: React.MouseEvent) => {
         e.preventDefault();
@@ -37,7 +38,9 @@ export default memo(function DeckEditor() {
     }, []);
 
     const onFinish = useCallback(() => {
+        shuffleCards()
         setBarIcon(false);
+        setDialogOpen(false);
     }, []);
 
     useEffect(() => {
