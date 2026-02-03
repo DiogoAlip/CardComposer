@@ -42,7 +42,7 @@ export function Bot ({P1Cards, P2Cards, difficulty}: BotProps) {
     let bestResult = {
         score: -Infinity,
         map: [] as mapFunctions[],
-        filter: "none",
+        filter: "none" as filterFunctions,
         finalCards: P1Cards
     };
 

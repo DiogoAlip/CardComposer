@@ -19,6 +19,8 @@ import { GameRoundContext } from '~/context/GameRound.context';
 import type { filterFunctions, mapFunctions } from "~/interface/functions.type";
 import type { Card } from "~/interface/card.interface";
 import type { difficultyType } from '~/interface/difficulty.type';
+import type { mapFunctions as MapFunctionsType, filterFunctions as FilterFunctionsType } from '~/interface/functions.type';
+import { evaluateMatchup } from "~/helpers/getMatch";
 
 interface DeckCodeProps {
   CardsFromPlayer1: {FrontRow: Card[], BackRow: Card[]}
@@ -26,13 +28,13 @@ interface DeckCodeProps {
 }
 
 export function DeckCode({CardsFromPlayer1, CardsFromPlayer2}: DeckCodeProps) {
-  const [mapFunctions, setMapFunctions] = useState<string[]>([]);
-  const [filterFunction, setFilterFunction] = useState<string>();
+  const [mapFunctions, setMapFunctions] = useState<MapFunctionsType[]>([]);
+  const [filterFunction, setFilterFunction] = useState<FilterFunctionsType>();
   const [isClient, setIsClient] = useState(false);
   const {SetCardsInOnePlayer} = useCardsStore()
   const navigate = useNavigate()
   const {dificulty, room} = useParams();
-  const {setDialogOpen, setBothPlayersNames} = use(GameRoundContext);
+  const {setBothPlayersNames, newGameRound, player1, player2} = use(GameRoundContext);
   const [ isRuned, setIsRuned ] = useState(false)
   
   const MapFunctions = MapFunctionsWithNone.filter((func) => func !== 'none')
@@ -69,16 +71,16 @@ export function DeckCode({CardsFromPlayer1, CardsFromPlayer2}: DeckCodeProps) {
     if (
       over &&
       over.id === 'mapDroppable' &&
-      MapFunctions.includes(active.id.toString())
+      MapFunctions.includes(active.id.toString() as mapFunctions)
     ) {
-      setMapFunctions((prev) => [...prev, active.id.toString()]);
+      setMapFunctions((prev) => [...prev, active.id.toString() as mapFunctions]);
     } else if (
       over &&
       over.id === 'filterDroppable' &&
       !filterFunction?.length &&
-      FilterFunctions.includes(active.id.toString())
+      FilterFunctions.includes(active.id.toString() as filterFunctions)
     ) {
-      setFilterFunction(active.id.toString());
+      setFilterFunction(active.id.toString() as filterFunctions);
     }
   }
 
@@ -95,6 +97,7 @@ export function DeckCode({CardsFromPlayer1, CardsFromPlayer2}: DeckCodeProps) {
     const FilteredCards = simulateFilter(MapedCards.FrontRow, filterFunction as filterFunctions)
     SetCardsInOnePlayer(2, FilteredCards, MapedCards.BackRow)
     setIsRuned(true)
+    return {FrontRow: FilteredCards, BackRow: MapedCards.BackRow}
   }
 
   function sendCode (){
@@ -102,12 +105,10 @@ export function DeckCode({CardsFromPlayer1, CardsFromPlayer2}: DeckCodeProps) {
       console.log("No map functions or filter function", "Is necesary to have at least one map function and one filter function")
       return
     }
-    if(!isRuned){
-      runCode()
-    }
+    const P2CardsAfterRun = !isRuned ? runCode() : CardsFromPlayer2
     if (dificulty) {
       const { FrontRow: P1FrontRow, BackRow: P1BackRow } = CardsFromPlayer1
-      const { FrontRow: P2FrontRow, BackRow: P2BackRow } = CardsFromPlayer2
+      const { FrontRow: P2FrontRow, BackRow: P2BackRow } = P2CardsAfterRun
       const { finalCards, map, filter } = Bot({
         P1Cards: {
           FrontRow: P1FrontRow,
@@ -121,10 +122,25 @@ export function DeckCode({CardsFromPlayer1, CardsFromPlayer2}: DeckCodeProps) {
       })
       SetCardsInOnePlayer(1, finalCards.FrontRow, finalCards.BackRow)
 
+      const matchs = evaluateMatchup({P1Cards: finalCards, P2Cards: P2CardsAfterRun})
+      const P1matchs = matchs
+        .filter((match) => match.matchWinner === "P1")
+        .reduce((acc, match) => acc + match.score, 0)
+      const P2matchs = matchs
+        .filter((match) => match.matchWinner === "P2")
+        .reduce((acc, match) => acc + match.score, 0)
+      const winner = P1matchs > P2matchs ? player1.name : P2matchs > P1matchs ? player2.name : "Empate"
+
+      newGameRound({
+        winner: winner,
+        P1score: P1matchs,
+        P2score: P2matchs,
+        P1code: {mapFunctions: map, filterFunction: filter},
+        P2code: {mapFunctions, filterFunction}
+      })
     }else if (room){
       console.log(`TODO: No connection to ${room}`)
     }
-    setDialogOpen(true)
   }
 
   return (
@@ -133,7 +149,7 @@ export function DeckCode({CardsFromPlayer1, CardsFromPlayer2}: DeckCodeProps) {
         <div className='flex flex-row gap-2 w-full'>
           <div className='flex flex-col gap-2 w-1/2'>
             <h3 className="text-primary font-bold text-center">Map Functions</h3>
-            {MapFunctions.map((key) => !mapFunctions.includes(key) && (
+            {MapFunctions.map((key) => !mapFunctions.includes(key as mapFunctions) && (
               <Draggable key={key} id={key} className='hover:scale-150'>
                 {key}
               </Draggable>
@@ -156,7 +172,7 @@ export function DeckCode({CardsFromPlayer1, CardsFromPlayer2}: DeckCodeProps) {
               <Button 
                 onClick={() => {
                   setMapFunctions([])
-                  setFilterFunction('')
+                  setFilterFunction(undefined)
                 }}
                 className="text-xs border text-red-400 bg-transparent hover:text-black hover:bg-red-400 border-red-400 rounded px-2 py-1"
               >

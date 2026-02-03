@@ -23,11 +23,8 @@ export const MatchDialog = ({CardsFromPlayer1, CardsFromPlayer2, onFinish}: Matc
     const [isClient, setIsClient] = useState(false);
     const [score, setScore] = useState(Array(4).fill(null) as ScoreType[])
     const [stage, setStage] = useState(stages[0])
-    const {nextGameRounds, gameRounds, addScore, player1, player2} = use(GameRoundContext);
+    const {gameRounds, player1, player2} = use(GameRoundContext);
     const matchs = evaluateMatchup({P1Cards: CardsFromPlayer1, P2Cards: CardsFromPlayer2})
-    const P1matchs = matchs.filter((match) => match.matchWinner === "P1").reduce((acc, match) => acc + match.score, 0)
-    const P2matchs = matchs.filter((match) => match.matchWinner === "P2").reduce((acc, match) => acc + match.score, 0)
-    const winner = P1matchs > P2matchs ? player1.name : P2matchs > P1matchs ? player2.name : "Empate"
 
     const changeStage = (number: 1 | -1) => {
         const stageIndex = stages.indexOf(stage)
@@ -89,35 +86,43 @@ export const MatchDialog = ({CardsFromPlayer1, CardsFromPlayer2, onFinish}: Matc
                     }
                     {
                         stage === stages[1] &&
-                        gameRounds.map((round) => (
-                            <div key={`${round.round}${round.winner}`} className="py-2 w-full justify-center flex flex-row">
-                                <div className="flex flex-col items-center">
-                                    <h1 className="text-bold text-lg">Round {round.round}</h1>
-                                    {round.winner === null ?
-                                    <h1 className="text-bold text-lg">{winner === "Empate" ? "Empate" : `Winner: ${winner}`}</h1> :
-                                    <h1 className="text-bold text-lg">{round.winner != "None" ? `Winner: ${round.winner}` : "Empate"}</h1>
-                                    }
-                                    <hr className="w-full my-4"/>
-                                    <div className="flex gap-10 py-1 w-full justify-around">
+                        gameRounds.map((round) => round.isMatched && (
+                            <div key={`${round.round}${round.winner}`} className="w-full justify-center flex flex-col">
+                                <div className="flex flex-row items-center justify-between">
+                                    <div className="w-fit px-4">
+                                        <h1 className="text-bold text-lg">Round {round.round}</h1>
+                                        {round.winner === null ?
+                                            <h1 className="text-bold text-lg">{round.winner === "Empate" ? "Empate" : `Winner: ${round.winner}`}</h1> :
+                                            <h1 className="text-bold text-lg">{round.winner != "None" ? `Winner: ${round.winner}` : "Empate"}</h1>
+                                        }
+                                    </div>
+                                    <div className="flex flex-row gap-8 py-1 w-fit justify-around px-4">
                                         <div className="flex flex-col justify-center items-center max-w-[100px]">
-                                            <h1 className="text-bold text-accent text-2xl">{player2.name}</h1>
-                                            <h1 className="text-bold text-accent text-2xl">{round.scorePerRound.player2 ? round.scorePerRound.player2 : P2matchs}</h1>
+                                            <h1 className="text-bold text-accent text-xl">{player1.name}</h1>
+                                            <h1 className="text-bold text-accent text-xl">{round.scorePerRound.player1}</h1>
                                         </div>
                                         <div className="flex flex-col justify-center items-center max-w-[100px]">
-                                            <h1 className="text-bold text-primary text-2xl">{player1.name}</h1>
-                                            <h1 className="text-bold text-primary text-2xl">{round.scorePerRound.player1 ? round.scorePerRound.player1 : P1matchs}</h1>
+                                            <h1 className="text-bold text-primary text-xl">{player2.name}</h1>
+                                            <h1 className="text-bold text-primary text-xl">{round.scorePerRound.player2}</h1>
                                         </div>
                                     </div>
                                 </div>
+                                <hr className="w-full my-4"/>
                             </div>
                         ))
                     }
                     {
                         stage === stages[2] &&
                         <div className="flex flex-col gap-4 py-4 w-full items-center">
-                            {/* TODO: Add match code per player */}
+                            <h1 className="text-bold text-lg">Match Code</h1>
+                            <div className="flex flex-col items-center gap-2">
+                                <h1 className="text-bold text-accent text-xl">{player1.name}</h1>
+                            </div>
+                            <hr className="w-full my-4"/>
+                            <div className="flex flex-col items-center gap-2">
+                                <h1 className="text-bold text-primary text-xl">{player2.name}</h1>
+                            </div>
                         </div>
-
                     }
                 </div>
             </div>
