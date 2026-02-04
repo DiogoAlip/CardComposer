@@ -13,7 +13,7 @@ export default memo(function DeckEditor() {
     const [width, setWidth] = useState(375);
     const [barIcon, setBarIcon] = useState(false);
     const isResizing = useRef(false);
-    const {dialogOpen, setDialogOpen} = use(GameRoundContext);
+    const {dialogOpen, setDialogOpen, gameRounds, resetGame} = use(GameRoundContext);
     
     const startResizing = useCallback((e: React.MouseEvent) => {
         e.preventDefault();
@@ -41,6 +41,7 @@ export default memo(function DeckEditor() {
         shuffleCards()
         setBarIcon(false);
         setDialogOpen(false);
+        if (gameRounds.length >= 4) resetGame()
     }, []);
 
     useEffect(() => {

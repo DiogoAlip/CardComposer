@@ -9,6 +9,7 @@ export interface GameRoundsInterface {
     setBothPlayersNames: ({player1, player2}: {player1: string, player2: string}) => void;
     dialogOpen: boolean;
     setDialogOpen: (open: boolean) => void;
+    resetGame: () => void;
 }
 
 const intialRoundState = {
@@ -120,11 +121,9 @@ export const GameRoundProvider = ({children}: {children: React.ReactNode}) => {
         });
     }
 
-    useEffect(() => {
-        if (gameRounds.length >= 3 && dialogOpen === false) {
-            setGameRounds([{...intialRoundState}] as RoundInterface[]);
-        }
-    }, [gameRounds, dialogOpen])
+    const resetGame = () => {
+        setGameRounds([{...intialRoundState}] as RoundInterface[]);
+    }
 
     return (
         <GameRoundContext value={{
@@ -134,7 +133,8 @@ export const GameRoundProvider = ({children}: {children: React.ReactNode}) => {
             setOnePlayersName,
             setBothPlayersNames,
             dialogOpen,
-            setDialogOpen
+            setDialogOpen,
+            resetGame
         }}>
             {children}
         </GameRoundContext>

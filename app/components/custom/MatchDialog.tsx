@@ -26,6 +26,9 @@ export const MatchDialog = ({CardsFromPlayer1, CardsFromPlayer2, onFinish}: Matc
     const [stage, setStage] = useState(stages[0])
     const {gameRounds, playersName:{P1Name, P2Name}} = use(GameRoundContext);
     const matchs = evaluateMatchup({P1Cards: CardsFromPlayer1, P2Cards: CardsFromPlayer2})
+    const P1TotalScore = gameRounds.reduce((acc, round) => acc + round.scorePerRound.player1, 0)
+    const P2TotalScore = gameRounds.reduce((acc, round) => acc + round.scorePerRound.player2, 0)
+    const GameWinner = P1TotalScore === P2TotalScore ? "Empate" : (P1TotalScore > P2TotalScore ? P1Name : P2Name)
 
     const changeStage = (number: 1 | -1) => {
         const stageIndex = stages.indexOf(stage)
@@ -87,7 +90,8 @@ export const MatchDialog = ({CardsFromPlayer1, CardsFromPlayer2, onFinish}: Matc
                     }
                     {
                         stage === stages[1] &&
-                        gameRounds.map((round) => round.isMatched && (
+                        <>
+                        {gameRounds.map((round) => round.isMatched && (
                             <div key={`${round.round}${round.winner}`} className="w-full justify-center flex flex-col">
                                 <div className="flex flex-row items-center justify-between">
                                     <div className="w-fit px-4">
@@ -110,7 +114,34 @@ export const MatchDialog = ({CardsFromPlayer1, CardsFromPlayer2, onFinish}: Matc
                                 </div>
                                 <hr className="w-full my-4"/>
                             </div>
-                        ))
+                        ))}
+                        {gameRounds.length === 4 && ((
+                            <div className="px-4 w-full flex flex-row items-center justify-between animate-pulse">
+                                <div className="flex flex-col justify-center items-center max-w-[100px]">
+                                    <h1 className="text-bold text-accent text-xl">{P1Name}</h1>
+                                    <h1 className="text-bold text-accent text-xl">{P1TotalScore}</h1>
+                                </div>
+                                <div className="w-fit px-4">
+                                    {
+                                        GameWinner === "Empate" ?
+                                        <h1 className="text-bold text-lg">Empate</h1> :
+                                        <h1 className="text-bold text-lg">
+                                            {   
+                                                GameWinner === P1Name ?
+                                                <span className="text-accent">{P1Name} </span> :
+                                                <span className="text-primary">{P2Name} </span>
+                                            }
+                                            is the Winner
+                                        </h1>
+                                    }
+                                </div>
+                                <div className="flex flex-col justify-center items-center max-w-[100px]">
+                                    <h1 className="text-bold text-primary text-xl">{P2Name}</h1>
+                                    <h1 className="text-bold text-primary text-xl">{P2TotalScore}</h1>
+                                </div>
+                            </div>
+                        ))}
+                        </>
                     }
                     {
                         stage === stages[2] &&
