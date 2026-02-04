@@ -1,25 +1,31 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import type { mapFunctions, filterFunctions } from "~/interface/functions.type";
 
-export interface GameRoundsInterface extends playersInterface{
+export interface GameRoundsInterface {
     gameRounds: RoundInterface[];
+    playersName: {P1Name: string, P2Name: string};
     newGameRound: (newGameRoundInterface: newGameRoundInterface) => void;
-    addScore: (score: number, player: 1 | 2) => void;
-    setOnePlayerName: (name: string, player: 1 | 2) => void;
+    setOnePlayersName: (name: string, player: 1 | 2) => void;
     setBothPlayersNames: ({player1, player2}: {player1: string, player2: string}) => void;
     dialogOpen: boolean;
     setDialogOpen: (open: boolean) => void;
 }
 
-export interface playersInterface {
-    player1: {
-        name: string;
-        score: number;
-    };
-    player2: {
-        name: string;
-        score: number;
-    };
+const intialRoundState = {
+    isMatched: false,
+    round: 1,
+    winner: null,
+    scorePerRound: {player1: 0, player2: 0},
+    codePerRound: {
+        player1: {
+            mapFunctions: ["none"],
+            filterFunction: "none"
+        },
+        player2: {
+            mapFunctions: ["none"],
+            filterFunction: "none"
+        }
+    }
 }
 
 export interface RoundInterface {
@@ -53,23 +59,8 @@ interface newGameRoundInterface {
 export const GameRoundContext = createContext({} as GameRoundsInterface);
 
 export const GameRoundProvider = ({children}: {children: React.ReactNode}) => {
-    const [gameRounds, setGameRounds] = useState([{
-            isMatched: false,
-            round: 1,
-            winner: null,
-            scorePerRound: {player1: 0, player2: 0},
-            codePerRound: {
-                player1: {
-                    mapFunctions: ["none"],
-                    filterFunction: "none"
-                },
-                player2: {
-                    mapFunctions: ["none"],
-                    filterFunction: "none"
-                }
-            }
-        }] as RoundInterface[]);
-    const [players, setPlayers] = useState({} as playersInterface);
+    const [gameRounds, setGameRounds] = useState([{...intialRoundState}] as RoundInterface[]);
+    const [playersName, setPlayersName] = useState({} as {P1Name: string, P2Name: string});
     const [dialogOpen, setDialogOpen] = useState(false)
 
     const newGameRound = ({winner, P1score, P2score, P1code, P2code}: newGameRoundInterface) => {
@@ -108,60 +99,39 @@ export const GameRoundProvider = ({children}: {children: React.ReactNode}) => {
         setDialogOpen(true);
     }
 
-    const addScore = (P1Score: number, P2Score: number) => {
-        setPlayers({
-            player1: {
-                name: 'Player 1',
-                score: players.player1.score + P1Score
-            },
-            player2: {
-                name: 'Player 2',
-                score: players.player2.score + P2Score
-            }}
-        );
-    }
-
-    const setOnePlayerName = (name: string, player: 1 | 2) => {
+    const setOnePlayersName = (name: string, player: 1 | 2) => {
         if (player === 1) {
-            setPlayers(
-                {...players,
-                player1: {
-                    name: name,
-                    score: players.player1?.score || 0
-                }}
+            setPlayersName(
+                {...playersName,
+                P1Name: name}
             );
         } else {
-            setPlayers(
-                {...players,
-                player2: {
-                    name: name,
-                    score: players.player2?.score || 0
-                }}
+            setPlayersName(
+                {...playersName,
+                P2Name: name}
             );
         }
     }
 
     const setBothPlayersNames = ({player1, player2}: {player1: string, player2: string}) => {
-        setPlayers(
-            {...players,
-            player1: {
-                name: player1,
-                score: players.player1?.score || 0
-            },
-            player2: {
-                name: player2,
-                score: players.player2?.score || 0
-            }}
-        );
+        setPlayersName({
+            P1Name: player1,
+            P2Name: player2
+        });
     }
+
+    useEffect(() => {
+        if (gameRounds.length >= 3 && dialogOpen === false) {
+            setGameRounds([{...intialRoundState}] as RoundInterface[]);
+        }
+    }, [gameRounds, dialogOpen])
 
     return (
         <GameRoundContext value={{
             gameRounds,
-            ...players,
+            playersName,
             newGameRound,
-            addScore,
-            setOnePlayerName,
+            setOnePlayersName,
             setBothPlayersNames,
             dialogOpen,
             setDialogOpen

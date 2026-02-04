@@ -24,7 +24,7 @@ export const MatchDialog = ({CardsFromPlayer1, CardsFromPlayer2, onFinish}: Matc
     const [isClient, setIsClient] = useState(false);
     const [score, setScore] = useState(Array(4).fill(null) as ScoreType[])
     const [stage, setStage] = useState(stages[0])
-    const {gameRounds, player1, player2} = use(GameRoundContext);
+    const {gameRounds, playersName:{P1Name, P2Name}} = use(GameRoundContext);
     const matchs = evaluateMatchup({P1Cards: CardsFromPlayer1, P2Cards: CardsFromPlayer2})
 
     const changeStage = (number: 1 | -1) => {
@@ -99,11 +99,11 @@ export const MatchDialog = ({CardsFromPlayer1, CardsFromPlayer2, onFinish}: Matc
                                     </div>
                                     <div className="flex flex-row gap-8 py-1 w-fit justify-around px-4">
                                         <div className="flex flex-col justify-center items-center max-w-[100px]">
-                                            <h1 className="text-bold text-accent text-xl">{player1.name}</h1>
+                                            <h1 className="text-bold text-accent text-xl">{P1Name}</h1>
                                             <h1 className="text-bold text-accent text-xl">{round.scorePerRound.player1}</h1>
                                         </div>
                                         <div className="flex flex-col justify-center items-center max-w-[100px]">
-                                            <h1 className="text-bold text-primary text-xl">{player2.name}</h1>
+                                            <h1 className="text-bold text-primary text-xl">{P2Name}</h1>
                                             <h1 className="text-bold text-primary text-xl">{round.scorePerRound.player2}</h1>
                                         </div>
                                     </div>
@@ -115,7 +115,7 @@ export const MatchDialog = ({CardsFromPlayer1, CardsFromPlayer2, onFinish}: Matc
                     {
                         stage === stages[2] &&
                         <div className="flex flex-col gap-4 py-4 w-full items-center">
-                            <h1 className="text-center w-full text-bold text-accent text-xl">{player1.name}</h1>
+                            <h1 className="text-center w-full text-bold text-accent text-xl">{P1Name}</h1>
                             <div className="w-[300px] flex flex-col gap-2">
                                 <ComposeCode
                                     mapFunctions={gameRounds[gameRounds.length-2]?.codePerRound.player1.mapFunctions}
@@ -123,7 +123,7 @@ export const MatchDialog = ({CardsFromPlayer1, CardsFromPlayer2, onFinish}: Matc
                                 />
                             </div>
                             <hr className="w-full my-4"/>
-                            <h1 className="text-center w-full text-bold text-primary text-xl">{player2.name}</h1>
+                            <h1 className="text-center w-full text-bold text-primary text-xl">{P2Name}</h1>
                             <div className="w-[300px] flex flex-col gap-2">
                                 <ComposeCode
                                     mapFunctions={gameRounds[gameRounds.length-2]?.codePerRound.player2.mapFunctions}

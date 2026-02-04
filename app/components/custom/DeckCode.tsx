@@ -34,7 +34,7 @@ export function DeckCode({CardsFromPlayer1, CardsFromPlayer2}: DeckCodeProps) {
   const {SetCardsInOnePlayer} = useCardsStore()
   const navigate = useNavigate()
   const {dificulty, room} = useParams();
-  const {setBothPlayersNames, newGameRound, player1, player2} = use(GameRoundContext);
+  const {setBothPlayersNames, newGameRound, playersName:{P1Name, P2Name}} = use(GameRoundContext);
   const [ isRuned, setIsRuned ] = useState(false)
   
   const MapFunctions = MapFunctionsWithNone.filter((func) => func !== 'none')
@@ -129,7 +129,7 @@ export function DeckCode({CardsFromPlayer1, CardsFromPlayer2}: DeckCodeProps) {
       const P2matchs = matchs
         .filter((match) => match.matchWinner === "P2")
         .reduce((acc, match) => acc + match.score, 0)
-      const winner = P1matchs > P2matchs ? player1.name : P2matchs > P1matchs ? player2.name : "Empate"
+      const winner = P1matchs > P2matchs ? P1Name : P2matchs > P1matchs ? P2Name : "Empate"
 
       newGameRound({
         winner: winner,

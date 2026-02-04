@@ -1,7 +1,7 @@
 import type { Card } from "~/interface/card.interface";
 import DeckCard from "../components/custom/DeckCard"
 
-const MatchCommonClass = "bg-background w-[50px] h-[50px] border-[3px] border-border rounded-lg p-auto flex items-center justify-center font-bold text-lg text-white animation tw-animate-pulse transition-colors transition-transform duration-300 ease-in-out"
+const MatchCommonClass = "bg-background w-[50px] h-[50px] border-[1px] border-border rounded-lg p-auto flex items-center justify-center font-bold text-lg text-white animation tw-animate-pulse transition-colors transition-transform duration-300 ease-in-out"
 const P1WonMatchClass = MatchCommonClass.replace("bg-background", "bg-accent transform-[translateY(-8px)]")
 const P2WonMatchClass = MatchCommonClass.replace("bg-background", "bg-primary transform-[translateY(8px)]")
 
