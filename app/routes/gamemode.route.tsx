@@ -1,19 +1,11 @@
 import { useState } from "react";
-import type { Route } from "./+types/gamemode.route";
-import {Navbar} from "~/ui/NavBar.ui";
+import { Navbar } from "~/ui/NavBar.ui";
 import { Link, useNavigate } from "react-router";
-import { Bot, Mail, DoorOpen, Clipboard, ArrowRight } from "lucide-react";
+import { Bot, Mail, DoorOpen, Clipboard as ClipboardIcon, ArrowRight } from "lucide-react";
 import { CardGameMode } from "~/ui/CardGameMode.ui";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { difficulty } from "~/interface/difficulty.type";
-
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: "Game Mode" },
-    { name: "description", content: "Game Mode" },
-  ];
-}
 
 export default function GameMode() {
   const [gameModeSelected, setGameModeSelected] = useState<string>("");
@@ -69,7 +61,7 @@ export default function GameMode() {
             <div className="flex flex-row text-center py-2 px-10 bg-black/50 rounded-lg">
               <p className="text-white">21K2-1A3J</p>
               <button className="relative hover:text-white/70" onClick={() => navigator.clipboard.writeText("21K2-1A3J")}>
-                <span><Clipboard className="absolute bottom-1 top-1 left-4 h-4 w-4"/></span>
+                <span><ClipboardIcon className="absolute bottom-1 top-1 left-4 h-4 w-4"/></span>
               </button>
             </div>
             <Link

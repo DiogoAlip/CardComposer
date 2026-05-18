@@ -1,16 +1,8 @@
-import type { Route } from "./+types/tutorial.route";
 import { HeroSection } from "~/ui/HeroSection.ui";
 import { Navbar } from "~/ui/NavBar.ui";
 import { Footer } from "~/ui/Footer.ui";
 import { CtaSection } from "~/ui/CTASection.ui";
 import { Play, Target, Trophy, Zap } from "lucide-react";
-
-export function meta({}: Route.MetaArgs) {
-    return [
-        { title: "CardComposer - Tutorial" },
-        { name: "description", content: "Tutorial" },
-    ];
-}
 
 const tutorialSteps = [
   {

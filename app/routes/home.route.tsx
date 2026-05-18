@@ -1,4 +1,3 @@
-import type { Route } from "./+types/home.route";
 import { Navbar } from "../ui/NavBar.ui"
 import { HeroSection } from "../ui/HeroSection.ui"
 import { GameFeatures } from "../ui/GameFeatures.ui"
@@ -6,13 +5,6 @@ import { FunctionalConcepts } from "../ui/FunctionalConcepts.ui"
 import { CtaSection } from "../ui/CTASection.ui"
 import { Footer } from "../ui/Footer.ui"
 import { Layers, Zap, Brain, Users, Code2 } from "lucide-react";
-
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: "CardComposer" },
-    { name: "description", content: "Aprende programación funcional jugando" },
-  ];
-}
 
 export default function Home() {
   const features = [
@@ -63,6 +55,7 @@ export default function Home() {
       title="¿Listo para dominar la programación funcional?"
       subtitle="Únete a miles de desarrolladores que están aprendiendo FP de la manera más divertida posible"
     />
+    <Footer />
   </div>
   );
 }

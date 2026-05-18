@@ -1,14 +1,4 @@
-import type { Route } from "./+types/about.route";
-import { Navbar } from "~/ui/NavBar.ui";
-import { Footer } from "~/ui/Footer.ui";
 import { HeroSection } from "~/ui/HeroSection.ui";
-
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: "CardComposer Creators" },
-    { name: "description", content: "About the creators of CardComposer" },
-  ];
-}
 
 const creators = [
   {

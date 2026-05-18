@@ -1,15 +1,60 @@
-import { index, route, type RouteConfig } from "@react-router/dev/routes";
+import Root, { ErrorBoundary } from "./root";
+import IndexRoute from "./routes/index.route";
+import Home from "./routes/home.route";
+import About from "./routes/about.route";
+import Tutorial from "./routes/tutorial.route";
+import PlayRoute from "./routes/play.route";
+import GameMode from "./routes/gamemode.route";
+import PlayVsComputer from "./routes/playVsComputer.route";
+import PlayInvite from "./routes/playInvite.route";
+import PlayJoin from "./routes/playJoin.route";
 
-export default [
-  route("", "routes/index.route.tsx", [
-    index("routes/home.route.tsx"),
-    route("about", "routes/about.route.tsx"),
-    route("tutorial", "routes/tutorial.route.tsx"),
-  ]),
-  route("play", "routes/play.route.tsx", [
-    index("routes/gamemode.route.tsx"),
-    route("vs-computer/:dificulty", "routes/playVsComputer.route.tsx"),
-    route("invite", "routes/playInvite.route.tsx"),
-    route("join", "routes/playJoin.route.tsx"),
-  ]),
-] satisfies RouteConfig;
+export const routes = [
+  {
+    path: "/",
+    Component: Root,
+    ErrorBoundary: ErrorBoundary,
+    children: [
+      {
+        path: "",
+        Component: IndexRoute,
+        children: [
+          {
+            index: true,
+            Component: Home,
+          },
+          {
+            path: "about",
+            Component: About,
+          },
+          {
+            path: "tutorial",
+            Component: Tutorial,
+          },
+        ],
+      },
+      {
+        path: "play",
+        Component: PlayRoute,
+        children: [
+          {
+            index: true,
+            Component: GameMode,
+          },
+          {
+            path: "vs-computer/:dificulty",
+            Component: PlayVsComputer,
+          },
+          {
+            path: "invite",
+            Component: PlayInvite,
+          },
+          {
+            path: "join",
+            Component: PlayJoin,
+          },
+        ],
+      },
+    ],
+  },
+];
