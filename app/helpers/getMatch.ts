@@ -1,69 +1,95 @@
 import type { Card, Rank } from "~/interface/card.interface";
 import { getRankToValue } from "./getRankToValue";
+import { CaptionsOffIcon } from "lucide-react";
 
 interface Player {
-    name: string;
-    rank: Rank;
+  name: string;
+  rank: Rank;
 }
 
 export const getMatchCards = (Player1: Player, Player2: Player) => {
-    const player1Val = getRankToValue(Player1.rank);
-    const player2Val = getRankToValue(Player2.rank);
-    return {
-        winner: player1Val === player2Val ? {name: "None", rank: 1} : (player1Val > player2Val ? Player1 : Player2),
-        score: Math.abs(player1Val - player2Val)
-    };
-}
+  const player1Val = getRankToValue(Player1.rank);
+  const player2Val = getRankToValue(Player2.rank);
+  return {
+    winner:
+      player1Val === player2Val
+        ? { name: "None", rank: 1 }
+        : player1Val > player2Val
+          ? Player1
+          : Player2,
+    score: Math.abs(player1Val - player2Val),
+  };
+};
 
 interface Cards {
-    FrontRow: Card[],
-    BackRow: Card[]
+  FrontRow: Card[];
+  BackRow: Card[];
 }
 
-export const evaluateMatchup = ({P1Cards, P2Cards}: {P1Cards: Cards, P2Cards: Cards}): typeof matchs => {
+export const evaluateMatchup = ({
+  P1Cards,
+  P2Cards,
+}: {
+  P1Cards: Cards;
+  P2Cards: Cards;
+}): typeof matchs => {
+  const matchs = [] as {
+    cardFromP1: "FrontRow" | "BackRow";
+    cardFromP2: "FrontRow" | "BackRow";
+    matchWinner: "P1" | "P2" | "None";
+    score: number;
+  }[];
 
-    const matchs = [] as {
-        cardFromP1: "FrontRow" | "BackRow", 
-        cardFromP2: "FrontRow" | "BackRow", 
-        matchWinner: "P1" | "P2" | "None",
-        score: number
-    }[];
+  for (let i = 0; i < 4; i++) {
+    const P1Card = P1Cards.FrontRow[i].isIt
+      ? P1Cards.FrontRow[i]
+      : P1Cards.BackRow[i];
+    const P2Card = P2Cards.FrontRow[i].isIt
+      ? P2Cards.FrontRow[i]
+      : P2Cards.BackRow[i];
+    let matchScore = 0;
 
-    for (let i = 0; i < 4; i++) {
-        const P1Card = P1Cards.FrontRow[i].isIt ? P1Cards.FrontRow[i] : P1Cards.BackRow[i];
-        const P2Card = P2Cards.FrontRow[i].isIt ? P2Cards.FrontRow[i] : P2Cards.BackRow[i];
-        let matchScore = 0;
-
-        if (!P1Card.isFaceUp || !P1Card.isIt) {
-            matchScore += 0; 
-            continue;
-        }
-
-        if (P2Card && P2Card.isIt && P2Card.isFaceUp) {
-            const {winner, score} = getMatchCards(
-                {name: "Oppnent", rank: P1Card.rank},
-                {name: "Player", rank: P2Card.rank}
-            );
-            matchScore += score;
-            matchs.push({
-                cardFromP1: P1Cards.FrontRow[i].isIt ? "FrontRow" : "BackRow",
-                cardFromP2: P2Cards.FrontRow[i].isIt ? "FrontRow" : "BackRow",
-                matchWinner: winner.name === "None" ? "None" : (winner.name === "Oppnent" ? "P1" : "P2"),
-                score: matchScore
-            })
-        }       
-        else if (P2Card && P2Card.isIt && !P2Card.isFaceUp) {
-            matchScore += 0;
-            matchs.push({
-                cardFromP1: P1Cards.FrontRow[i].isIt ? "FrontRow" : "BackRow",
-                cardFromP2: P2Cards.FrontRow[i].isIt ? "FrontRow" : "BackRow",
-                matchWinner: "None",
-                score: matchScore
-            })
-        } 
-        else {
-            matchScore += getRankToValue(P1Card.rank);
-        }
+    if (P1Card.isFaceUp && P2Card.isFaceUp) {
+      const { winner, score } = getMatchCards(
+        { name: "Oppnent", rank: P1Card.rank },
+        { name: "Player", rank: P2Card.rank },
+      );
+      matchScore += score;
+      matchs.push({
+        cardFromP1: P1Cards.FrontRow[i].isIt ? "FrontRow" : "BackRow",
+        cardFromP2: P2Cards.FrontRow[i].isIt ? "FrontRow" : "BackRow",
+        matchWinner:
+          winner.name === "None"
+            ? "None"
+            : winner.name === "Oppnent"
+              ? "P1"
+              : "P2",
+        score: matchScore,
+      });
+      console.log("Bot First Cards up");
+    } else if (P1Card.isFaceUp || P2Card.isFaceUp) {
+      matchScore += P1Card.isFaceUp
+        ? getRankToValue(P1Card.rank)
+        : getRankToValue(P2Card.rank);
+      matchs.push({
+        cardFromP1: P1Cards.FrontRow[i].isIt ? "FrontRow" : "BackRow",
+        cardFromP2: P2Cards.FrontRow[i].isIt ? "FrontRow" : "BackRow",
+        matchWinner: P1Card.isFaceUp ? "P1" : "P2",
+        score: matchScore,
+      });
+      console.log("One player have First Card up but the other not");
+    } else if (!P1Card.isFaceUp && !P1Card.isFaceUp) {
+      matchs.push({
+        cardFromP1: P1Cards.FrontRow[i].isIt ? "FrontRow" : "BackRow",
+        cardFromP2: P2Cards.FrontRow[i].isIt ? "FrontRow" : "BackRow",
+        matchWinner: "None",
+        score: matchScore,
+      });
+    } else if (!P2Card.isIt || !P1Card.isIt) {
+      matchScore += 0;
+      console.log("The imposible happend, both Cards aren it");
     }
-    return matchs;
+  }
+  return matchs;
 };
+
