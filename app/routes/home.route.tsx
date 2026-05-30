@@ -1,7 +1,7 @@
-import { HeroSection } from "../ui/HeroSection.ui";
-import { GameFeatures } from "../ui/GameFeatures.ui";
-import { FunctionalConcepts } from "../ui/FunctionalConcepts.ui";
-import { CtaSection } from "../ui/CTASection.ui";
+import { HeroSection } from "@/marketing/components/HeroSection.ui";
+import { GameFeatures } from "@/marketing/components/GameFeatures.ui";
+import { FunctionalConcepts } from "@/marketing/components/FunctionalConcepts.ui";
+import { CtaSection } from "@/marketing/components/CTASection.ui";
 import { Layers, Zap, Brain, Users, Code2 } from "lucide-react";
 
 export default function Home() {

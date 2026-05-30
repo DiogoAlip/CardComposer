@@ -1,4 +1,4 @@
-import { HeroSection } from "~/ui/HeroSection.ui";
+import { HeroSection } from "~/marketing/components/HeroSection.ui";
 
 const creators = [
   {

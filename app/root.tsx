@@ -5,7 +5,7 @@ import {
 } from "react-router";
 
 import "./app.css";
-import NotFound from "./ui/NotFound.ui";
+import NotFound from "./shared/components/NotFound.ui";
 
 export default function App() {
   return (

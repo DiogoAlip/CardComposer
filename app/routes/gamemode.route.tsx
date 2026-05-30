@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Navbar } from "~/ui/NavBar.ui";
+import { Navbar } from "~/shared/components/NavBar.ui";
 import { Link, useNavigate } from "react-router";
 import {
   Bot,
@@ -9,10 +9,10 @@ import {
   ArrowRight,
   Flashlight,
 } from "lucide-react";
-import { CardGameMode } from "~/ui/CardGameMode.ui";
-import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
-import { difficulty } from "~/interface/difficulty.type";
+import { CardGameMode } from "~/match/components/CardGameMode.ui";
+import { Button } from "~/shared/ui/button";
+import { Input } from "~/shared/ui/input";
+import { difficulty } from "~/player/interfaces/difficulty.type";
 
 export default function GameMode() {
   const [gameModeSelected, setGameModeSelected] = useState<string>("");

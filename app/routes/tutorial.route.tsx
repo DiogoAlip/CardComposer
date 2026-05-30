@@ -1,5 +1,5 @@
-import { HeroSection } from "~/ui/HeroSection.ui";
-import { CtaSection } from "~/ui/CTASection.ui";
+import { HeroSection } from "~/marketing/components/HeroSection.ui";
+import { CtaSection } from "~/marketing/components/CTASection.ui";
 import { Play, Target, Trophy, Zap } from "lucide-react";
 
 const tutorialSteps = [

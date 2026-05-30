@@ -1,4 +1,4 @@
-import DeckEditor from "~/components/custom/DeckEditor";
+import DeckEditor from "~/deck/components/DeckEditor";
 
 export default function PlayVsComputerRoute() {
   
