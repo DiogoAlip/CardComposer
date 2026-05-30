@@ -1,11 +1,11 @@
 import type { Card } from "~/interface/card.interface";
 import { use, useEffect, useState } from "react";
 import { evaluateMatchup } from "~/helpers/getMatch";
-import { SquareChevronLeft, SquareChevronRight } from "lucide-react";
-import { Button } from "~/components/ui/button";
 import { MatchDeckLayout } from "../../ui/MatchDeck.ui";
 import { GameRoundContext } from "~/context/GameRound.context";
-import { ComposeCode } from "~/ui/ComposeCode.ui";
+import { StageNavigator } from "./StageNavigator.dialog";
+import { ScoreStage } from "./ScoreStage.dialog";
+import { CodeStage } from "./CodeStage.dialog";
 
 interface MatchDialogProps {
   CardsFromPlayer1: { FrontRow: Card[]; BackRow: Card[] };
@@ -52,7 +52,8 @@ export const MatchDialog = ({
 
   const changeStage = (number: 1 | -1) => {
     const stageIndex = stages.indexOf(stage);
-    setStage(stages[Math.abs(stageIndex + (number % 3))]);
+    const nextIndex = (stageIndex + number + stages.length) % stages.length;
+    setStage(stages[nextIndex]);
   };
 
   useEffect(() => {
@@ -85,153 +86,41 @@ export const MatchDialog = ({
         </h1>
         <hr />
         <div className="flex flex-col gap-4 py-4 w-full items-center">
-          <div className="absolute flex gap-2 right-8">
-            <SquareChevronLeft
-              onClick={() => changeStage(-1)}
-              className="hover:text-primary text-primary/70 w-[30px] h-[30px]"
-            />
-            {stage === "code" ? (
-              <Button
-                onClick={onFinish}
-                className="bg-background hover:bg-background hover:border-primary border-primary/70 hover:text-primary text-primary/70 h-[30px]"
-              >
-                Finish Review
-              </Button>
-            ) : (
-              <SquareChevronRight
-                onClick={() => changeStage(1)}
-                className="hover:text-primary text-primary/70 w-[30px] h-[30px]"
-              />
-            )}
-          </div>
-          {stage === stages[0] && (
+          <StageNavigator
+            onPrev={() => changeStage(-1)}
+            onNext={() => changeStage(1)}
+            onFinish={onFinish}
+            isLastStage={stage === "code"}
+          />
+
+          {stage === "cards" && (
             <MatchDeckLayout
               CardsFromPlayer1={CardsFromPlayer1}
               CardsFromPlayer2={CardsFromPlayer2}
               score={score}
             />
           )}
-          {stage === stages[1] && (
-            <>
-              {gameRounds.map(
-                (round) =>
-                  round.isMatched && (
-                    <div
-                      key={`${round.round}${round.winner}`}
-                      className="w-full justify-center flex flex-col"
-                    >
-                      <div className="flex flex-row items-center justify-between">
-                        <div className="w-fit px-4">
-                          <h1 className="text-bold text-lg">
-                            Round {round.round}
-                          </h1>
-                          {round.winner === null ? (
-                            <h1 className="text-bold text-lg">
-                              {round.winner === "Empate"
-                                ? "Empate"
-                                : `Winner: ${round.winner}`}
-                            </h1>
-                          ) : (
-                            <h1 className="text-bold text-lg">
-                              {round.winner != "None"
-                                ? `Winner: ${round.winner}`
-                                : "Empate"}
-                            </h1>
-                          )}
-                        </div>
-                        <div className="flex flex-row gap-8 py-1 w-fit justify-around px-4">
-                          <div className="flex flex-col justify-center items-center max-w-[100px]">
-                            <h1 className="text-bold text-accent text-xl">
-                              {P1Name}
-                            </h1>
-                            <h1 className="text-bold text-accent text-xl">
-                              {round.scorePerRound.player1}
-                            </h1>
-                          </div>
-                          <div className="flex flex-col justify-center items-center max-w-[100px]">
-                            <h1 className="text-bold text-primary text-xl">
-                              {P2Name}
-                            </h1>
-                            <h1 className="text-bold text-primary text-xl">
-                              {round.scorePerRound.player2}
-                            </h1>
-                          </div>
-                        </div>
-                      </div>
-                      <hr className="w-full my-4" />
-                    </div>
-                  ),
-              )}
-              {gameRounds.length === 4 && (
-                <div className="px-4 w-full flex flex-row items-center justify-between animate-pulse">
-                  <div className="flex flex-col justify-center items-center max-w-[100px]">
-                    <h1 className="text-bold text-accent text-xl">{P1Name}</h1>
-                    <h1 className="text-bold text-accent text-xl">
-                      {P1TotalScore}
-                    </h1>
-                  </div>
-                  <div className="w-fit px-4">
-                    {GameWinner === "Empate" ? (
-                      <h1 className="text-bold text-lg">Empate</h1>
-                    ) : (
-                      <h1 className="text-bold text-lg">
-                        {GameWinner === P1Name ? (
-                          <span className="text-accent">{P1Name} </span>
-                        ) : (
-                          <span className="text-primary">{P2Name} </span>
-                        )}
-                        is the Winner
-                      </h1>
-                    )}
-                  </div>
-                  <div className="flex flex-col justify-center items-center max-w-[100px]">
-                    <h1 className="text-bold text-primary text-xl">{P2Name}</h1>
-                    <h1 className="text-bold text-primary text-xl">
-                      {P2TotalScore}
-                    </h1>
-                  </div>
-                </div>
-              )}
-            </>
+
+          {stage === "score" && (
+            <ScoreStage
+              gameRounds={gameRounds}
+              P1Name={P1Name}
+              P2Name={P2Name}
+              P1TotalScore={P1TotalScore}
+              P2TotalScore={P2TotalScore}
+              GameWinner={GameWinner}
+            />
           )}
-          {stage === stages[2] && (
-            <div className="flex flex-col gap-4 py-4 w-full items-center">
-              <h1 className="text-center w-full text-bold text-accent text-xl">
-                {P1Name}
-              </h1>
-              <div className="w-[300px] flex flex-col gap-2">
-                <ComposeCode
-                  mapFunctions={
-                    gameRounds[gameRounds.length - 2]?.codePerRound.player1
-                      .mapFunctions
-                  }
-                  filterFunction={
-                    gameRounds[gameRounds.length - 2]?.codePerRound.player1
-                      .filterFunction
-                  }
-                />
-              </div>
-              <hr className="w-full my-4" />
-              <h1 className="text-center w-full text-bold text-primary text-xl">
-                {P2Name}
-              </h1>
-              <div className="w-[300px] flex flex-col gap-2">
-                <ComposeCode
-                  mapFunctions={
-                    gameRounds[gameRounds.length - 2]?.codePerRound.player2
-                      .mapFunctions
-                  }
-                  filterFunction={
-                    gameRounds[gameRounds.length - 2]?.codePerRound.player2
-                      .filterFunction
-                  }
-                />
-              </div>
-            </div>
+
+          {stage === "code" && (
+            <CodeStage
+              P1Name={P1Name}
+              P2Name={P2Name}
+              gameRounds={gameRounds}
+            />
           )}
         </div>
       </div>
     </div>
   );
 };
-

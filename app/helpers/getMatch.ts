@@ -67,13 +67,10 @@ export const evaluateMatchup = ({
         score: matchScore,
       });
     } else if (P1Card.isFaceUp || P2Card.isFaceUp) {
-      matchScore += P1Card.isFaceUp
-        ? getRankToValue(P1Card.rank)
-        : getRankToValue(P2Card.rank);
       matchs.push({
         cardFromP1: P1Cards.FrontRow[i].isIt ? "FrontRow" : "BackRow",
         cardFromP2: P2Cards.FrontRow[i].isIt ? "FrontRow" : "BackRow",
-        matchWinner: P1Card.isFaceUp ? "P1" : "P2",
+        matchWinner: "None",
         score: matchScore,
       });
     } else if (!P1Card.isFaceUp && !P1Card.isFaceUp) {
@@ -90,4 +87,3 @@ export const evaluateMatchup = ({
   }
   return matchs;
 };
-
