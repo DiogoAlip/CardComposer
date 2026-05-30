@@ -11,7 +11,10 @@ import {
   simulateFilter,
 } from "~/deck/helpers/card.functions";
 import { GameRoundContext } from "~/match/context/GameRound.context";
-import type { filterFunctions, mapFunctions } from "~/code-composer/interfaces/functions.type";
+import type {
+  filterFunctions,
+  mapFunctions,
+} from "~/code-composer/interfaces/functions.type";
 import type { Card } from "~/deck/interfaces/card.interface";
 import type { difficultyType } from "~/player/interfaces/difficulty.type";
 import { evaluateMatchup } from "~/match/helpers/getMatch";
@@ -37,6 +40,7 @@ export function DeckCode({
   const {
     setBothPlayersNames,
     newGameRound,
+    gameRounds,
     playersName: { P1Name, P2Name },
   } = use(GameRoundContext);
   const [isRuned, setIsRuned] = useState(false);
@@ -48,9 +52,8 @@ export function DeckCode({
 
   useEffect(() => {
     if (mapFunctions.length === 0 || !filterFunction?.length) {
-      setIsRuned(false);
+      resetCode();
     }
-    resetCode();
     setIsRuned(false);
   }, [mapFunctions, filterFunction]);
 
@@ -173,10 +176,12 @@ export function DeckCode({
         />
 
         <div className="flex-1">
+          <h3 className="text-primary font-bold mb-3">Program (Composition)</h3>
           <CodeActions
             onClear={() => {
               setMapFunctions([]);
               setFilterFunction(undefined);
+              resetCode();
             }}
             onRun={runCode}
             onSend={sendCode}

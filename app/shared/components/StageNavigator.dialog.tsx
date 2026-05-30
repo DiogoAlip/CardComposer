@@ -1,5 +1,4 @@
-import { SquareChevronLeft, SquareChevronRight } from "lucide-react";
-import { Button } from "~/shared/ui/button";
+import { SquareChevronLeft, SquareChevronRight, X } from "lucide-react";
 
 interface StageNavigatorProps {
   onPrev: () => void;
@@ -15,22 +14,20 @@ export function StageNavigator({
   isLastStage,
 }: StageNavigatorProps) {
   return (
-    <div className="absolute flex gap-2 right-8">
+    <div className="absolute flex gap-2 right-8 top-3.5">
       <SquareChevronLeft
         onClick={onPrev}
-        className="hover:text-primary text-primary/70 w-[30px] h-[30px] cursor-pointer"
+        className="hover:text-primary text-primary/70 w-7.5 h-7.5 cursor-pointer"
       />
       {isLastStage ? (
-        <Button
+        <X
           onClick={onFinish}
-          className="bg-background hover:bg-background hover:border-primary border-primary/70 hover:text-primary text-primary/70 h-[30px]"
-        >
-          Finish Review
-        </Button>
+          className="hover:text-primary text-primary/70 w-7.5 h-7.5 cursor-pointer"
+        />
       ) : (
         <SquareChevronRight
           onClick={onNext}
-          className="hover:text-primary text-primary/70 w-[30px] h-[30px] cursor-pointer"
+          className="hover:text-primary text-primary/70 w-7.5 h-7.5 cursor-pointer"
         />
       )}
     </div>

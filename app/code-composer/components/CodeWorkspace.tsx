@@ -1,6 +1,9 @@
 import { Droppable } from "@/shared/components/Droppable.layout";
 import { DroppableButton } from "@/shared/components/DroppableButton";
-import type { filterFunctions, mapFunctions } from "~/code-composer/interfaces/functions.type";
+import type {
+  filterFunctions,
+  mapFunctions,
+} from "~/code-composer/interfaces/functions.type";
 
 interface CodeWorkspaceProps {
   mapFunctions: mapFunctions[];
@@ -15,8 +18,6 @@ export function CodeWorkspace({
 }: CodeWorkspaceProps) {
   return (
     <div className="flex-1">
-      <h3 className="text-primary font-bold mb-3">Program (Composition)</h3>
-      
       <p className="text-base my-2 mt-4">{"filter ("}</p>
       <div className="ml-8">
         <Droppable id="filterDroppable">

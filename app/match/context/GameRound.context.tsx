@@ -1,5 +1,8 @@
 import { createContext, useState } from "react";
-import type { mapFunctions, filterFunctions } from "~/code-composer/interfaces/functions.type";
+import type {
+  mapFunctions,
+  filterFunctions,
+} from "~/code-composer/interfaces/functions.type";
 
 export interface GameRoundsInterface {
   gameRounds: RoundInterface[];
