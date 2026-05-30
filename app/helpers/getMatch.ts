@@ -66,7 +66,6 @@ export const evaluateMatchup = ({
               : "P2",
         score: matchScore,
       });
-      console.log("Bot First Cards up");
     } else if (P1Card.isFaceUp || P2Card.isFaceUp) {
       matchScore += P1Card.isFaceUp
         ? getRankToValue(P1Card.rank)
@@ -77,7 +76,6 @@ export const evaluateMatchup = ({
         matchWinner: P1Card.isFaceUp ? "P1" : "P2",
         score: matchScore,
       });
-      console.log("One player have First Card up but the other not");
     } else if (!P1Card.isFaceUp && !P1Card.isFaceUp) {
       matchs.push({
         cardFromP1: P1Cards.FrontRow[i].isIt ? "FrontRow" : "BackRow",

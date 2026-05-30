@@ -7,28 +7,28 @@ import { Layers, Zap, Brain, Users, Code2 } from "lucide-react";
 export default function Home() {
   const features = [
     {
-      icon: Layers,
-      title: "Composición Pura",
+      Icon: Layers,
+      title: "Composición de Rutinas",
       description:
-        "Cada carta representa una función pura. Combínalas para crear estrategias complejas sin efectos secundarios.",
+        "Diseña secuencias visuales de manipulación de cartas combinando funciones puras de forma intuitiva.",
     },
     {
-      icon: Zap,
-      title: "Transformaciones",
+      Icon: Zap,
+      title: "Transformaciones Progresivas",
       description:
-        "Usa map, filter y reduce en tiempo real. Aprende transformaciones de datos mientras juegas.",
+        "Usa map y filter para voltear, intercambiar o cambiar el estado de las cartas en tiempo real.",
     },
     {
-      icon: Brain,
-      title: "Inmutabilidad",
+      Icon: Brain,
+      title: "Inmutabilidad Nativa",
       description:
-        "El estado del juego nunca muta. Cada jugada crea una nueva realidad, enseñando inmutabilidad de forma natural.",
+        "Cada jugada crea un nuevo estado del juego, demostrando cómo los datos nunca mutan en la programación funcional.",
     },
     {
-      icon: Users,
-      title: "Higher-Order Cards",
+      Icon: Code2,
+      title: "Programación Visual",
       description:
-        "Cartas especiales que toman otras cartas como entrada, demostrando funciones de orden superior en acción.",
+        "Construye 'programas' mediante drag-and-drop para dominar la lógica de funciones de orden superior.",
     },
   ];
   return (
@@ -36,12 +36,12 @@ export default function Home() {
       <HeroSection
         title="Aprende a programar"
         colorTitle="jugando cartas"
-        paragraph="Domina los conceptos de programación funcional mientras desarrollas estrategias ganadoras en un juego de cartas único e innovador."
+        paragraph="Diseña rutinas visuales de manipulación de cartas y domina la programación funcional. Crea programas mediante drag-and-drop para transformar tu mazo con secuencias lógicas y estratégicas."
         addButtons={false}
         children={
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 text-primary text-sm font-mono">
             <Code2 className="h-4 w-4" />
-            <span>Programación Funcional + Estrategia</span>
+            <span>Programación Funcional + Estrategia Visual</span>
           </div>
         }
       />

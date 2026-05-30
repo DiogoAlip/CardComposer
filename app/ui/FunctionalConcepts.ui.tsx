@@ -2,27 +2,27 @@ import { Card } from "../components/ui/card"
 
 const concepts = [
   {
-    title: "Pure Functions",
-    code: "attack(card) => damage",
-    description: "Sin sorpresas, sin estado global",
+    title: "Funciones Puras",
+    code: "flip(card) => newCard",
+    description: "Cada transformación crea una nueva versión de la carta sin alterar la original.",
     color: "border-l-chart-1",
   },
   {
-    title: "Composition",
-    code: "buff(shield(attack))",
-    description: "Combina efectos como funciones",
+    title: "Composición",
+    code: "sequence([swap, flipOver])",
+    description: "Encadena múltiples manipulaciones para crear rutinas de cartas complejas.",
     color: "border-l-chart-2",
   },
   {
-    title: "Immutability",
-    code: "newState = play(state, card)",
-    description: "El estado original permanece intacto",
+    title: "Inmutabilidad",
+    code: "nextDeck = map(deck, faceUp)",
+    description: "El mazo original nunca muta; cada jugada produce una nueva realidad del juego.",
     color: "border-l-chart-3",
   },
   {
-    title: "Higher-Order",
-    code: "double(fn) => x => fn(fn(x))",
-    description: "Cartas que modifican otras cartas",
+    title: "Orden Superior",
+    code: "filter(deck, isRed)",
+    description: "Usa funciones que operan sobre otras funciones para refinar tu estrategia.",
     color: "border-l-chart-4",
   },
 ]
