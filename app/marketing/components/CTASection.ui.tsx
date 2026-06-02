@@ -43,7 +43,11 @@ export function CtaSection({ title, subtitle, dark = false }: CtaSectionProps) {
                 to="https://github.com/DiogoAlip/CardComposer"
                 target="_blank"
               >
-                <Github className="h-4 w-4" />
+                <img
+                  src="/github.svg"
+                  alt="GitHub"
+                  className="invert scale-120 h-6 w-6 border-0 rounded-full"
+                />
                 Ver en GitHub
               </Link>
             </Button>

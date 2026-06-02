@@ -1,87 +1,92 @@
 import { Link } from "react-router";
-import { Gamepad2, Github } from "lucide-react";
+import { Gamepad2 } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="border-t border-border py-12 bg-white/5">
+    <footer className="border-t border-border pt-12 pb-8 bg-white/5 px-6 md:px-0">
       <div className="container mx-auto max-w-6xl">
-        <div className="grid md:grid-cols-3 gap-8 mb-8 px-12 md:px-0">
-          <div className="space-y-4">
+        {/* SECCIÓN PRINCIPAL: Distribución en Columnas */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 items-start px-12">
+          {/* Columna 1: Branding y Eslogan */}
+          <div className="flex flex-col items-center md:items-start text-center md:text-left gap-2">
             <Link
               to="/"
-              className="flex items-center gap-2 font-bold text-xl text-white"
+              className="flex items-center gap-2 font-bold text-3xl text-white hover:opacity-90 transition-opacity"
             >
-              <Gamepad2 className="h-6 w-6 text-primary" />
+              <Gamepad2 className="h-9 w-9 text-primary" />
               <span>CardComposer</span>
             </Link>
-            <p className="text-sm text-white/70">
-              Aprende programación funcional jugando
+            <p className="text-sm text-white/60 max-w-sm">
+              Aprende programación funcional jugando con cartas.
             </p>
           </div>
 
-          <div>
-            <h4 className="font-semibold mb-4 text-white">Juego</h4>
-            <ul className="space-y-2 text-sm">
+          {/* Columna 2: Navegación del Serious Game */}
+          <div className="flex flex-col items-center md:items-start gap-3">
+            <h4 className="text-sm font-semibold text-primary tracking-wider">
+              Módulo de Juego
+            </h4>
+            <ul className="flex flex-col gap-2 items-center md:items-start text-sm text-white/70">
               <li>
-                <Link
-                  to="/play"
-                  className="text-white/70 hover:text-white transition-colors"
-                >
+                <Link to="/play" className="hover:text-white transition-colors">
                   Jugar Ahora
                 </Link>
               </li>
               <li>
                 <Link
                   to="/rules"
-                  className="text-white/70 hover:text-white transition-colors"
+                  className="hover:text-white transition-colors"
                 >
-                  Tutorial
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/cards"
-                  className="text-white/70 hover:text-white transition-colors"
-                >
-                  Sobre las Cartas
+                  Tutorial de Reglas
                 </Link>
               </li>
             </ul>
           </div>
 
-          <div>
-            <h4 className="font-semibold mb-4 text-white">Aprender</h4>
-            <ul className="space-y-2 text-sm">
+          {/* Columna 3: Navegación Académica / Teórica */}
+          <div className="flex flex-col items-center md:items-start gap-3">
+            <h4 className="text-sm font-semibold text-primary tracking-wider">
+              Aprendizaje FP
+            </h4>
+            <ul className="flex flex-col gap-2 items-center md:items-start text-sm text-white/70">
               <li>
                 <Link
-                  to="/tutorial"
-                  className="text-white/70 hover:text-white transition-colors"
+                  to="/concepts"
+                  className="hover:text-white transition-colors"
                 >
-                  ¿Que es Programacion funcional?
+                  Conceptos de Programación
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/concepts"
-                  className="text-white/70 hover:text-white transition-colors"
+                  to="https://github.com/DiogoAlip/CardComposer"
+                  target="_blank"
+                  className="hover:text-white transition-colors"
                 >
-                  Conceptos FP
+                  Documentación del Proyecto
                 </Link>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-white/70">
-            © 2025 FuncCards. Todos los derechos reservados.
+        {/* LÍNEA INFERIOR: Créditos y Repositorio */}
+        <div className="pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4 px-12">
+          <p className="text-xs text-white/50">
+            © 2026 CardComposer version Beta
           </p>
           <div className="flex items-center gap-4">
             <Link
               to="https://github.com/DiogoAlip/CardComposer"
-              className="text-white/70 hover:text-white transition-colors"
+              className="text-white/50 hover:text-white transition-colors flex items-center gap-2 text-xs"
+              target="_blank"
             >
-              <Github className="h-5 w-5" />
+              <span>Ver en GitHub</span>
+              <img
+                src="/github.svg"
+                alt="GitHub"
+                className="invert scale-110 h-5 w-5 border-0 rounded-full opacity-70 hover:opacity-100 transition-opacity"
+              />
             </Link>
           </div>
         </div>
