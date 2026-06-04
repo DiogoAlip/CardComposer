@@ -40,7 +40,7 @@ export function DeckCode({
   const {
     setBothPlayersNames,
     newGameRound,
-    gameRounds,
+    dialogOpen,
     playersName: { P1Name, P2Name },
   } = use(GameRoundContext);
   const [isRuned, setIsRuned] = useState(false);
@@ -51,9 +51,7 @@ export function DeckCode({
   );
 
   useEffect(() => {
-    if (mapFunctions.length === 0 || !filterFunction?.length) {
-      resetCode();
-    }
+    resetCode();
     setIsRuned(false);
   }, [mapFunctions, filterFunction]);
 
@@ -165,6 +163,16 @@ export function DeckCode({
     }
   }
 
+  function clearCode() {
+    setMapFunctions([]);
+    setFilterFunction(undefined);
+    resetCode();
+  }
+
+  useEffect(() => {
+    if (!dialogOpen) clearCode();
+  }, [dialogOpen]);
+
   return (
     <DndContext onDragEnd={handleDragEnd}>
       <div className="flex flex-col gap-8 px-6 py-4">
@@ -178,11 +186,7 @@ export function DeckCode({
         <div className="flex-1">
           <h3 className="text-primary font-bold mb-3">Program (Composition)</h3>
           <CodeActions
-            onClear={() => {
-              setMapFunctions([]);
-              setFilterFunction(undefined);
-              resetCode();
-            }}
+            onClear={clearCode}
             onRun={runCode}
             onSend={sendCode}
             show={mapFunctions.length > 0 || !!filterFunction?.length}
