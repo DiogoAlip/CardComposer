@@ -3,30 +3,31 @@ import DeckEditor from "./DeckEditor";
 import { useCardsStore } from "~/deck/store/cards.store";
 import { GameRoundContext } from "~/match/context/GameRound.context";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import React from "react";
 
-// Mock child components
 vi.mock("./DeckLayout", () => ({
   default: ({ showNames }: { showNames: boolean }) => (
-    <div data-testid="deck-layout">DeckLayout {showNames ? "with names" : ""}</div>
-  )
+    <div data-testid="deck-layout">
+      DeckLayout {showNames ? "with names" : ""}
+    </div>
+  ),
 }));
 
 vi.mock("@/code-composer/components/DeckCode", () => ({
-  DeckCode: () => <div data-testid="deck-code">DeckCode</div>
+  DeckCode: () => <div data-testid="deck-code">DeckCode</div>,
 }));
 
 vi.mock("~/match/components/MatchDialog", () => ({
   MatchDialog: ({ onFinish }: { onFinish: () => void }) => (
     <div data-testid="match-dialog">
-      <button onClick={onFinish} data-testid="finish-match">Finish</button>
+      <button onClick={onFinish} data-testid="finish-match">
+        Finish
+      </button>
     </div>
-  )
+  ),
 }));
 
-// Mock Zustand store
 vi.mock("~/deck/store/cards.store", () => ({
-  useCardsStore: vi.fn()
+  useCardsStore: vi.fn(),
 }));
 
 const mockContextValue = {
@@ -45,18 +46,22 @@ describe("DeckEditor", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    (useCardsStore as any).mockImplementation((selector: any) => selector({
-      CardsFromPlayer1: { FrontRow: [], BackRow: [] },
-      CardsFromPlayer2: { FrontRow: [], BackRow: [] },
-      ShuffleCards: mockShuffleCards
-    }));
+    (useCardsStore as any).mockImplementation((selector: any) =>
+      selector({
+        CardsFromPlayer1: { FrontRow: [], BackRow: [] },
+        CardsFromPlayer2: { FrontRow: [], BackRow: [] },
+        ShuffleCards: mockShuffleCards,
+      }),
+    );
   });
 
   const renderDeckEditor = (contextOverrides = {}) => {
     return render(
-      <GameRoundContext.Provider value={{ ...mockContextValue, ...contextOverrides } as any}>
+      <GameRoundContext.Provider
+        value={{ ...mockContextValue, ...contextOverrides } as any}
+      >
         <DeckEditor />
-      </GameRoundContext.Provider>
+      </GameRoundContext.Provider>,
     );
   };
 
@@ -72,15 +77,12 @@ describe("DeckEditor", () => {
     const menuIcon = container.querySelector(".lucide-menu");
     expect(menuIcon).toBeTruthy();
 
-    // Initially sidebar is visible
     const sidebar = screen.getByText("Deck Editor").closest(".overflow-auto");
     expect(sidebar?.className).not.toContain("hidden");
 
-    // Click to close
     fireEvent.click(menuIcon!);
     expect(sidebar?.className).toContain("hidden");
 
-    // Menu icon should now be visible in the main area (outside sidebar)
     const absoluteMenu = container.querySelector(".lucide-menu");
     expect(absoluteMenu).toBeTruthy();
   });
@@ -93,12 +95,12 @@ describe("DeckEditor", () => {
   it("should handle onFinish correctly", async () => {
     const setDialogOpen = vi.fn();
     const resetGame = vi.fn();
-    
-    renderDeckEditor({ 
-      dialogOpen: true, 
-      setDialogOpen, 
+
+    renderDeckEditor({
+      dialogOpen: true,
+      setDialogOpen,
       resetGame,
-      gameRounds: [{}, {}, {}, {}] // 4 rounds
+      gameRounds: [{}, {}, {}, {}], // 4 rounds
     });
 
     const finishButton = screen.getByTestId("finish-match");
@@ -115,25 +117,25 @@ describe("DeckEditor", () => {
     expect(resizer).toBeTruthy();
 
     if (resizer) {
-      // Simulate mouse down to start resizing
       fireEvent.mouseDown(resizer);
-      
-      // Simulate mouse move to 500px
+
       act(() => {
-        window.dispatchEvent(new MouseEvent("mousemove", { clientX: 500, bubbles: true }));
+        window.dispatchEvent(
+          new MouseEvent("mousemove", { clientX: 500, bubbles: true }),
+        );
       });
-      
+
       const sidebar = screen.getByText("Deck Editor").closest(".overflow-auto");
       expect(sidebar?.style.width).toBe("500px");
 
-      // Simulate mouse up to stop resizing
       act(() => {
         window.dispatchEvent(new MouseEvent("mouseup", { bubbles: true }));
       });
-      
-      // Move mouse again, width should not change
+
       act(() => {
-        window.dispatchEvent(new MouseEvent("mousemove", { clientX: 600, bubbles: true }));
+        window.dispatchEvent(
+          new MouseEvent("mousemove", { clientX: 600, bubbles: true }),
+        );
       });
       expect(sidebar?.style.width).toBe("500px");
     }
@@ -145,19 +147,22 @@ describe("DeckEditor", () => {
 
     if (resizer) {
       fireEvent.mouseDown(resizer);
-      
-      // Try to resize too small (default is 375, min is 350, so let's try 200)
+
       act(() => {
-        window.dispatchEvent(new MouseEvent("mousemove", { clientX: 200, bubbles: true }));
+        window.dispatchEvent(
+          new MouseEvent("mousemove", { clientX: 200, bubbles: true }),
+        );
       });
       const sidebar = screen.getByText("Deck Editor").closest(".overflow-auto");
-      expect(sidebar?.style.width).toBe("375px"); // Stays default
+      console.log(sidebar?.style);
+      expect(sidebar?.style.width).toBe("375px");
 
-      // Try to resize too large (max 800, try 1000)
       act(() => {
-        window.dispatchEvent(new MouseEvent("mousemove", { clientX: 1000, bubbles: true }));
+        window.dispatchEvent(
+          new MouseEvent("mousemove", { clientX: 1000, bubbles: true }),
+        );
       });
-      expect(sidebar?.style.width).toBe("375px"); // Stays default
+      expect(sidebar?.style.width).toBe("375px");
     }
   });
 });
