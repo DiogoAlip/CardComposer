@@ -67,10 +67,7 @@ export default function Tutorial() {
                 </div>
                 <h3 className="text-2xl font-bold mb-2 text-white">{title}</h3>
                 <p className="text-white/70">{description}</p>
-                <img
-                  className="mx-auto mt-8 w-full"
-                  src={`../../dist/assets/${image}`}
-                />
+                <img className="mx-auto mt-8 w-full" src={`/${image}`} />
               </div>
             </div>
           ),
