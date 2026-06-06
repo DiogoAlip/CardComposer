@@ -125,7 +125,9 @@ describe("DeckEditor", () => {
         );
       });
 
-      const sidebar = screen.getByText("Deck Editor").closest(".overflow-auto");
+      const sidebar = screen
+        .getByText("Deck Editor")
+        .closest(".overflow-auto") as HTMLElement;
       expect(sidebar?.style.width).toBe("500px");
 
       act(() => {
@@ -153,8 +155,9 @@ describe("DeckEditor", () => {
           new MouseEvent("mousemove", { clientX: 200, bubbles: true }),
         );
       });
-      const sidebar = screen.getByText("Deck Editor").closest(".overflow-auto");
-      console.log(sidebar?.style);
+      const sidebar = screen
+        .getByText("Deck Editor")
+        .closest(".overflow-auto") as HTMLElement;
       expect(sidebar?.style.width).toBe("375px");
 
       act(() => {
