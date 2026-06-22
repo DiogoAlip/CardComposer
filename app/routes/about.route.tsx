@@ -38,8 +38,7 @@ export default function About() {
               key={index}
               className="flex flex-col md:flex-row gap-6 items-center md:items-start p-6 rounded-lg bg-white/5 border border-[#4E586E]/30 hover:border-[#FFD428]/50 transition-all"
             >
-              {/* Image */}
-              <div className="flex-shrink-0">
+              <div className="shrink-0">
                 <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-[#FFD428]/30">
                   <img
                     src={creator.image || "/placeholder.svg"}

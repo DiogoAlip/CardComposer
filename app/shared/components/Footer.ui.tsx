@@ -5,8 +5,8 @@ export function Footer() {
   return (
     <footer className="border-t border-border pt-12 pb-8 bg-white/5 px-6 md:px-0">
       <div className="container mx-auto max-w-6xl">
-        <div className="flex flex-col md:flex-row justify-center md:justify-between items-center md:items-start gap-8 mb-12 px-12">
-          <div className="flex flex-col items-center md:items-start text-center md:text-left gap-2">
+        <div className="flex flex-col justify-center items-center gap-8 mb-12 px-12">
+          <div className="flex flex-col items-center text-center md:text-left gap-2">
             <Link
               to="/"
               className="flex items-center gap-2 font-bold text-3xl text-white hover:opacity-90 transition-opacity"
@@ -17,53 +17,10 @@ export function Footer() {
             <p className="text-sm text-white/60 max-w-sm">
               Aprende programación funcional jugando con cartas.
             </p>
+            <Link to="/play" className="hover:text-white transition-colors">
+              Jugar Ahora
+            </Link>
           </div>
-
-          <div className="flex flex-col items-center md:items-end gap-3 text-center md:text-right">
-            <h4 className="text-sm font-semibold text-primary tracking-wider">
-              Módulo de Juego
-            </h4>
-            <ul className="flex flex-col gap-2 items-center md:items-end text-sm text-white/70">
-              <li>
-                <Link to="/play" className="hover:text-white transition-colors">
-                  Jugar Ahora
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/rules"
-                  className="hover:text-white transition-colors"
-                >
-                  Tutorial de Reglas
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* <div className="flex flex-col md:items-start gap-3"> */}
-          {/*   <h4 className="text-sm font-semibold text-primary tracking-wider"> */}
-          {/*     Aprendizaje FP */}
-          {/*   </h4> */}
-          {/*   <ul className="flex flex-col gap-2 items-center md:items-start text-sm text-white/70"> */}
-          {/*     <li> */}
-          {/*       <Link */}
-          {/*         to="/concepts" */}
-          {/*         className="hover:text-white transition-colors" */}
-          {/*       > */}
-          {/*         Conceptos de Programación */}
-          {/*       </Link> */}
-          {/*     </li> */}
-          {/*     <li> */}
-          {/*       <Link */}
-          {/*         to="https://github.com/DiogoAlip/CardComposer" */}
-          {/*         target="_blank" */}
-          {/*         className="hover:text-white transition-colors" */}
-          {/*       > */}
-          {/*         Documentación del Proyecto */}
-          {/*       </Link> */}
-          {/*     </li> */}
-          {/*   </ul> */}
-          {/* </div> */}
         </div>
 
         <div className="pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4 px-12">

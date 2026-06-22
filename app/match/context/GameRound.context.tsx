@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 import type {
   mapFunctions,
   filterFunctions,
@@ -21,7 +21,7 @@ export interface GameRoundsInterface {
   resetGame: () => void;
 }
 
-const intialRoundState = {
+const initialRoundState = {
   isMatched: false,
   round: 1,
   winner: null,
@@ -74,7 +74,7 @@ export const GameRoundProvider = ({
   children: React.ReactNode;
 }) => {
   const [gameRounds, setGameRounds] = useState([
-    { ...intialRoundState },
+    { ...initialRoundState },
   ] as RoundInterface[]);
   const [playersName, setPlayersName] = useState(
     {} as { P1Name: string; P2Name: string },
@@ -147,7 +147,7 @@ export const GameRoundProvider = ({
   };
 
   const resetGame = () => {
-    setGameRounds([{ ...intialRoundState }] as RoundInterface[]);
+    setGameRounds([{ ...initialRoundState }] as RoundInterface[]);
   };
 
   return (

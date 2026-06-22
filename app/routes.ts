@@ -2,7 +2,6 @@ import Root, { ErrorBoundary } from "./root";
 import IndexRoute from "./routes/index.route";
 import Home from "./routes/home.route";
 import About from "./routes/about.route";
-import Tutorial from "./routes/tutorial.route";
 import PlayRoute from "./routes/play.route";
 import GameMode from "./routes/gamemode.route";
 import PlayVsComputer from "./routes/playVsComputer.route";
@@ -26,10 +25,6 @@ export const routes = [
           {
             path: "about",
             Component: About,
-          },
-          {
-            path: "tutorial",
-            Component: Tutorial,
           },
         ],
       },
