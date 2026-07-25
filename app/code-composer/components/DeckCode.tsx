@@ -193,7 +193,11 @@ export function DeckCode({
           onClear={clearCode}
           onRun={runCode}
           onSend={sendCode}
-          show={mapFunctions.length > 0 || !!filterFunction?.length}
+          show={
+            mapFunctions.length > 0 ||
+            !!filterFunction?.length ||
+            (tutorialMode && tutorialStage === 2)
+          }
         />
         <CodeWorkspace
           mapFunctions={mapFunctions}

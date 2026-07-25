@@ -3,16 +3,6 @@ import { CodeWorkspace } from "./CodeWorkspace";
 import { describe, it, expect, vi } from "vitest";
 import React from "react";
 
-// Mock child components
-vi.mock("@/shared/components/DroppableButton", () => ({
-  DroppableButton: ({ paragraph, handleRemoveBlock }: { paragraph: string; handleRemoveBlock: () => void }) => (
-    <div data-testid={`button-${paragraph}`}>
-      <span>{paragraph}</span>
-      <button onClick={handleRemoveBlock} data-testid={`remove-${paragraph}`}>Remove</button>
-    </div>
-  )
-}));
-
 describe("CodeWorkspace", () => {
   const mockHandleRemoveBlock = vi.fn();
   const mockOnSelectFilter = vi.fn();
@@ -20,10 +10,10 @@ describe("CodeWorkspace", () => {
 
   it("should render placeholder text when empty", () => {
     render(
-      <CodeWorkspace 
-        mapFunctions={[]} 
-        handleRemoveBlock={mockHandleRemoveBlock} 
-      />
+      <CodeWorkspace
+        mapFunctions={[]}
+        handleRemoveBlock={mockHandleRemoveBlock}
+      />,
     );
 
     expect(screen.getByText("Filter function here...")).toBeDefined();
@@ -32,11 +22,11 @@ describe("CodeWorkspace", () => {
 
   it("should render the provided filter function", () => {
     render(
-      <CodeWorkspace 
-        mapFunctions={[]} 
-        filterFunction="isRed" 
-        handleRemoveBlock={mockHandleRemoveBlock} 
-      />
+      <CodeWorkspace
+        mapFunctions={[]}
+        filterFunction="isRed"
+        handleRemoveBlock={mockHandleRemoveBlock}
+      />,
     );
 
     expect(screen.queryByText("Filter function here...")).toBeNull();
@@ -46,10 +36,10 @@ describe("CodeWorkspace", () => {
   it("should render multiple map functions", () => {
     const mapFunctions = ["swap", "faceUp"] as any[];
     render(
-      <CodeWorkspace 
-        mapFunctions={mapFunctions} 
-        handleRemoveBlock={mockHandleRemoveBlock} 
-      />
+      <CodeWorkspace
+        mapFunctions={mapFunctions}
+        handleRemoveBlock={mockHandleRemoveBlock}
+      />,
     );
 
     expect(screen.queryByText("Map functions here...")).toBeNull();
@@ -59,11 +49,11 @@ describe("CodeWorkspace", () => {
 
   it("should call handleRemoveBlock when a block is removed", () => {
     render(
-      <CodeWorkspace 
-        mapFunctions={["swap" as any]} 
-        filterFunction="isRed" 
-        handleRemoveBlock={mockHandleRemoveBlock} 
-      />
+      <CodeWorkspace
+        mapFunctions={["swap" as any]}
+        filterFunction="isRed"
+        handleRemoveBlock={mockHandleRemoveBlock}
+      />,
     );
 
     // Remove filter
@@ -77,10 +67,10 @@ describe("CodeWorkspace", () => {
 
   it("should render the correct code structure", () => {
     render(
-      <CodeWorkspace 
-        mapFunctions={[]} 
-        handleRemoveBlock={mockHandleRemoveBlock} 
-      />
+      <CodeWorkspace
+        mapFunctions={[]}
+        handleRemoveBlock={mockHandleRemoveBlock}
+      />,
     );
 
     expect(screen.getByText("filter (")).toBeDefined();
@@ -96,7 +86,7 @@ describe("CodeWorkspace", () => {
         handleRemoveBlock={mockHandleRemoveBlock}
         onSelectFilter={mockOnSelectFilter}
         onSelectMap={mockOnSelectMap}
-      />
+      />,
     );
 
     expect(screen.getByText("Filter Functions")).toBeDefined();
@@ -110,10 +100,12 @@ describe("CodeWorkspace", () => {
         handleRemoveBlock={mockHandleRemoveBlock}
         onSelectFilter={mockOnSelectFilter}
         onSelectMap={mockOnSelectMap}
-      />
+      />,
     );
 
-    const isRedButton = screen.getAllByRole("button").find(b => b.textContent?.includes("isRed"));
+    const isRedButton = screen
+      .getAllByRole("button")
+      .find((b) => b.textContent?.includes("isRed"));
     expect(isRedButton).toBeDefined();
     if (isRedButton) {
       fireEvent.click(isRedButton);
@@ -128,10 +120,12 @@ describe("CodeWorkspace", () => {
         handleRemoveBlock={mockHandleRemoveBlock}
         onSelectFilter={mockOnSelectFilter}
         onSelectMap={mockOnSelectMap}
-      />
+      />,
     );
 
-    const swapButton = screen.getAllByRole("button").find(b => b.textContent?.includes("swap"));
+    const swapButton = screen
+      .getAllByRole("button")
+      .find((b) => b.textContent?.includes("swap"));
     expect(swapButton).toBeDefined();
     if (swapButton) {
       fireEvent.click(swapButton);
@@ -146,10 +140,12 @@ describe("CodeWorkspace", () => {
         handleRemoveBlock={mockHandleRemoveBlock}
         onSelectFilter={mockOnSelectFilter}
         onSelectMap={mockOnSelectMap}
-      />
+      />,
     );
 
-    const swapButton = screen.getAllByRole("button").find(b => b.textContent?.includes("swap"));
+    const swapButton = screen
+      .getAllByRole("button")
+      .find((b) => b.textContent?.includes("swap"));
     expect(swapButton).toBeDefined();
     expect(swapButton?.hasAttribute("disabled")).toBe(true);
   });

@@ -28,42 +28,57 @@ const STAGE_DATA: Record<
     isCentered: true,
   },
   1: {
-    title: "1. Biblioteca de Funciones",
-    badge: "Paso 2 de 5",
-    headerRight: "Biblioteca",
+    title: "1. Selección de Funciones",
+    badge: "Paso 1 de 4",
+    headerRight: "Espacio de Trabajo",
     body: (
       <>
-        <p> Arrastra bloques de esta biblioteca.</p>
-        <p>
-          Las <strong>Map Functions</strong> cambian orden o estado de cartas.
+        <p className="mb-1">
+          Despliega los acordeones haciendo click a las flechas para seleccionar
+          tus funciones.
+        </p>
+        <p className="mb-1">
+          Las <strong className="text-emerald-500">Filter Functions</strong>{" "}
+          seleccionan qué cartas se verán afectadas.
         </p>
         <p>
-          Las <strong>Filter Functions</strong> seleccionan qué cartas se verán
-          afectadas.
+          Las <strong className="text-cyan-500">Map Functions</strong>{" "}
+          transforman el estado u orden de tus cartas.
         </p>
       </>
     ),
-    positionClass: "fixed top-24 left-97.5 w-80",
+    positionClass: "fixed top-24 left-[390px] w-80",
     animateClass: "animate-in slide-in-from-left-5 duration-300",
   },
   2: {
-    title: "2. Espacio de Trabajo",
-    badge: "Paso 3 de 5",
-    headerRight: "Programa",
+    title: "2. Ejecutar y Enviar Código",
+    badge: "Paso 2 de 4",
+    headerRight: "Acciones de Código",
     body: (
       <>
-        Arrastra las funciones aquí para programar tu rutina, para que aparezcan
-        las funciones adicionales. Presiona <strong>Run</strong> para
-        previsualizar los cambios locales en tus cartas. Presiona{" "}
-        <strong>Send Code</strong> para jugar contra el oponente.
+        <p className="mb-1">
+          Al elegir funciones, aparecerán los botones de acción en la parte
+          superior:
+        </p>
+        <p className="mb-1">
+          • <strong>Run</strong>: Previsualiza localmente el efecto sobre tus
+          cartas.
+        </p>
+        <p className="mb-1">
+          • <strong>Send</strong>: Envía tu código final para jugar contra el
+          oponente.
+        </p>
+        <p>
+          • <strong>Clear</strong>: Reinicia la selección de funciones.
+        </p>
       </>
     ),
-    positionClass: "fixed bottom-24 left-[390px] w-80",
+    positionClass: "fixed top-24 left-[390px] w-80",
     animateClass: "animate-in slide-in-from-left-5 duration-300",
   },
   3: {
     title: "3. Cartas del Oponente (Arriba)",
-    badge: "Paso 4 de 5",
+    badge: "Paso 3 de 4",
     headerRight: "Oponente",
     body: "Esta es la baraja del oponente (Bot). Sus cartas también se modificarán por sus funciones programadas. Al final de la ronda, se comparan las cartas correspondientes que queden boca arriba.",
     positionClass: "fixed top-24 right-8 w-80",
@@ -71,7 +86,7 @@ const STAGE_DATA: Record<
   },
   4: {
     title: "4. Tu Zona de Juego",
-    badge: "Paso 5 de 5",
+    badge: "Paso 4 de 4",
     headerRight: "Jugador",
     body: "Esta es tu baraja. Tienes 4 cartas en la Fila Frontal y 4 en la Fila Trasera. Las funciones que programes se aplicarán sobre la Fila Frontal filtrada. ¡Diseña tu código para dejar tus cartas más altas boca arriba!",
     positionClass: "fixed bottom-24 right-8 w-80",
@@ -141,7 +156,7 @@ export function TutorialPopup({ stage }: TutorialPopupProps) {
       </div>
       <div>
         <h4 className="text-sm font-bold text-zinc-100 mb-1">{data.title}</h4>
-        <p className="text-xs text-zinc-400 leading-relaxed">{data.body}</p>
+        <div className="text-xs text-zinc-400 leading-relaxed">{data.body}</div>
       </div>
       <div className="flex justify-between items-center mt-1">
         <button
@@ -173,62 +188,6 @@ export function TutorialPopup({ stage }: TutorialPopupProps) {
             </button>
           </div>
         )}
-      </div>
-    </div>
-  );
-}
-
-export function TutorialPopup2({
-  className,
-  animationClass,
-  beforeButton,
-  afterButton,
-  isCentered,
-}: {
-  className?: string;
-  beforeButton: false;
-  afterButton: false;
-  isCentered?: boolean;
-  animationClass?: string;
-}) {
-  return (
-    <div
-      className={
-        className +
-        " " +
-        (isCentered ? "" : animationClass) +
-        "  bg-zinc-900/95 border border-zinc-800 p-5 rounded-2xl shadow-2xl z-50 text-zinc-100 flex flex-col gap-3 backdrop-blur-md pointer-events-auto"
-      }
-    >
-      <div
-        className={`w-full max-w-md bg-zinc-900/95 border border-zinc-800 p-6 rounded-2xl shadow-2xl flex flex-col gap-4 text-zinc-100 ${isCentered ? animationClass : ""}`}
-      >
-        <div className="flex justify-between items-center border-b border-zinc-800 pb-2">
-          <span className="text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full">
-            data.badge
-          </span>
-          <span className="text-xs text-zinc-500 font-medium">
-            data.headerRight
-          </span>
-        </div>
-        <div>
-          <h4 className="text-lg font-bold text-zinc-100 mb-1">data.title</h4>
-          <p className="text-sm text-zinc-400 leading-relaxed">data.body</p>
-        </div>
-        <div className="flex justify-between items-center mt-2">
-          <button
-            onClick={() => console.log("setTutorialMode(false)")}
-            className="px-3 py-1.5 rounded-lg border border-zinc-800 text-sm font-medium hover:bg-zinc-800 transition-colors cursor-pointer text-zinc-300"
-          >
-            Omitir
-          </button>
-          <button
-            onClick={() => console.log("setTutorialStage(1)")}
-            className="px-4 py-1.5 rounded bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium transition-colors cursor-pointer shadow-md shadow-emerald-900/35"
-          >
-            Siguiente
-          </button>
-        </div>
       </div>
     </div>
   );

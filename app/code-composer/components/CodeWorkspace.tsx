@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { DroppableButton } from "@/shared/components/DroppableButton";
 import {
   ChevronDown,
   ChevronRight,
@@ -46,8 +45,8 @@ export function CodeWorkspace({
   availableMapFunctions = DEFAULT_MAP_FUNCTIONS,
   availableFilterFunctions = DEFAULT_FILTER_FUNCTIONS,
 }: CodeWorkspaceProps) {
-  const [filterAccordionOpen, setFilterAccordionOpen] = useState(true);
-  const [mapAccordionOpen, setMapAccordionOpen] = useState(true);
+  const [filterAccordionOpen, setFilterAccordionOpen] = useState(false);
+  const [mapAccordionOpen, setMapAccordionOpen] = useState(false);
 
   const handleFilterClick = (func: filterFunctions) => {
     if (onSelectFilter) {
