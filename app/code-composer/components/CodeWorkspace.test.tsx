@@ -4,10 +4,6 @@ import { describe, it, expect, vi } from "vitest";
 import React from "react";
 
 // Mock child components
-vi.mock("@/shared/components/Droppable.layout", () => ({
-  Droppable: ({ children }: { children: React.ReactNode }) => <div data-testid="droppable">{children}</div>
-}));
-
 vi.mock("@/shared/components/DroppableButton", () => ({
   DroppableButton: ({ paragraph, handleRemoveBlock }: { paragraph: string; handleRemoveBlock: () => void }) => (
     <div data-testid={`button-${paragraph}`}>
@@ -19,6 +15,8 @@ vi.mock("@/shared/components/DroppableButton", () => ({
 
 describe("CodeWorkspace", () => {
   const mockHandleRemoveBlock = vi.fn();
+  const mockOnSelectFilter = vi.fn();
+  const mockOnSelectMap = vi.fn();
 
   it("should render placeholder text when empty", () => {
     render(
@@ -89,5 +87,70 @@ describe("CodeWorkspace", () => {
     expect(screen.getByText("map (")).toBeDefined();
     expect(screen.getByText(")")).toBeDefined();
     expect(screen.getByText(");")).toBeDefined();
+  });
+
+  it("should render accordion sections for filter and map functions", () => {
+    render(
+      <CodeWorkspace
+        mapFunctions={[]}
+        handleRemoveBlock={mockHandleRemoveBlock}
+        onSelectFilter={mockOnSelectFilter}
+        onSelectMap={mockOnSelectMap}
+      />
+    );
+
+    expect(screen.getByText("Filter Functions")).toBeDefined();
+    expect(screen.getByText("Map Functions")).toBeDefined();
+  });
+
+  it("should call onSelectFilter when a filter option is clicked", () => {
+    render(
+      <CodeWorkspace
+        mapFunctions={[]}
+        handleRemoveBlock={mockHandleRemoveBlock}
+        onSelectFilter={mockOnSelectFilter}
+        onSelectMap={mockOnSelectMap}
+      />
+    );
+
+    const isRedButton = screen.getAllByRole("button").find(b => b.textContent?.includes("isRed"));
+    expect(isRedButton).toBeDefined();
+    if (isRedButton) {
+      fireEvent.click(isRedButton);
+      expect(mockOnSelectFilter).toHaveBeenCalledWith("isRed");
+    }
+  });
+
+  it("should call onSelectMap when an available map option is clicked", () => {
+    render(
+      <CodeWorkspace
+        mapFunctions={[]}
+        handleRemoveBlock={mockHandleRemoveBlock}
+        onSelectFilter={mockOnSelectFilter}
+        onSelectMap={mockOnSelectMap}
+      />
+    );
+
+    const swapButton = screen.getAllByRole("button").find(b => b.textContent?.includes("swap"));
+    expect(swapButton).toBeDefined();
+    if (swapButton) {
+      fireEvent.click(swapButton);
+      expect(mockOnSelectMap).toHaveBeenCalledWith("swap");
+    }
+  });
+
+  it("should disable already selected map functions to prevent duplicates", () => {
+    render(
+      <CodeWorkspace
+        mapFunctions={["swap"]}
+        handleRemoveBlock={mockHandleRemoveBlock}
+        onSelectFilter={mockOnSelectFilter}
+        onSelectMap={mockOnSelectMap}
+      />
+    );
+
+    const swapButton = screen.getAllByRole("button").find(b => b.textContent?.includes("swap"));
+    expect(swapButton).toBeDefined();
+    expect(swapButton?.hasAttribute("disabled")).toBe(true);
   });
 });

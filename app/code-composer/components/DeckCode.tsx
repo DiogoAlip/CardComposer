@@ -1,6 +1,5 @@
 import { useParams, useNavigate } from "react-router";
 import { use, useEffect, useState } from "react";
-import { DndContext, type DragEndEvent } from "@dnd-kit/core";
 import { resetCode } from "@/deck/store/cards.thunk";
 import { Bot } from "~/player/helpers/player.bot";
 import { useCardsStore } from "~/deck/store/cards.store";
@@ -20,7 +19,6 @@ import type { Card } from "~/deck/interfaces/card.interface";
 import type { difficultyType } from "~/player/interfaces/difficulty.type";
 import { evaluateMatchup } from "~/match/helpers/getMatch";
 
-import { FunctionLibrary } from "./FunctionLibrary";
 import { CodeActions } from "./CodeActions";
 import { CodeWorkspace } from "./CodeWorkspace";
 import { TutorialPopup } from "~/shared/components/TutorialPopup";
@@ -50,10 +48,12 @@ export function DeckCode({
 
   const [isRuned, setIsRuned] = useState(false);
 
-  const MapFunctions = MapFunctionsWithNone.filter((func) => func !== "none");
+  const MapFunctions = MapFunctionsWithNone.filter(
+    (func) => func !== "none",
+  ) as mapFunctions[];
   const FilterFunctions = FilterFunctionsWithNone.filter(
     (func) => func !== "none",
-  );
+  ) as filterFunctions[];
 
   useEffect(() => {
     resetCode();
@@ -74,26 +74,15 @@ export function DeckCode({
     }
   }, []);
 
-  function handleDragEnd(event: DragEndEvent) {
-    const { active, over } = event;
+  function handleSelectFilter(func: filterFunctions) {
+    setFilterFunction((prev) => (prev === func ? undefined : func));
+  }
 
-    if (
-      over &&
-      over.id === "mapDroppable" &&
-      MapFunctions.includes(active.id.toString() as mapFunctions)
-    ) {
-      setMapFunctions((prev) => [
-        ...prev,
-        active.id.toString() as mapFunctions,
-      ]);
-    } else if (
-      over &&
-      over.id === "filterDroppable" &&
-      !filterFunction?.length &&
-      FilterFunctions.includes(active.id.toString() as filterFunctions)
-    ) {
-      setFilterFunction(active.id.toString() as filterFunctions);
-    }
+  function handleSelectMap(func: mapFunctions) {
+    setMapFunctions((prev) => {
+      if (prev.includes(func)) return prev;
+      return [...prev, func];
+    });
   }
 
   function handleRemoveBlock(instanceId: string) {
@@ -192,42 +181,36 @@ export function DeckCode({
   }, [dialogOpen]);
 
   return (
-    <DndContext onDragEnd={handleDragEnd}>
-      <div className="flex flex-col gap-8 px-6 py-4 relative">
-        <div
-          className={`transition-all duration-300 ${tutorialMode && tutorialStage === 1 ? "ring-2 ring-emerald-500 rounded-xl p-2 bg-emerald-500/5 shadow-[0_0_15px_rgba(16,185,129,0.2)]" : ""}`}
-        >
-          <FunctionLibrary
-            mapFunctions={mapFunctions}
-            filterFunction={filterFunction}
-            availableMapFunctions={MapFunctions}
-            availableFilterFunctions={FilterFunctions}
-          />
-        </div>
-
-        <div
-          className={`flex-1 transition-all duration-300 ${tutorialMode && tutorialStage === 2 ? "ring-2 ring-emerald-500 rounded-xl p-2 bg-emerald-500/5 shadow-[0_0_15px_rgba(16,185,129,0.2)]" : ""}`}
-        >
-          <h3 className="text-primary font-bold mb-3">Program (Composition)</h3>
-          <CodeActions
-            onClear={clearCode}
-            onRun={runCode}
-            onSend={sendCode}
-            show={mapFunctions.length > 0 || !!filterFunction?.length}
-          />
-          <CodeWorkspace
-            mapFunctions={mapFunctions}
-            filterFunction={filterFunction}
-            handleRemoveBlock={handleRemoveBlock}
-          />
-        </div>
-
-        {/* Tutorial Stage 1 Popup */}
-        <TutorialPopup stage={1} />
-
-        {/* Tutorial Stage 2 Popup */}
-        <TutorialPopup stage={2} />
+    <div className="flex flex-col gap-8 px-6 py-4 relative">
+      <div
+        className={`flex-1 transition-all duration-300 ${
+          tutorialMode && (tutorialStage === 1 || tutorialStage === 2)
+            ? "ring-2 ring-emerald-500 rounded-xl p-2 bg-emerald-500/5 shadow-[0_0_15px_rgba(16,185,129,0.2)]"
+            : ""
+        }`}
+      >
+        <CodeActions
+          onClear={clearCode}
+          onRun={runCode}
+          onSend={sendCode}
+          show={mapFunctions.length > 0 || !!filterFunction?.length}
+        />
+        <CodeWorkspace
+          mapFunctions={mapFunctions}
+          filterFunction={filterFunction}
+          handleRemoveBlock={handleRemoveBlock}
+          onSelectFilter={handleSelectFilter}
+          onSelectMap={handleSelectMap}
+          availableMapFunctions={MapFunctions}
+          availableFilterFunctions={FilterFunctions}
+        />
       </div>
-    </DndContext>
+
+      {/* Tutorial Stage 1 Popup */}
+      <TutorialPopup stage={1} />
+
+      {/* Tutorial Stage 2 Popup */}
+      <TutorialPopup stage={2} />
+    </div>
   );
 }
