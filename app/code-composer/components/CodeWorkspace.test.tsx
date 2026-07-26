@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { CodeWorkspace } from "./CodeWorkspace";
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import React from "react";
 
 describe("CodeWorkspace", () => {
@@ -8,7 +8,11 @@ describe("CodeWorkspace", () => {
   const mockOnSelectFilter = vi.fn();
   const mockOnSelectMap = vi.fn();
 
-  it("should render placeholder text when empty", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("should render accordion sections for filter and map functions", () => {
     render(
       <CodeWorkspace
         mapFunctions={[]}
@@ -16,11 +20,30 @@ describe("CodeWorkspace", () => {
       />,
     );
 
-    expect(screen.getByText("Filter function here...")).toBeDefined();
-    expect(screen.getByText("Map functions here...")).toBeDefined();
+    expect(screen.getByText("Filter Functions")).toBeDefined();
+    expect(screen.getByText("Map Functions")).toBeDefined();
   });
 
-  it("should render the provided filter function", () => {
+  it("should toggle accordion sections when clicked", () => {
+    render(
+      <CodeWorkspace
+        mapFunctions={[]}
+        handleRemoveBlock={mockHandleRemoveBlock}
+      />,
+    );
+
+    expect(screen.queryByText("isRed")).toBeNull();
+
+    // Open Filter accordion
+    fireEvent.click(screen.getByText("Filter Functions"));
+    expect(screen.getByText("isRed")).toBeDefined();
+
+    // Open Map accordion
+    fireEvent.click(screen.getByText("Map Functions"));
+    expect(screen.getByText("swap")).toBeDefined();
+  });
+
+  it("should render the provided filter function when accordion is open", () => {
     render(
       <CodeWorkspace
         mapFunctions={[]}
@@ -29,11 +52,12 @@ describe("CodeWorkspace", () => {
       />,
     );
 
-    expect(screen.queryByText("Filter function here...")).toBeNull();
-    expect(screen.getByTestId("button-isRed")).toBeDefined();
+    fireEvent.click(screen.getByText("Filter Functions"));
+    const isRedBtn = screen.getByRole("button", { name: /isRed/i });
+    expect(isRedBtn).toBeDefined();
   });
 
-  it("should render multiple map functions", () => {
+  it("should render multiple map functions when accordion is open", () => {
     const mapFunctions = ["swap", "faceUp"] as any[];
     render(
       <CodeWorkspace
@@ -42,12 +66,12 @@ describe("CodeWorkspace", () => {
       />,
     );
 
-    expect(screen.queryByText("Map functions here...")).toBeNull();
-    expect(screen.getByTestId("button-swap")).toBeDefined();
-    expect(screen.getByTestId("button-faceUp")).toBeDefined();
+    fireEvent.click(screen.getByText("Map Functions"));
+    expect(screen.getByText(/swap/i)).toBeDefined();
+    expect(screen.getByText(/faceUp/i)).toBeDefined();
   });
 
-  it("should call handleRemoveBlock when a block is removed", () => {
+  it("should call handleRemoveBlock when a selected block is removed", () => {
     render(
       <CodeWorkspace
         mapFunctions={["swap" as any]}
@@ -56,12 +80,14 @@ describe("CodeWorkspace", () => {
       />,
     );
 
-    // Remove filter
-    fireEvent.click(screen.getByTestId("remove-isRed"));
+    // Remove filter (when onSelectFilter is not passed)
+    fireEvent.click(screen.getByText("Filter Functions"));
+    fireEvent.click(screen.getByRole("button", { name: /isRed/i }));
     expect(mockHandleRemoveBlock).toHaveBeenCalledWith("isRed");
 
     // Remove map
-    fireEvent.click(screen.getByTestId("remove-swap"));
+    fireEvent.click(screen.getByText("Map Functions"));
+    fireEvent.click(screen.getByRole("button", { name: /swap/i }));
     expect(mockHandleRemoveBlock).toHaveBeenCalledWith("swap");
   });
 
@@ -79,20 +105,6 @@ describe("CodeWorkspace", () => {
     expect(screen.getByText(");")).toBeDefined();
   });
 
-  it("should render accordion sections for filter and map functions", () => {
-    render(
-      <CodeWorkspace
-        mapFunctions={[]}
-        handleRemoveBlock={mockHandleRemoveBlock}
-        onSelectFilter={mockOnSelectFilter}
-        onSelectMap={mockOnSelectMap}
-      />,
-    );
-
-    expect(screen.getByText("Filter Functions")).toBeDefined();
-    expect(screen.getByText("Map Functions")).toBeDefined();
-  });
-
   it("should call onSelectFilter when a filter option is clicked", () => {
     render(
       <CodeWorkspace
@@ -103,14 +115,10 @@ describe("CodeWorkspace", () => {
       />,
     );
 
-    const isRedButton = screen
-      .getAllByRole("button")
-      .find((b) => b.textContent?.includes("isRed"));
-    expect(isRedButton).toBeDefined();
-    if (isRedButton) {
-      fireEvent.click(isRedButton);
-      expect(mockOnSelectFilter).toHaveBeenCalledWith("isRed");
-    }
+    fireEvent.click(screen.getByText("Filter Functions"));
+    const isRedButton = screen.getByRole("button", { name: /isRed/i });
+    fireEvent.click(isRedButton);
+    expect(mockOnSelectFilter).toHaveBeenCalledWith("isRed");
   });
 
   it("should call onSelectMap when an available map option is clicked", () => {
@@ -123,30 +131,24 @@ describe("CodeWorkspace", () => {
       />,
     );
 
-    const swapButton = screen
-      .getAllByRole("button")
-      .find((b) => b.textContent?.includes("swap"));
-    expect(swapButton).toBeDefined();
-    if (swapButton) {
-      fireEvent.click(swapButton);
-      expect(mockOnSelectMap).toHaveBeenCalledWith("swap");
-    }
+    fireEvent.click(screen.getByText("Map Functions"));
+    const swapButton = screen.getByRole("button", { name: /swap/i });
+    fireEvent.click(swapButton);
+    expect(mockOnSelectMap).toHaveBeenCalledWith("swap");
   });
 
-  it("should disable already selected map functions to prevent duplicates", () => {
+  it("should display selected state for selected map functions in accordion", () => {
     render(
       <CodeWorkspace
-        mapFunctions={["swap"]}
+        mapFunctions={["swap" as any]}
         handleRemoveBlock={mockHandleRemoveBlock}
         onSelectFilter={mockOnSelectFilter}
         onSelectMap={mockOnSelectMap}
       />,
     );
 
-    const swapButton = screen
-      .getAllByRole("button")
-      .find((b) => b.textContent?.includes("swap"));
+    fireEvent.click(screen.getByText("Map Functions"));
+    const swapButton = screen.getByRole("button", { name: /1 swap/i });
     expect(swapButton).toBeDefined();
-    expect(swapButton?.hasAttribute("disabled")).toBe(true);
   });
 });

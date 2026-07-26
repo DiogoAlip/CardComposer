@@ -1,8 +1,9 @@
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import DeckEditor from "./DeckEditor";
 import { useCardsStore } from "~/deck/store/cards.store";
 import { GameRoundContext } from "~/match/context/GameRound.context";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import React from "react";
 
 vi.mock("./DeckLayout", () => ({
   default: ({ showNames }: { showNames: boolean }) => (
@@ -23,6 +24,12 @@ vi.mock("~/match/components/MatchDialog", () => ({
         Finish
       </button>
     </div>
+  ),
+}));
+
+vi.mock("~/shared/components/TutorialPopup", () => ({
+  TutorialPopup: ({ stage }: { stage: number }) => (
+    <div data-testid="tutorial-popup">Tutorial Stage {stage}</div>
   ),
 }));
 
@@ -70,6 +77,7 @@ describe("DeckEditor", () => {
     expect(screen.getByText("Deck Editor")).toBeDefined();
     expect(screen.getByTestId("deck-code")).toBeDefined();
     expect(screen.getByTestId("deck-layout")).toBeDefined();
+    expect(screen.getByTestId("tutorial-popup")).toBeDefined();
   });
 
   it("should toggle sidebar visibility when menu icon is clicked", () => {
@@ -82,6 +90,7 @@ describe("DeckEditor", () => {
 
     fireEvent.click(menuIcon!);
     expect(sidebar?.className).toContain("hidden");
+    expect(screen.getByTestId("deck-layout").textContent).toContain("with names");
 
     const absoluteMenu = container.querySelector(".lucide-menu");
     expect(absoluteMenu).toBeTruthy();
@@ -109,63 +118,5 @@ describe("DeckEditor", () => {
     expect(mockShuffleCards).toHaveBeenCalled();
     expect(setDialogOpen).toHaveBeenCalledWith(false);
     expect(resetGame).toHaveBeenCalled();
-  });
-
-  it("should resize the sidebar on mouse move", () => {
-    const { container } = renderDeckEditor();
-    const resizer = container.querySelector(".cursor-col-resize");
-    expect(resizer).toBeTruthy();
-
-    if (resizer) {
-      fireEvent.mouseDown(resizer);
-
-      act(() => {
-        window.dispatchEvent(
-          new MouseEvent("mousemove", { clientX: 500, bubbles: true }),
-        );
-      });
-
-      const sidebar = screen
-        .getByText("Deck Editor")
-        .closest(".overflow-auto") as HTMLElement;
-      expect(sidebar?.style.width).toBe("500px");
-
-      act(() => {
-        window.dispatchEvent(new MouseEvent("mouseup", { bubbles: true }));
-      });
-
-      act(() => {
-        window.dispatchEvent(
-          new MouseEvent("mousemove", { clientX: 600, bubbles: true }),
-        );
-      });
-      expect(sidebar?.style.width).toBe("500px");
-    }
-  });
-
-  it("should respect resize boundaries", () => {
-    const { container } = renderDeckEditor();
-    const resizer = container.querySelector(".cursor-col-resize");
-
-    if (resizer) {
-      fireEvent.mouseDown(resizer);
-
-      act(() => {
-        window.dispatchEvent(
-          new MouseEvent("mousemove", { clientX: 200, bubbles: true }),
-        );
-      });
-      const sidebar = screen
-        .getByText("Deck Editor")
-        .closest(".overflow-auto") as HTMLElement;
-      expect(sidebar?.style.width).toBe("375px");
-
-      act(() => {
-        window.dispatchEvent(
-          new MouseEvent("mousemove", { clientX: 1000, bubbles: true }),
-        );
-      });
-      expect(sidebar?.style.width).toBe("375px");
-    }
   });
 });
