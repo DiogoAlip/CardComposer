@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState, memo, use } from "react";
-import { Menu } from "lucide-react";
+import { PanelLeftOpen } from "lucide-react";
 import DeckLayout from "./DeckLayout";
 import { useCardsStore } from "~/deck/store/cards.store";
 import { DeckCode } from "@/code-composer/components/DeckCode";
@@ -17,10 +17,10 @@ export default memo(function DeckEditor() {
   const { dialogOpen, setDialogOpen, gameRounds, resetGame } =
     use(GameRoundContext);
 
-  const startResizing = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    isResizing.current = true;
-  }, []);
+  // const startResizing = useCallback((e: React.MouseEvent) => {
+  //   e.preventDefault();
+  //   isResizing.current = true;
+  // }, []);
 
   const stopResizing = useCallback(() => {
     isResizing.current = false;
@@ -65,7 +65,7 @@ export default memo(function DeckEditor() {
     <>
       <div className="flex h-screen relative">
         {barIcon && (
-          <Menu
+          <PanelLeftOpen
             onClick={closeBar}
             className="w-6 h-6 text-primary absolute top-4 left-4 z-20 cursor-pointer"
           />
@@ -86,7 +86,7 @@ export default memo(function DeckEditor() {
         >
           <div className="flex flex-col">
             <div className="flex flex-row gap-4 border-b border-border">
-              <Menu
+              <PanelLeftOpen
                 onClick={closeBar}
                 className="w-6 h-6 text-primary cursor-pointer"
               />

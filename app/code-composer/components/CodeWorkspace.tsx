@@ -11,6 +11,9 @@ import type {
   filterFunctions,
   mapFunctions,
 } from "~/code-composer/interfaces/functions.type";
+import { Tooltip } from "react-tooltip";
+import { tooltipFilterFunctionText } from "../helpers/tooltipFilterFunctionText";
+import { tooltipMapFunctionText } from "../helpers/tooltipMapFunctionText";
 
 const DEFAULT_MAP_FUNCTIONS: mapFunctions[] = [
   "swap",
@@ -75,6 +78,9 @@ export function CodeWorkspace({
           <p className="text-base my-2 mt-4 font-mono text-emerald-400 font-semibold">
             {"filter ("}
           </p>
+          <span className="text-xs text-zinc-500 font-normal">
+            (Seleccion unica)
+          </span>
           <div className="border border-zinc-800 rounded-lg overflow-hidden transition-all bg-zinc-950/40">
             <button
               type="button"
@@ -84,9 +90,6 @@ export function CodeWorkspace({
               <div className="flex items-center gap-2">
                 <Filter className="w-4 h-4 text-emerald-400" />
                 <span>Filter Functions</span>
-                <span className="text-xs text-zinc-500 font-normal">
-                  (Select 1)
-                </span>
               </div>
               {filterAccordionOpen ? (
                 <ChevronDown className="w-4 h-4 text-zinc-400" />
@@ -95,16 +98,29 @@ export function CodeWorkspace({
               )}
             </button>
 
+            <Tooltip
+              id="func-tooltip"
+              style={{
+                backgroundColor: "#FFD428",
+                color: "black",
+                maxWidth: "200px",
+                textAlign: "center",
+              }}
+            />
+
             {filterAccordionOpen && (
               <div className="p-3 grid grid-cols-2 gap-2 bg-zinc-950/20 border-t border-zinc-800/60">
                 {availableFilterFunctions.map((func) => {
                   const isSelected = filterFunction === func;
                   return (
                     <button
-                      key={func}
+                      data-tooltip-id="func-tooltip"
+                      data-tooltip-content={`${tooltipFilterFunctionText[isSelected ? "quitFunction" : func]}`}
+                      data-tooltip-place="top"
                       type="button"
+                      key={func}
                       onClick={() => handleFilterClick(func)}
-                      className={`px-3 py-2 text-xs font-mono rounded-md border flex items-center justify-between transition-all ${
+                      className={`px-3 py-2 text-sm font-mono rounded-md border flex items-center justify-between transition-all ${
                         isSelected
                           ? "bg-emerald-500/20 border-emerald-500 text-emerald-300 shadow-[0_0_10px_rgba(16,185,129,0.2)]"
                           : "bg-zinc-900/50 border-zinc-800 text-zinc-300 hover:bg-zinc-800 hover:border-zinc-700"
@@ -124,6 +140,9 @@ export function CodeWorkspace({
             {"map ("}
           </p>
           <div className="flex flex-col ml-8 gap-2">
+            <span className="text-xs text-zinc-500 font-normal">
+              (Seleccion multiple)
+            </span>
             <div className="border border-zinc-800 rounded-lg overflow-hidden transition-all bg-zinc-950/40">
               <button
                 type="button"
@@ -133,9 +152,6 @@ export function CodeWorkspace({
                 <div className="flex items-center gap-2">
                   <Layers className="w-4 h-4 text-cyan-400" />
                   <span>Map Functions</span>
-                  <span className="text-xs text-zinc-500 font-normal">
-                    (Select multiple)
-                  </span>
                 </div>
                 {mapAccordionOpen ? (
                   <ChevronDown className="w-4 h-4 text-zinc-400" />
@@ -154,15 +170,17 @@ export function CodeWorkspace({
                     })
                     .map((func, index) => {
                       const isSelected = mapFunctions.includes(func);
-                      console.log(mapFunctions.indexOf(func));
                       return (
                         <button
+                          data-tooltip-id="func-tooltip"
+                          data-tooltip-content={`${tooltipMapFunctionText[isSelected ? "quitFunction" : func]}`}
+                          data-tooltip-place="top"
                           key={func}
                           type="button"
                           onClick={() => handleMapClick(func)}
-                          className={`px-3 py-2 text-xs font-mono rounded-md border flex items-center justify-between transition-all ${
+                          className={`px-3 py-2 text-sm font-mono rounded-md border flex items-center justify-between transition-all ${
                             isSelected
-                              ? "bg-zinc-800/40 border-zinc-800 text-zinc-500 opacity-60"
+                              ? "bg-zinc-800 border-zinc-400 text-zinc-100 text-bold"
                               : "bg-zinc-900/50 border-zinc-800 text-zinc-300 hover:bg-zinc-800 hover:border-zinc-700"
                           }`}
                         >
