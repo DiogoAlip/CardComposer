@@ -9,12 +9,12 @@ export default defineConfig({
   plugins: [tailwindcss(), react(), tsconfigPaths()],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./app"),
+      "@": path.resolve(__dirname, "./src"),
     },
   },
   test: {
     globals: true,
     environment: "jsdom",
-    setupFiles: "./app/test/setup.ts",
+    setupFiles: "./src/test/setup.ts",
   },
 });

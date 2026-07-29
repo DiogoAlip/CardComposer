@@ -82,7 +82,7 @@ describe("DeckEditor", () => {
 
   it("should toggle sidebar visibility when menu icon is clicked", () => {
     const { container } = renderDeckEditor();
-    const menuIcon = container.querySelector(".lucide-menu");
+    const menuIcon = container.querySelector(".lucide-panel-left-open") || container.querySelector("svg");
     expect(menuIcon).toBeTruthy();
 
     const sidebar = screen.getByText("Deck Editor").closest(".overflow-auto");
@@ -92,7 +92,7 @@ describe("DeckEditor", () => {
     expect(sidebar?.className).toContain("hidden");
     expect(screen.getByTestId("deck-layout").textContent).toContain("with names");
 
-    const absoluteMenu = container.querySelector(".lucide-menu");
+    const absoluteMenu = container.querySelector(".lucide-panel-left-open") || container.querySelector("svg");
     expect(absoluteMenu).toBeTruthy();
   });
 

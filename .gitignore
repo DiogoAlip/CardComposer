@@ -1,7 +1,19 @@
+# Logs & OS
 .DS_Store
-.env
-/node_modules/
+*.log
 
-# React Router
-/.react-router/
-/build/
+# Environment variables
+.env
+.env.local
+
+# Dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Build outputs
+dist/
+build/
+client/dist/
+client/build/
+.react-router/

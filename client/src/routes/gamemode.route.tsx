@@ -7,7 +7,6 @@ import {
   DoorOpen,
   Clipboard as ClipboardIcon,
   ArrowRight,
-  Flashlight,
 } from "lucide-react";
 import { CardGameMode } from "~/match/components/CardGameMode.ui";
 import { Button } from "~/shared/ui/button";
