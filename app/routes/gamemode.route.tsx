@@ -64,7 +64,7 @@ export default function GameMode() {
       title: "Invitar jugador",
       description: "Reta a un amigo a jugar mediante un enlace de invitación",
       icon: Mail,
-      avaible: false,
+      avaible: true,
       children: (
         <div className="flex flex-col gap-2">
           <p className="text-white text-center">Código de invitación</p>
@@ -97,7 +97,7 @@ export default function GameMode() {
       description:
         "Accede a una partida existente usando un código de invitación compartido",
       icon: DoorOpen,
-      avaible: false,
+      avaible: true,
       children: (
         <Input
           placeholder="Código de invitación"

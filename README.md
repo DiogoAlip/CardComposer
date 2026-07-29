@@ -41,7 +41,7 @@ Ensure you have [Node.js](https://nodejs.org/) installed on your system. It is r
 Open your terminal and clone the project:
 
 ```bash
-git clone <REPOSITORY_URL>
+git clone https://github.com/DiogoAlip/CardComposer.git
 cd CardComposer
 ```
 
