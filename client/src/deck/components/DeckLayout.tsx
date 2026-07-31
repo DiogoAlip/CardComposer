@@ -49,7 +49,7 @@ export default memo(function DeckLayout({
         >
           <PlayerNameTag name={P2Name} firstPlayer={false} />
           <p className="text-center sm:text-right">
-            Points: {countPoints.P2Points}
+            Puntos: {countPoints.P2Points}
           </p>
         </div>
         <div className="grid grid-cols-4 gap-2">
@@ -76,7 +76,7 @@ export default memo(function DeckLayout({
         >
           <PlayerNameTag name={P1Name} firstPlayer={true} />
           <p className="text-center sm:text-right">
-            Points: {countPoints.P1Points}
+            Puntos: {countPoints.P1Points}
           </p>
         </div>
         <div className="grid grid-cols-4 gap-2">
