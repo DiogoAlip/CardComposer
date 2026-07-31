@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useRef, useState, memo, use } from "react";
-import { PanelLeftOpen } from "lucide-react";
+import { useCallback, useEffect, useState, memo, use } from "react";
+import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import DeckLayout from "./DeckLayout";
 import { useCardsStore } from "~/deck/store/cards.store";
 import { DeckCode } from "@/code-composer/components/DeckCode";
@@ -11,29 +11,9 @@ export default memo(function DeckEditor() {
   const CardsFromPlayer1 = useCardsStore((state) => state.CardsFromPlayer1);
   const CardsFromPlayer2 = useCardsStore((state) => state.CardsFromPlayer2);
   const shuffleCards = useCardsStore((state) => state.ShuffleCards);
-  const [width, setWidth] = useState(375);
   const [barIcon, setBarIcon] = useState(false);
-  const isResizing = useRef(false);
   const { dialogOpen, setDialogOpen, gameRounds, resetGame } =
     use(GameRoundContext);
-
-  // const startResizing = useCallback((e: React.MouseEvent) => {
-  //   e.preventDefault();
-  //   isResizing.current = true;
-  // }, []);
-
-  const stopResizing = useCallback(() => {
-    isResizing.current = false;
-  }, []);
-
-  const resize = useCallback((e: MouseEvent) => {
-    if (isResizing.current) {
-      const newWidth = e.clientX;
-      if (newWidth > 350 && newWidth < 800) {
-        setWidth(newWidth);
-      }
-    }
-  }, []);
 
   const closeBar = useCallback(() => {
     setBarIcon((prev) => !prev);
@@ -45,15 +25,6 @@ export default memo(function DeckEditor() {
     setDialogOpen(false);
     if (gameRounds.length >= 4) resetGame();
   }, [gameRounds]);
-
-  useEffect(() => {
-    window.addEventListener("mousemove", resize);
-    window.addEventListener("mouseup", stopResizing);
-    return () => {
-      window.removeEventListener("mousemove", resize);
-      window.removeEventListener("mouseup", stopResizing);
-    };
-  }, [resize, stopResizing]);
 
   useEffect(() => {
     if (dialogOpen) {
@@ -80,16 +51,23 @@ export default memo(function DeckEditor() {
         )}
 
         <div
-          style={{ width: `${width}px` }}
+          style={{ width: `${375}px` }}
           className={`overflow-auto absolute lg:relative border-r border-border bg-black/85 p-4 h-full z-10 ${barIcon ? "hidden" : ""}`}
           // custom-scrollbar
         >
           <div className="flex flex-col">
             <div className="flex flex-row gap-4 border-b border-border">
-              <PanelLeftOpen
-                onClick={closeBar}
-                className="w-6 h-6 text-primary cursor-pointer"
-              />
+              {barIcon ? (
+                <PanelLeftOpen
+                  onClick={closeBar}
+                  className="w-6 h-6 text-primary cursor-pointer"
+                />
+              ) : (
+                <PanelLeftClose
+                  onClick={closeBar}
+                  className="w-6 h-6 text-primary cursor-pointer"
+                />
+              )}
               <h3 className="text-primary font-bold mb-4">Deck Editor</h3>
             </div>
             <DeckCode

@@ -21,7 +21,17 @@ const STAGE_DATA: Record<
     title: "¡Bienvenido a CardComposer!",
     badge: "Introducción",
     headerRight: "Tutorial de CardComposer",
-    body: "Un juego de lógica y programación funcional. Tu objetivo es componer secuencias de funciones que manipulen tus cartas para obtener el mayor puntaje frente a tu oponente.",
+    body: (
+      <>
+        Un juego de lógica y programación funcional. Tu objetivo es{" "}
+        <strong className="text-primary">
+          componer secuencias de funciones
+        </strong>{" "}
+        que manipulen tus cartas para obtener{" "}
+        <strong className="text-primary">el mayor puntaje</strong> frente a tu
+        oponente.
+      </>
+    ),
     positionClass:
       "fixed inset-0 bg-black/50 backdrop-blur-[2px] z-50 flex items-center justify-center pointer-events-auto",
     animateClass: "animate-in zoom-in-95 duration-200",
@@ -37,13 +47,13 @@ const STAGE_DATA: Record<
           Despliega los acordeones haciendo click a las flechas para seleccionar
           tus funciones.
         </p>
+        <p>
+          Las <strong className="text-cyan-500">Map Functions</strong> altera la
+          fila superior de tus cartas.
+        </p>
         <p className="mb-1">
           Las <strong className="text-emerald-500">Filter Functions</strong>{" "}
-          seleccionan qué cartas se verán afectadas.
-        </p>
-        <p>
-          Las <strong className="text-cyan-500">Map Functions</strong>{" "}
-          transforman el estado u orden de tus cartas.
+          seleccionan las cartas con las que deseas quedarte.
         </p>
       </>
     ),
@@ -60,16 +70,17 @@ const STAGE_DATA: Record<
           Al elegir funciones, aparecerán los botones de acción en la parte
           superior:
         </p>
-        <p className="mb-1">
-          • <strong>Run</strong>: Previsualiza localmente el efecto sobre tus
-          cartas.
-        </p>
-        <p className="mb-1">
-          • <strong>Send</strong>: Envía tu código final para jugar contra el
-          oponente.
-        </p>
         <p>
-          • <strong>Clear</strong>: Reinicia la selección de funciones.
+          • <strong className="text-red-500">Clear</strong>: Reinicia la
+          selección de funciones.
+        </p>
+        <p className="mb-1">
+          • <strong className="text-emerald-500">Run</strong>: Previsualiza
+          localmente el efecto sobre tus cartas.
+        </p>
+        <p className="mb-1">
+          • <strong className="text-primary">Match</strong>: Inicia el match
+          contra el oponente.
         </p>
       </>
     ),
@@ -88,7 +99,20 @@ const STAGE_DATA: Record<
     title: "4. Tu Zona de Juego",
     badge: "Paso 4 de 4",
     headerRight: "Jugador",
-    body: "Esta es tu baraja. Tienes 4 cartas en la Fila Frontal y 4 en la Fila Trasera. Las funciones que programes se aplicarán sobre la Fila Frontal filtrada. ¡Diseña tu código para dejar tus cartas más altas boca arriba!",
+    body: (
+      <>
+        Esta es tu baraja con 4 cuatro cartas para la fila frontal, tu objetivo
+        es{" "}
+        <strong className="text-primary">
+          ordenar tus cartas para obtener el mayor puntaje
+        </strong>{" "}
+        delante de tu oponente.{" "}
+        <strong className="text-primary">Cada fila se compara</strong> y ganara
+        el puntaje mas alto,{" "}
+        <strong className="text-primary">los puntos obtenidos se suman </strong>{" "}
+        y el jugador con mayor puntaje gana la partida.
+      </>
+    ),
     positionClass: "fixed bottom-24 right-8 w-80",
     animateClass: "animate-in slide-in-from-right-5 duration-300",
   },
